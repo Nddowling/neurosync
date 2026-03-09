@@ -119,7 +119,11 @@ const SourcesPanel = ({ sources, onRequestSOAP }) => {
       {open && (
         <div className="px-3 pb-3 space-y-2 border-t border-teal-100">
           {sources.map((src, i) => {
-            const [citation, ...annotParts] = src.split(" — ");
+            // Extract URL if present anywhere in the source string
+            const urlMatch = src.match(/https?:\/\/[^\s)>\]"]+/);
+            const url = urlMatch?.[0];
+            const text = src.replace(urlMatch?.[0] || "", "").trim();
+            const [citation, ...annotParts] = text.split(" — ");
             const annotation = annotParts.join(" — ");
             return (
               <div key={i} className="flex gap-2 pt-2">
@@ -127,6 +131,16 @@ const SourcesPanel = ({ sources, onRequestSOAP }) => {
                 <div>
                   <p className="text-xs font-semibold text-gray-800">{citation?.trim()}</p>
                   {annotation && <p className="text-[11px] text-teal-700 mt-0.5 leading-relaxed">{annotation.trim()}</p>}
+                  {url && (
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] text-teal-600 hover:text-teal-800 underline underline-offset-2 mt-0.5"
+                    >
+                      Read more →
+                    </a>
+                  )}
                 </div>
               </div>
             );
