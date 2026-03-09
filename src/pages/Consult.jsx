@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import MessageBubble from "../components/chat/MessageBubble";
 import ChatInput from "../components/chat/ChatInput";
 import PromptSuggestions from "../components/chat/PromptSuggestions";
+import AgentStatusBar from "../components/chat/AgentStatusBar";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Consult() {
