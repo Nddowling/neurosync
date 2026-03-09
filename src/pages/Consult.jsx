@@ -62,6 +62,7 @@ export default function Consult() {
     const conv = await base44.agents.getConversation(id);
     setActiveConversation(conv);
     setMessages(conv.messages || []);
+    localStorage.setItem("neurosync_active_conv", id);
     setIsLoading(false);
     setShowHistory(false);
   };
