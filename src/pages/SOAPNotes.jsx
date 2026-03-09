@@ -5,7 +5,6 @@ import { FileText, Plus, Copy, Download, ChevronDown, Clock, CheckCircle2, Loade
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { format, toZonedTime } from "date-fns-tz";
 import { toast } from "sonner";
 import SOAPNoteForm from "../components/soap/SOAPNoteForm";
 import SOAPNoteView from "../components/soap/SOAPNoteView";
@@ -172,7 +171,7 @@ Generate the note in this JSON format with thorough, clinically appropriate cont
                     </div>
                     <p className="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
                       <Clock className="w-3 h-3" />
-                      {format(toZonedTime(new Date(note.created_date), "America/New_York"), "MMM d, yyyy 'at' h:mm a zzz")}
+                      {new Date(note.created_date).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", second: undefined, timeZone: "America/New_York" })}
                     </p>
                     {note.icd_codes && (
                       <p className="text-xs text-gray-500 mt-1 truncate">ICD: {note.icd_codes}</p>
