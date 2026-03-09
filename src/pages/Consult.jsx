@@ -250,7 +250,7 @@ export default function Consult() {
                   message={{ role: "assistant", content: typewriterText + "▍" }}
                 />
               )}
-              <AgentStatusBar status={agentStatus} />
+              <AgentStatusBar status={typewriterIdx !== null ? null : agentStatus} />
               <div ref={messagesEndRef} />
             </div>
           )}
