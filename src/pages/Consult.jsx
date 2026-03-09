@@ -51,6 +51,8 @@ export default function Consult() {
   }, [activeConversation?.id]);
 
   // Detect new assistant messages and drive typewriter + status
+  const typewriterActiveRef = useRef(false);
+
   useEffect(() => {
     const prev = prevMessagesRef.current;
     const curr = messages;
@@ -58,21 +60,22 @@ export default function Consult() {
     if (curr.length > prev.length) {
       const newest = curr[curr.length - 1];
       if (newest.role === "assistant" && newest.content) {
-        // New assistant message arrived — typewrite it
         const idx = curr.length - 1;
         setAgentStatus("typing");
         setTypewriterIdx(idx);
         setTypewriterText("");
-        setDisplayedMessages(curr.slice(0, idx)); // show all but last until typed
+        setDisplayedMessages(curr.slice(0, idx));
+        typewriterActiveRef.current = true;
 
         let i = 0;
         const full = newest.content;
-        const speed = Math.max(4, Math.min(12, Math.round(8000 / full.length))); // adaptive speed
+        const speed = Math.max(4, Math.min(12, Math.round(8000 / full.length)));
         const interval = setInterval(() => {
           i++;
           setTypewriterText(full.slice(0, i));
           if (i >= full.length) {
             clearInterval(interval);
+            typewriterActiveRef.current = false;
             setDisplayedMessages(curr);
             setTypewriterIdx(null);
             setTypewriterText("");
@@ -80,12 +83,15 @@ export default function Consult() {
           }
         }, speed);
         prevMessagesRef.current = curr;
-        return () => clearInterval(interval);
+        return () => { clearInterval(interval); typewriterActiveRef.current = false; };
       }
     }
 
     prevMessagesRef.current = curr;
-    setDisplayedMessages(curr);
+    // Don't overwrite displayedMessages while typewriter is running
+    if (!typewriterActiveRef.current) {
+      setDisplayedMessages(curr);
+    }
   }, [messages]);
 
   // Auto-scroll
