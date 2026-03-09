@@ -160,24 +160,7 @@ const SourcesPanel = ({ sources, onRequestSOAP, bodyIsSoap }) => {
           })}
         </div>
       )}
-      {!bodyIsSoap && (
-        <div className="px-3 py-2 border-t border-teal-100">
-          {soapRequested ? (
-            <p className="text-xs text-teal-600 flex items-center gap-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5" />
-              SOAP note requested — generating now...
-            </p>
-          ) : (
-            <button
-              onClick={handleSOAP}
-              className="flex items-center gap-1.5 text-xs text-teal-700 font-medium hover:text-teal-900 transition-colors"
-            >
-              <FileText className="h-3.5 w-3.5 text-teal-500" />
-              Would you like a SOAP note created for this session?
-            </button>
-          )}
-        </div>
-      )}
+
     </div>
   );
 };
