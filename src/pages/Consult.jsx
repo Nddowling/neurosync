@@ -242,7 +242,7 @@ export default function Consult() {
           ) : (
             <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
               {displayedMessages.map((msg, idx) => (
-                <MessageBubble key={idx} message={msg} />
+                <MessageBubble key={idx} message={msg} onSendMessage={sendMessage} />
               ))}
               {typewriterIdx !== null && (
                 <MessageBubble
