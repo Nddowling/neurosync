@@ -34,8 +34,8 @@ export default function DSMReference() {
     setResult(null);
 
     try {
-    const response = await base44.integrations.Core.InvokeLLM({
-      prompt: `You are a psychiatry professor and DSM-5-TR expert. Provide comprehensive diagnostic information for this query. Be thorough and clinically precise.
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt: `You are a psychiatry professor and DSM-5-TR expert. Provide comprehensive diagnostic information for this query. Be thorough and clinically precise.
 
 Query: ${q}
 
@@ -48,9 +48,8 @@ Structure your response with:
 6. **Assessment Tools** — Validated scales/instruments for screening and monitoring
 
 Use clear formatting with headers and bullet points.`,
-    });
-
-    setResult(response);
+      });
+      setResult(response);
     } finally {
       setIsLoading(false);
     }
