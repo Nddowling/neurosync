@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { BookOpen, Search, Loader2, AlertCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -149,7 +149,7 @@ Use clear formatting with headers and bullet points.`,
             </div>
             <div className="prose-clinical">
               <ReactMarkdown className="text-sm text-gray-700 leading-relaxed">
-                {result}
+                {displayedResult}
               </ReactMarkdown>
             </div>
           </div>

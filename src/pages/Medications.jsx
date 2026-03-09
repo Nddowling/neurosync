@@ -19,9 +19,9 @@ export default function Medications() {
   const [result, setResult] = useState(null);
   const [displayedResult, setDisplayedResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const typewriterRef = React.useRef(null);
+  const typewriterRef = useRef(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!result) { setDisplayedResult(""); return; }
     let i = 0;
     clearInterval(typewriterRef.current);
