@@ -62,7 +62,7 @@ export default function Layout({ children, currentPageName }) {
                 <Stethoscope className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-lg font-semibold text-gray-900 tracking-tight">ClinAssist</h1>
+                <h1 className="text-lg font-semibold text-gray-900 tracking-tight">NeuroSync</h1>
                 <p className="text-[11px] text-gray-400 font-medium tracking-wide uppercase">Clinical AI Assistant</p>
               </div>
             </div>
@@ -133,7 +133,7 @@ export default function Layout({ children, currentPageName }) {
           </Button>
           <div className="flex items-center gap-2">
             <Stethoscope className="w-5 h-5 text-teal-600" />
-            <span className="font-semibold text-gray-900">ClinAssist</span>
+            <span className="font-semibold text-gray-900">NeuroSync</span>
           </div>
         </div>
 
