@@ -96,7 +96,14 @@ const FunctionDisplay = ({ toolCall }) => {
   );
 };
 
-const SourcesPanel = ({ sources, onRequestSOAP }) => {
+// Detect if a message body is itself a SOAP note
+function isSoapNote(body) {
+  if (!body) return false;
+  const lower = body.toLowerCase();
+  return (lower.includes("subjective") && lower.includes("objective") && lower.includes("assessment") && lower.includes("plan"));
+}
+
+const SourcesPanel = ({ sources, onRequestSOAP, bodyIsSoap }) => {
   const [open, setOpen] = useState(false);
   const [soapRequested, setSoapRequested] = useState(false);
   if (!sources?.length) return null;
@@ -119,26 +126,28 @@ const SourcesPanel = ({ sources, onRequestSOAP }) => {
       {open && (
         <div className="px-3 pb-3 space-y-2 border-t border-teal-100">
           {sources.map((src, i) => {
-            // Extract URL if present anywhere in the source string
             const urlMatch = src.match(/https?:\/\/[^\s)>\]"]+/);
             const url = urlMatch?.[0];
             const text = src.replace(urlMatch?.[0] || "", "").trim();
             const [citation, ...annotParts] = text.split(" — ");
+            const citationText = citation?.trim();
             const annotation = annotParts.join(" — ");
+            // Fall back to a PubMed search if no direct URL
+            const searchUrl = url || (citationText ? `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(citationText)}` : null);
             return (
               <div key={i} className="flex gap-2 pt-2">
                 <span className="flex-shrink-0 w-5 h-5 rounded-full bg-teal-600 text-white text-[10px] font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
                 <div>
-                  <p className="text-xs font-semibold text-gray-800">{citation?.trim()}</p>
+                  <p className="text-xs font-semibold text-gray-800">{citationText}</p>
                   {annotation && <p className="text-[11px] text-teal-700 mt-0.5 leading-relaxed">{annotation.trim()}</p>}
-                  {url && (
+                  {searchUrl && (
                     <a
-                      href={url}
+                      href={searchUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-[11px] text-teal-600 hover:text-teal-800 underline underline-offset-2 mt-0.5"
                     >
-                      Read more →
+                      {url ? "Read more →" : "Search PubMed →"}
                     </a>
                   )}
                 </div>
@@ -147,22 +156,24 @@ const SourcesPanel = ({ sources, onRequestSOAP }) => {
           })}
         </div>
       )}
-      <div className="px-3 py-2 border-t border-teal-100">
-        {soapRequested ? (
-          <p className="text-xs text-teal-600 flex items-center gap-1.5">
-            <CheckCircle2 className="h-3.5 w-3.5" />
-            SOAP note requested — generating now...
-          </p>
-        ) : (
-          <button
-            onClick={handleSOAP}
-            className="flex items-center gap-1.5 text-xs text-teal-700 font-medium hover:text-teal-900 transition-colors"
-          >
-            <FileText className="h-3.5 w-3.5 text-teal-500" />
-            Would you like a SOAP note created for this session?
-          </button>
-        )}
-      </div>
+      {!bodyIsSoap && (
+        <div className="px-3 py-2 border-t border-teal-100">
+          {soapRequested ? (
+            <p className="text-xs text-teal-600 flex items-center gap-1.5">
+              <CheckCircle2 className="h-3.5 w-3.5" />
+              SOAP note requested — generating now...
+            </p>
+          ) : (
+            <button
+              onClick={handleSOAP}
+              className="flex items-center gap-1.5 text-xs text-teal-700 font-medium hover:text-teal-900 transition-colors"
+            >
+              <FileText className="h-3.5 w-3.5 text-teal-500" />
+              Would you like a SOAP note created for this session?
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
