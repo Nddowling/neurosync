@@ -175,13 +175,17 @@ const mdComponents = {
   ),
 };
 
-export default function MessageBubble({ message }) {
+export default function MessageBubble({ message, onSendMessage }) {
   const isUser = message.role === "user";
   const { body, sources } = isUser ? { body: message.content, sources: [] } : parseSources(message.content);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content);
     toast.success("Copied to clipboard");
+  };
+
+  const handleRequestSOAP = () => {
+    onSendMessage?.("Please generate a SOAP note for this session.");
   };
 
   return (
