@@ -241,9 +241,16 @@ export default function Consult() {
             </div>
           ) : (
             <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
-              {messages.map((msg, idx) => (
+              {displayedMessages.map((msg, idx) => (
                 <MessageBubble key={idx} message={msg} />
               ))}
+              {typewriterIdx !== null && (
+                <MessageBubble
+                  key="typewriter"
+                  message={{ role: "assistant", content: typewriterText + "▍" }}
+                />
+              )}
+              <AgentStatusBar status={agentStatus} />
               <div ref={messagesEndRef} />
             </div>
           )}
