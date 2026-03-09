@@ -5,7 +5,7 @@ import { FileText, Plus, Copy, Download, ChevronDown, Clock, CheckCircle2, Loade
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { format } from "date-fns";
+import { format, toZonedTime } from "date-fns-tz";
 import { toast } from "sonner";
 import SOAPNoteForm from "../components/soap/SOAPNoteForm";
 import SOAPNoteView from "../components/soap/SOAPNoteView";
@@ -18,7 +18,23 @@ export default function SOAPNotes() {
 
   const { data: notes = [], isLoading } = useQuery({
     queryKey: ["clinical-notes"],
-    queryFn: () => base44.entities.ClinicalNote.list("-created_date", 50),
+    queryFn: async () => {
+      let allNotes = [];
+      let skip = 0;
+      const limit = 100;
+      let hasMore = true;
+      while (hasMore) {
+        const batch = await base44.entities.ClinicalNote.list("-created_date", limit, skip);
+        if (!batch || batch.length === 0) {
+          hasMore = false;
+        } else {
+          allNotes = allNotes.concat(batch);
+          skip += limit;
+          if (batch.length < limit) hasMore = false;
+        }
+      }
+      return allNotes;
+    },
   });
 
   const createNoteMutation = useMutation({
@@ -156,7 +172,7 @@ Generate the note in this JSON format with thorough, clinically appropriate cont
                     </div>
                     <p className="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
                       <Clock className="w-3 h-3" />
-                      {format(new Date(note.created_date), "MMM d, yyyy 'at' h:mm a")}
+                      {format(toZonedTime(new Date(note.created_date), "America/New_York"), "MMM d, yyyy 'at' h:mm a zzz")}
                     </p>
                     {note.icd_codes && (
                       <p className="text-xs text-gray-500 mt-1 truncate">ICD: {note.icd_codes}</p>
