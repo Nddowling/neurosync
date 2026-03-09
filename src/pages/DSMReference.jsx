@@ -129,7 +129,7 @@ Use clear formatting with headers and bullet points.`,
       )}
 
       {/* Result */}
-      {result && (
+      {(result || displayedResult) && (
         <div>
           <Button variant="ghost" onClick={() => setResult(null)} className="mb-4 text-sm text-gray-500 hover:text-gray-700 gap-1 -ml-2">
             ← Back to categories

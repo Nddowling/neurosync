@@ -127,7 +127,7 @@ Include:
       )}
 
       {/* Result */}
-      {result && (
+      {(result || displayedResult) && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
           <div className="flex items-start gap-3 mb-4 pb-4 border-b border-gray-50">
             <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
@@ -143,7 +143,7 @@ Include:
           </div>
           <div className="prose-clinical">
             <ReactMarkdown className="text-sm text-gray-700 leading-relaxed">
-              {result}
+              {displayedResult}
             </ReactMarkdown>
           </div>
         </div>
