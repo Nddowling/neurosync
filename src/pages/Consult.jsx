@@ -16,22 +16,23 @@ export default function Consult() {
   const [showHistory, setShowHistory] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Load conversations list
-  useEffect(() => {
-    loadConversations();
-  }, []);
-
-  // Load from URL param
+  // Load conversations list and restore last active session
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const sessionId = params.get("sessionId");
-    if (sessionId) {
-      // Find conversation by session
-      loadConversations().then((convs) => {
+
+    loadConversations().then((convs) => {
+      if (sessionId) {
         const match = convs?.find(c => c.metadata?.session_id === sessionId);
+        if (match) { loadConversation(match.id); return; }
+      }
+      // Restore last active conversation from localStorage
+      const savedId = localStorage.getItem("neurosync_active_conv");
+      if (savedId) {
+        const match = convs?.find(c => c.id === savedId);
         if (match) loadConversation(match.id);
-      });
-    }
+      }
+    });
   }, []);
 
   // Subscribe to conversation updates
