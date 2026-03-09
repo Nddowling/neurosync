@@ -15,7 +15,12 @@ export default function Consult() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [agentStatus, setAgentStatus] = useState(null); // null | 'received' | 'thinking' | 'typing'
+  const [displayedMessages, setDisplayedMessages] = useState([]);
+  const [typewriterIdx, setTypewriterIdx] = useState(null); // index of msg being typewritten
+  const [typewriterText, setTypewriterText] = useState("");
   const messagesEndRef = useRef(null);
+  const prevMessagesRef = useRef([]);
 
   // Load conversations list and restore last active session
   useEffect(() => {
