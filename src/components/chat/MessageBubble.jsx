@@ -132,8 +132,12 @@ const SourcesPanel = ({ sources, onRequestSOAP, bodyIsSoap }) => {
             const [citation, ...annotParts] = text.split(" — ");
             const citationText = citation?.trim();
             const annotation = annotParts.join(" — ");
-            // Fall back to a PubMed search if no direct URL
-            const searchUrl = url || (citationText ? `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(citationText)}` : null);
+            // Extract first author + year for cleaner search, or use google scholar
+            const authorYearMatch = citationText?.match(/^([A-Za-z\s&]+)\s*(?:\((\d{4})\)|(\d{4}))/);
+            const author = authorYearMatch?.[1]?.trim();
+            const year = authorYearMatch?.[2] || authorYearMatch?.[3];
+            const searchTerm = author && year ? `${author} ${year}` : citationText;
+            const searchUrl = url || (searchTerm ? `https://scholar.google.com/scholar?q=${encodeURIComponent(searchTerm)}` : null);
             return (
               <div key={i} className="flex gap-2 pt-2">
                 <span className="flex-shrink-0 w-5 h-5 rounded-full bg-teal-600 text-white text-[10px] font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
