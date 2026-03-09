@@ -128,8 +128,10 @@ export default function Consult() {
   };
 
   const sendMessage = async (content) => {
+    setAgentStatus("received");
+    setTimeout(() => setAgentStatus("thinking"), 800);
+
     if (!activeConversation) {
-      // Auto-create conversation
       const conv = await base44.agents.createConversation({
         agent_name: "clinicalAssistant",
         metadata: {
