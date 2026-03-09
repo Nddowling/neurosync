@@ -239,7 +239,7 @@ export default function MessageBubble({ message, onSendMessage }) {
                     {body}
                   </ReactMarkdown>
                 </div>
-                <SourcesPanel sources={sources} onRequestSOAP={handleRequestSOAP} />
+                <SourcesPanel sources={sources} onRequestSOAP={handleRequestSOAP} bodyIsSoap={isSoapNote(body)} />
               </>
             )}
             {!isUser && (
