@@ -26,8 +26,9 @@ export default function Medications() {
     setIsLoading(true);
     setResult(null);
 
-    const response = await base44.integrations.Core.InvokeLLM({
-      prompt: `You are a senior psychopharmacology expert. Provide a thorough, evidence-based response to this medication query. Use clinical precision with drug names, dosing ranges, CYP450 interactions, black box warnings, and monitoring parameters. Format with clear headers, bullet points, and tables where helpful. Always note safety concerns prominently.
+    try {
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt: `You are a senior psychopharmacology expert. Provide a thorough, evidence-based response to this medication query. Use clinical precision with drug names, dosing ranges, CYP450 interactions, black box warnings, and monitoring parameters. Format with clear headers, bullet points, and tables where helpful. Always note safety concerns prominently.
 
 Query: ${q}
 
@@ -38,11 +39,12 @@ Include:
 - Black box warnings if applicable
 - Monitoring requirements
 - Clinical pearls from practice`,
-      model: "claude_sonnet_4_6"
-    });
+      });
 
-    setResult(response);
-    setIsLoading(false);
+      setResult(response);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyDown = (e) => {
