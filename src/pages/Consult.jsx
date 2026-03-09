@@ -50,10 +50,48 @@ export default function Consult() {
     return () => unsubscribe();
   }, [activeConversation?.id]);
 
+  // Detect new assistant messages and drive typewriter + status
+  useEffect(() => {
+    const prev = prevMessagesRef.current;
+    const curr = messages;
+
+    if (curr.length > prev.length) {
+      const newest = curr[curr.length - 1];
+      if (newest.role === "assistant" && newest.content) {
+        // New assistant message arrived — typewrite it
+        const idx = curr.length - 1;
+        setAgentStatus("typing");
+        setTypewriterIdx(idx);
+        setTypewriterText("");
+        setDisplayedMessages(curr.slice(0, idx)); // show all but last until typed
+
+        let i = 0;
+        const full = newest.content;
+        const speed = Math.max(4, Math.min(12, Math.round(8000 / full.length))); // adaptive speed
+        const interval = setInterval(() => {
+          i++;
+          setTypewriterText(full.slice(0, i));
+          if (i >= full.length) {
+            clearInterval(interval);
+            setDisplayedMessages(curr);
+            setTypewriterIdx(null);
+            setTypewriterText("");
+            setAgentStatus(null);
+          }
+        }, speed);
+        prevMessagesRef.current = curr;
+        return () => clearInterval(interval);
+      }
+    }
+
+    prevMessagesRef.current = curr;
+    setDisplayedMessages(curr);
+  }, [messages]);
+
   // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [displayedMessages, typewriterText]);
 
   const loadConversations = async () => {
     setIsLoading(true);
