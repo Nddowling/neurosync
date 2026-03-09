@@ -17,7 +17,26 @@ const quickQueries = [
 export default function Medications() {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
+  const [displayedResult, setDisplayedResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const typewriterRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!result) { setDisplayedResult(""); return; }
+    let i = 0;
+    clearInterval(typewriterRef.current);
+    setDisplayedResult("");
+    typewriterRef.current = setInterval(() => {
+      i += 8;
+      if (i >= result.length) {
+        setDisplayedResult(result);
+        clearInterval(typewriterRef.current);
+      } else {
+        setDisplayedResult(result.slice(0, i));
+      }
+    }, 16);
+    return () => clearInterval(typewriterRef.current);
+  }, [result]);
 
   const handleSearch = async (searchQuery) => {
     const q = searchQuery || query;

@@ -25,6 +25,25 @@ export default function DSMReference() {
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
+  const [displayedResult, setDisplayedResult] = useState("");
+  const typewriterRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!result) { setDisplayedResult(""); return; }
+    let i = 0;
+    clearInterval(typewriterRef.current);
+    setDisplayedResult("");
+    typewriterRef.current = setInterval(() => {
+      i += 8;
+      if (i >= result.length) {
+        setDisplayedResult(result);
+        clearInterval(typewriterRef.current);
+      } else {
+        setDisplayedResult(result.slice(0, i));
+      }
+    }, 16);
+    return () => clearInterval(typewriterRef.current);
+  }, [result]);
 
   const handleSearch = async (searchQuery) => {
     const q = searchQuery || query;
