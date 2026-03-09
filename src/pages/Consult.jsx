@@ -77,6 +77,7 @@ export default function Consult() {
     });
     setActiveConversation(conv);
     setMessages([]);
+    localStorage.setItem("neurosync_active_conv", conv.id);
     setIsLoading(false);
     setShowHistory(false);
     loadConversations();
