@@ -1,9 +1,22 @@
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
-import { Copy, CheckCircle2, AlertCircle, Loader2, ChevronRight, Clock, Zap, Stethoscope } from "lucide-react";
+import { Copy, CheckCircle2, AlertCircle, Loader2, ChevronRight, Clock, Zap, Stethoscope, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+// Parse ---SOURCES--- block out of message content
+function parseSources(content) {
+  if (!content) return { body: content, sources: [] };
+  const match = content.match(/---SOURCES---([\s\S]*?)---END SOURCES---/);
+  if (!match) return { body: content, sources: [] };
+  const body = content.replace(/---SOURCES---([\s\S]*?)---END SOURCES---/, "").trim();
+  const sources = match[1]
+    .split("\n")
+    .map(l => l.replace(/^\d+\.\s*/, "").trim())
+    .filter(Boolean);
+  return { body, sources };
+}
 
 const FunctionDisplay = ({ toolCall }) => {
   const [expanded, setExpanded] = useState(false);
