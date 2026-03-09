@@ -94,6 +94,7 @@ export default function Consult() {
       });
       setActiveConversation(conv);
       setMessages([]);
+      localStorage.setItem("neurosync_active_conv", conv.id);
       setIsSending(true);
       await base44.agents.addMessage(conv, { role: "user", content });
       setIsSending(false);
