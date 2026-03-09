@@ -151,7 +151,7 @@ const SourcesPanel = ({ sources, onRequestSOAP, bodyIsSoap }) => {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-[11px] text-teal-600 hover:text-teal-800 underline underline-offset-2 mt-0.5"
                     >
-                      {url ? "Read more →" : "Search PubMed →"}
+                      {url ? "Read more →" : "Search Scholar →"}
                     </a>
                   )}
                 </div>
