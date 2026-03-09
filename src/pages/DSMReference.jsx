@@ -51,7 +51,9 @@ Use clear formatting with headers and bullet points.`,
     });
 
     setResult(response);
-    setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
