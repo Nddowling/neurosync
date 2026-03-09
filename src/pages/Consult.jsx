@@ -157,7 +157,7 @@ export default function Consult() {
     sendMessage(prompt);
   };
 
-  const hasMessages = messages.length > 0;
+  const hasMessages = messages.length > 0 || displayedMessages.length > 0;
 
   return (
     <div className="flex h-full">
