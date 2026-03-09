@@ -106,6 +106,8 @@ function isSoapNote(body) {
 const SourcesPanel = ({ sources, onRequestSOAP, bodyIsSoap }) => {
   const [open, setOpen] = useState(false);
   const [soapRequested, setSoapRequested] = useState(false);
+  
+  // Only show sources panel, don't show SOAP button if message is already a SOAP note
   if (!sources?.length) return null;
 
   const handleSOAP = () => {
@@ -114,53 +116,67 @@ const SourcesPanel = ({ sources, onRequestSOAP, bodyIsSoap }) => {
   };
 
   return (
-    <div className="mt-2 rounded-xl border border-teal-100 bg-teal-50/60 overflow-hidden">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-teal-700 hover:bg-teal-100/50 transition-colors"
-      >
-        <BookOpen className="h-3.5 w-3.5 text-teal-500" />
-        <span>{sources.length} Annotated Source{sources.length !== 1 ? "s" : ""}</span>
-        <ChevronRight className={cn("h-3.5 w-3.5 ml-auto text-teal-400 transition-transform", open && "rotate-90")} />
-      </button>
-      {open && (
-        <div className="px-3 pb-3 space-y-2 border-t border-teal-100">
-          {sources.map((src, i) => {
-            const urlMatch = src.match(/https?:\/\/[^\s)>\]"]+/);
-            const url = urlMatch?.[0];
-            const text = src.replace(urlMatch?.[0] || "", "").trim();
-            const [citation, ...annotParts] = text.split(" — ");
-            const citationText = citation?.trim();
-            const annotation = annotParts.join(" — ");
-            // Extract first author + year for cleaner search, or use google scholar
-            const authorYearMatch = citationText?.match(/^([A-Za-z\s&]+)\s*(?:\((\d{4})\)|(\d{4}))/);
-            const author = authorYearMatch?.[1]?.trim();
-            const year = authorYearMatch?.[2] || authorYearMatch?.[3];
-            const searchTerm = author && year ? `${author} ${year}` : citationText;
-            const searchUrl = url || (searchTerm ? `https://scholar.google.com/scholar?q=${encodeURIComponent(searchTerm)}` : null);
-            return (
-              <div key={i} className="flex gap-2 pt-2">
-                <span className="flex-shrink-0 w-5 h-5 rounded-full bg-teal-600 text-white text-[10px] font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
-                <div>
-                  <p className="text-xs font-semibold text-gray-800">{citationText}</p>
-                  {annotation && <p className="text-[11px] text-teal-700 mt-0.5 leading-relaxed">{annotation.trim()}</p>}
-                  {searchUrl && (
-                    <a
-                      href={searchUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-[11px] text-teal-600 hover:text-teal-800 underline underline-offset-2 mt-0.5"
-                    >
-                      {url ? "Read more →" : "Search Scholar →"}
-                    </a>
-                  )}
+    <div className="mt-2 space-y-2">
+      <div className="rounded-xl border border-teal-100 bg-teal-50/60 overflow-hidden">
+        <button
+          onClick={() => setOpen(!open)}
+          className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-teal-700 hover:bg-teal-100/50 transition-colors"
+        >
+          <BookOpen className="h-3.5 w-3.5 text-teal-500" />
+          <span>{sources.length} Annotated Source{sources.length !== 1 ? "s" : ""}</span>
+          <ChevronRight className={cn("h-3.5 w-3.5 ml-auto text-teal-400 transition-transform", open && "rotate-90")} />
+        </button>
+        {open && (
+          <div className="px-3 pb-3 space-y-2 border-t border-teal-100">
+            {sources.map((src, i) => {
+              const urlMatch = src.match(/https?:\/\/[^\s)>\]"]+/);
+              const url = urlMatch?.[0];
+              const text = src.replace(urlMatch?.[0] || "", "").trim();
+              const [citation, ...annotParts] = text.split(" — ");
+              const citationText = citation?.trim();
+              const annotation = annotParts.join(" — ");
+              // Extract first author + year for cleaner search, or use google scholar
+              const authorYearMatch = citationText?.match(/^([A-Za-z\s&]+)\s*(?:\((\d{4})\)|(\d{4}))/);
+              const author = authorYearMatch?.[1]?.trim();
+              const year = authorYearMatch?.[2] || authorYearMatch?.[3];
+              const searchTerm = author && year ? `${author} ${year}` : citationText;
+              const searchUrl = url || (searchTerm ? `https://scholar.google.com/scholar?q=${encodeURIComponent(searchTerm)}` : null);
+              return (
+                <div key={i} className="flex gap-2 pt-2">
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-teal-600 text-white text-[10px] font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
+                  <div>
+                    <p className="text-xs font-semibold text-gray-800">{citationText}</p>
+                    {annotation && <p className="text-[11px] text-teal-700 mt-0.5 leading-relaxed">{annotation.trim()}</p>}
+                    {searchUrl && (
+                      <a
+                        href={searchUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[11px] text-teal-600 hover:text-teal-800 underline underline-offset-2 mt-0.5"
+                      >
+                        {url ? "Read more →" : "Search Scholar →"}
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+      
+      {/* Show SOAP button only if current message is NOT a SOAP note */}
+      {!bodyIsSoap && !soapRequested && (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleSOAP}
+          className="w-full text-xs text-teal-600 border-teal-200 hover:bg-teal-50"
+        >
+          <FileText className="h-3.5 w-3.5 mr-1.5" />
+          Generate SOAP Note
+        </Button>
       )}
-
     </div>
   );
 };

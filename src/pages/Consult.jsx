@@ -59,6 +59,9 @@ export default function Consult() {
       const newest = curr[curr.length - 1];
       if (newest.role === "assistant" && newest.content) {
         const idx = curr.length - 1;
+        prevMessagesRef.current = curr;
+        
+        // Start typewriter animation
         setAgentStatus("typing");
         setTypewriterIdx(idx);
         setTypewriterText("");
@@ -78,7 +81,6 @@ export default function Consult() {
             setAgentStatus(null);
           }
         }, speed);
-        prevMessagesRef.current = curr;
         return () => clearInterval(interval);
       }
     }
