@@ -40,32 +40,39 @@ export default function SOAPNotes() {
     mutationFn: async (formData) => {
       setGenerating(true);
       // Use LLM to generate SOAP note
-      const prompt = `Generate a comprehensive psychiatric SOAP note based on the following session data. Apply DSM-5 diagnostic reasoning, structured Mental Status Examination (MSE), suicide/homicide risk stratification, and ICD-10 coding. Write in professional clinical language appropriate for psychiatric documentation.
+      const prompt = `You are a board-certified psychiatrist generating a formal psychiatric SOAP note for an EHR. Output must be highly clinical, detailed, and formatted using Markdown. Use tables where specified below.
 
 ---
 
 SESSION DATA:
 - Session Type: ${formData.note_type}
+- Provider: ${formData.provider_name || "Not specified"}
+- Patient: ${formData.patient_info || "Not specified"}
+- Demographics: ${formData.demographics || "Not specified"}
 - Chief Complaint: ${formData.chief_complaint || "Not specified"}
-- Subjective Information: ${formData.subjective || "Not provided"}
-- Objective Findings: ${formData.objective || "Not provided"}
+- Subjective / HPI: ${formData.subjective || "Not provided"}
+- Objective / MSE notes: ${formData.objective || "Not provided"}
 - Current Medications: ${formData.medications || "None listed"}
-- Patient Demographics: ${formData.demographics || "Not specified"}
-- Additional Notes: ${formData.additional || "None"}
+- Additional Notes / Labs: ${formData.additional || "None"}
+- Session Duration: ${formData.session_duration || "45"} minutes
+- CPT Code: ${formData.cpt_code || ""}
 
 ---
 
-Generate the SOAP note in the specified JSON format. Follow these clinical standards for each section:
+Generate each JSON field with detailed Markdown content following these exact standards:
 
-**SUBJECTIVE:** Summarize the patient's reported symptoms in their own words, onset/duration/frequency, functional impairment, relevant psychosocial stressors, and pertinent psychiatric/medical history. Note any changes since last visit.
+**subjective:** Write a narrative paragraph. Include: chief complaint in patient's own words (use quotes), symptom onset/duration/frequency, sleep, appetite, energy, mood, concentration, functional impairment at work/relationships, psychosocial stressors, medication adherence details, substance use, collateral information if any, PHQ-9/GAD-7 scores if mentioned, and changes since last visit.
 
-**OBJECTIVE (MSE):** Include all MSE domains — appearance, behavior/psychomotor activity, speech (rate/rhythm/volume), mood (patient-reported), affect (clinician-observed, including range/congruence), thought process (linear, tangential, circumstantial, etc.), thought content (SI/HI/paranoia/obsessions/delusions), perceptual disturbances (hallucinations), cognition (orientation, memory, concentration), insight, and judgment.
+**objective:** Start with vital signs if provided. Then include a full MSE as a Markdown table with columns "Domain" and "Findings". Include all domains: Appearance, Behavior, Speech, Mood (patient-reported, in quotes), Affect (range/congruence), Thought Process, Thought Content (SI/HI/delusions/paranoia/obsessions), Perceptual, Cognition, Insight, Judgment. End with "Current Medications:" as a bulleted list with dose/route/frequency.
 
-**ASSESSMENT:** Provide a clinical formulation including primary and differential diagnoses with ICD-10 codes, current severity specifiers (mild/moderate/severe), relevant contributing biopsychosocial factors, and how today's presentation compares to baseline.
+**assessment:** Write a clinical formulation paragraph first (treatment response, residual symptoms, contributing factors, differential reasoning). Then add a Markdown table of diagnoses with columns "ICD-10" and "Diagnosis". Include Z-codes for psychosocial stressors. End with a severity statement.
 
-**RISK ASSESSMENT:** Explicitly address suicidal ideation (ideation/plan/intent/means/access), homicidal ideation, self-harm history, protective factors (reasons for living, social support, future orientation), and overall risk level (low/moderate/high) with clinical justification.
+**risk_assessment:** Render as a Markdown table with columns "Domain" and "Finding". Rows: Suicidal Ideation, Plan, Intent, Means/Access, Homicidal Ideation, Self-Harm History, Protective Factors, Risk Level. End with one sentence on safety plan status.
 
-**PLAN:** Detail interventions including medication changes (with dosing rationale), therapeutic interventions used in session, patient education provided, referrals, coordination of care, safety planning if indicated, and follow-up timeline.`;
+**plan:** Use numbered sections with bold headers: 1. Medications, 2. Therapy, 3. Labs, 4. Patient Education, 5. Coordination of Care, 6. Follow-Up. Be specific — include dosing rationale, referral names, what was discussed, and follow-up timeline. End with PHQ/GAD monitoring plan.
+
+**icd_codes:** Comma-separated ICD-10 codes only (e.g. "F33.1, F41.1, Z63.0")`;
+
 
       const result = await base44.integrations.Core.InvokeLLM({
         prompt,

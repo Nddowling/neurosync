@@ -47,20 +47,20 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Dashboard from './pages/Dashboard';
 import Consult from './pages/Consult';
-import SOAPNotes from './pages/SOAPNotes';
-import Medications from './pages/Medications';
 import DSMReference from './pages/DSMReference';
+import Dashboard from './pages/Dashboard';
+import Medications from './pages/Medications';
+import SOAPNotes from './pages/SOAPNotes';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Dashboard": Dashboard,
     "Consult": Consult,
-    "SOAPNotes": SOAPNotes,
-    "Medications": Medications,
     "DSMReference": DSMReference,
+    "Dashboard": Dashboard,
+    "Medications": Medications,
+    "SOAPNotes": SOAPNotes,
 }
 
 export const pagesConfig = {
