@@ -40,17 +40,32 @@ export default function SOAPNotes() {
     mutationFn: async (formData) => {
       setGenerating(true);
       // Use LLM to generate SOAP note
-      const prompt = `Generate a comprehensive psychiatric SOAP note based on the following information. Use proper psychiatric documentation standards including MSE in objective, risk assessment, and ICD-10 codes.
+      const prompt = `Generate a comprehensive psychiatric SOAP note based on the following session data. Apply DSM-5 diagnostic reasoning, structured Mental Status Examination (MSE), suicide/homicide risk stratification, and ICD-10 coding. Write in professional clinical language appropriate for psychiatric documentation.
 
-Session Type: ${formData.note_type}
-Chief Complaint: ${formData.chief_complaint || "Not specified"}
-Subjective Information: ${formData.subjective || "Not provided"}
-Objective Findings: ${formData.objective || "Not provided"}
-Current Medications: ${formData.medications || "None listed"}
-Patient Demographics: ${formData.demographics || "Not specified"}
-Additional Notes: ${formData.additional || "None"}
+---
 
-Generate the note in this JSON format with thorough, clinically appropriate content for each section.`;
+SESSION DATA:
+- Session Type: ${formData.note_type}
+- Chief Complaint: ${formData.chief_complaint || "Not specified"}
+- Subjective Information: ${formData.subjective || "Not provided"}
+- Objective Findings: ${formData.objective || "Not provided"}
+- Current Medications: ${formData.medications || "None listed"}
+- Patient Demographics: ${formData.demographics || "Not specified"}
+- Additional Notes: ${formData.additional || "None"}
+
+---
+
+Generate the SOAP note in the specified JSON format. Follow these clinical standards for each section:
+
+**SUBJECTIVE:** Summarize the patient's reported symptoms in their own words, onset/duration/frequency, functional impairment, relevant psychosocial stressors, and pertinent psychiatric/medical history. Note any changes since last visit.
+
+**OBJECTIVE (MSE):** Include all MSE domains — appearance, behavior/psychomotor activity, speech (rate/rhythm/volume), mood (patient-reported), affect (clinician-observed, including range/congruence), thought process (linear, tangential, circumstantial, etc.), thought content (SI/HI/paranoia/obsessions/delusions), perceptual disturbances (hallucinations), cognition (orientation, memory, concentration), insight, and judgment.
+
+**ASSESSMENT:** Provide a clinical formulation including primary and differential diagnoses with ICD-10 codes, current severity specifiers (mild/moderate/severe), relevant contributing biopsychosocial factors, and how today's presentation compares to baseline.
+
+**RISK ASSESSMENT:** Explicitly address suicidal ideation (ideation/plan/intent/means/access), homicidal ideation, self-harm history, protective factors (reasons for living, social support, future orientation), and overall risk level (low/moderate/high) with clinical justification.
+
+**PLAN:** Detail interventions including medication changes (with dosing rationale), therapeutic interventions used in session, patient education provided, referrals, coordination of care, safety planning if indicated, and follow-up timeline.`;
 
       const result = await base44.integrations.Core.InvokeLLM({
         prompt,
