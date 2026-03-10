@@ -15,7 +15,11 @@ export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
     objective: "",
     medications: "",
     demographics: "",
-    additional: ""
+    additional: "",
+    provider_name: "",
+    patient_info: "",
+    session_duration: "45",
+    cpt_code: "90837"
   });
 
   const update = (field, value) => setFormData(prev => ({ ...prev, [field]: value }));
@@ -37,6 +41,7 @@ export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
       </div>
 
       <div className="space-y-4">
+        {/* Row 1 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label className="text-xs text-gray-500 mb-1.5 block">Note Type</Label>
@@ -55,9 +60,53 @@ export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
           <div>
             <Label className="text-xs text-gray-500 mb-1.5 block">Patient Demographics</Label>
             <Input
-              placeholder="e.g., 34F, no significant PMH"
+              placeholder="e.g., 36M, MDD, GAD — Hispanic, married"
               value={formData.demographics}
               onChange={(e) => update("demographics", e.target.value)}
+              className="rounded-xl"
+            />
+          </div>
+        </div>
+
+        {/* Row 2 — Provider + Patient Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label className="text-xs text-gray-500 mb-1.5 block">Provider Name & Credentials</Label>
+            <Input
+              placeholder="e.g., Dr. Sarah Mitchell, MD — Psychiatry"
+              value={formData.provider_name}
+              onChange={(e) => update("provider_name", e.target.value)}
+              className="rounded-xl"
+            />
+          </div>
+          <div>
+            <Label className="text-xs text-gray-500 mb-1.5 block">Patient ID / Initials / MRN</Label>
+            <Input
+              placeholder="e.g., J.D. | DOB: 04/12/1989 | MRN: 00847231"
+              value={formData.patient_info}
+              onChange={(e) => update("patient_info", e.target.value)}
+              className="rounded-xl"
+            />
+          </div>
+        </div>
+
+        {/* Row 3 — Duration + CPT */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label className="text-xs text-gray-500 mb-1.5 block">Session Duration (min)</Label>
+            <Input
+              placeholder="e.g., 45"
+              value={formData.session_duration}
+              onChange={(e) => update("session_duration", e.target.value)}
+              className="rounded-xl"
+            />
+          </div>
+          <div>
+            <Label className="text-xs text-gray-500 mb-1.5 block">CPT Code</Label>
+            <Input
+              placeholder="e.g., 90837, 90833"
+              value={formData.cpt_code}
+              onChange={(e) => update("cpt_code", e.target.value)}
               className="rounded-xl"
             />
           </div>
@@ -66,7 +115,7 @@ export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
         <div>
           <Label className="text-xs text-gray-500 mb-1.5 block">Chief Complaint</Label>
           <Input
-            placeholder="e.g., Worsening anxiety and panic attacks over past 2 weeks"
+            placeholder="e.g., Worsening depression and anxiety, poor medication adherence"
             value={formData.chief_complaint}
             onChange={(e) => update("chief_complaint", e.target.value)}
             className="rounded-xl"
@@ -74,9 +123,9 @@ export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
         </div>
 
         <div>
-          <Label className="text-xs text-gray-500 mb-1.5 block">Subjective / History</Label>
+          <Label className="text-xs text-gray-500 mb-1.5 block">Subjective / History of Present Illness</Label>
           <Textarea
-            placeholder="Patient reports... Include HPI, symptoms, sleep, appetite, mood, energy, stressors..."
+            placeholder="Patient reports... Include symptom onset, duration, frequency, psychosocial stressors, PHQ/GAD scores, medication adherence..."
             value={formData.subjective}
             onChange={(e) => update("subjective", e.target.value)}
             className="rounded-xl min-h-[100px]"
@@ -84,9 +133,9 @@ export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
         </div>
 
         <div>
-          <Label className="text-xs text-gray-500 mb-1.5 block">Objective Findings / MSE</Label>
+          <Label className="text-xs text-gray-500 mb-1.5 block">Objective Findings / MSE & Vitals</Label>
           <Textarea
-            placeholder="Appearance, behavior, speech, mood, affect, thought process/content, cognition, insight, judgment..."
+            placeholder="Vital signs, MSE: appearance, behavior, speech, mood, affect, thought process/content, cognition, insight, judgment..."
             value={formData.objective}
             onChange={(e) => update("objective", e.target.value)}
             className="rounded-xl min-h-[80px]"
@@ -96,7 +145,7 @@ export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
         <div>
           <Label className="text-xs text-gray-500 mb-1.5 block">Current Medications</Label>
           <Textarea
-            placeholder="List current psychiatric and relevant medical medications with doses..."
+            placeholder="List current psychiatric and relevant medical medications with doses and frequency..."
             value={formData.medications}
             onChange={(e) => update("medications", e.target.value)}
             className="rounded-xl min-h-[60px]"
@@ -104,9 +153,9 @@ export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
         </div>
 
         <div>
-          <Label className="text-xs text-gray-500 mb-1.5 block">Additional Notes</Label>
+          <Label className="text-xs text-gray-500 mb-1.5 block">Additional Notes / Labs / Collateral</Label>
           <Textarea
-            placeholder="Any other relevant information, lab results, collateral information..."
+            placeholder="Lab results, collateral info, previous PHQ-9 scores, referrals pending..."
             value={formData.additional}
             onChange={(e) => update("additional", e.target.value)}
             className="rounded-xl min-h-[60px]"
