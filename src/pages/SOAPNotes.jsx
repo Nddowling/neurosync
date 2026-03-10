@@ -83,9 +83,9 @@ Generate each JSON field with detailed Markdown content following these exact st
             subjective: { type: "string" },
             objective: { type: "string" },
             assessment: { type: "string" },
+            risk_assessment: { type: "string" },
             plan: { type: "string" },
-            icd_codes: { type: "string" },
-            full_note: { type: "string" }
+            icd_codes: { type: "string" }
           }
         }
       });
@@ -95,10 +95,14 @@ Generate each JSON field with detailed Markdown content following these exact st
         subjective: result.subjective,
         objective: result.objective,
         assessment: result.assessment,
+        risk_assessment: result.risk_assessment,
         plan: result.plan,
         icd_codes: result.icd_codes,
-        full_note: result.full_note,
-        status: "draft"
+        status: "draft",
+        provider_name: formData.provider_name,
+        patient_info: formData.patient_info,
+        session_duration: formData.session_duration,
+        cpt_code: formData.cpt_code
       });
 
       setGenerating(false);
