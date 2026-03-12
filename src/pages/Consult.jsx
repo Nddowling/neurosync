@@ -428,6 +428,17 @@ Generate structured Markdown for each field. The note structure and depth MUST a
         {/* Input */}
         <ChatInput onSend={sendMessage} isLoading={isSending} />
       </div>
+
+      {/* CPT Code Selector Dialog */}
+      <CPTCodeSelector
+        open={showCptSelector}
+        onClose={() => setShowCptSelector(false)}
+        onGenerate={(codes) => {
+          setShowCptSelector(false);
+          handleGenerateSoapWithCodes(codes);
+        }}
+        isGenerating={isGeneratingSoap}
+      />
     </div>
   );
 }
