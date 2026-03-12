@@ -158,18 +158,7 @@ const SourcesPanel = ({ sources, bodyIsSoap }) => {
         )}
       </div>
       
-      {/* Show SOAP button only if current message is NOT a SOAP note */}
-      {!bodyIsSoap && !soapRequested && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleSOAP}
-          className="w-full text-xs text-teal-600 border-teal-200 hover:bg-teal-50"
-        >
-          <FileText className="h-3.5 w-3.5 mr-1.5" />
-          Generate SOAP Note
-        </Button>
-      )}
+
     </div>
   );
 };
