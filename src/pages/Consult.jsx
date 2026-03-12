@@ -20,6 +20,7 @@ export default function Consult() {
   const [agentStatus, setAgentStatus] = useState(null); // null | 'received' | 'thinking' | 'typing'
   const [isGeneratingSoap, setIsGeneratingSoap] = useState(false);
   const [soapBubble, setSoapBubble] = useState(null); // injected SOAP message bubble
+  const [showCptSelector, setShowCptSelector] = useState(false);
   const [displayedMessages, setDisplayedMessages] = useState([]);
   const [typewriterIdx, setTypewriterIdx] = useState(null); // index of msg being typewritten
   const [typewriterText, setTypewriterText] = useState("");
