@@ -161,6 +161,74 @@ export default function Consult() {
     sendMessage(prompt);
   };
 
+  const handleGenerateSoap = async () => {
+    if (!messages.length) return;
+    setIsGeneratingSoap(true);
+    setSoapBubble(null);
+    try {
+      const transcript = messages
+        .filter(m => m.role === "user" || m.role === "assistant")
+        .map(m => `${m.role === "user" ? "Clinician" : "Assistant"}: ${m.content}`)
+        .join("\n\n");
+
+      const result = await base44.integrations.Core.InvokeLLM({
+        prompt: `You are a board-certified psychiatrist. Based on the following clinical consultation transcript, generate a formal psychiatric SOAP note. Output detailed Markdown content for each section.
+
+TRANSCRIPT:
+${transcript}
+
+Generate structured Markdown for each field:
+
+**subjective:** Narrative paragraph with CC in patient's words, HPI, symptoms, functional impact, psychosocial stressors, medication adherence, substance use.
+
+**objective:** Full MSE as a Markdown table (Domain | Findings) covering: Appearance, Behavior, Speech, Mood, Affect, Thought Process, Thought Content (SI/HI), Perceptual, Cognition, Insight, Judgment. End with bulleted current medications.
+
+**assessment:** Clinical formulation paragraph then ICD-10 table (ICD-10 | Diagnosis) including Z-codes. End with severity statement.
+
+**risk_assessment:** Markdown table (Domain | Finding): Suicidal Ideation, Plan, Intent, Means/Access, Homicidal Ideation, Self-Harm History, Protective Factors, Risk Level. One sentence on safety plan.
+
+**plan:** Numbered sections: 1. Medications, 2. Therapy, 3. Labs, 4. Patient Education, 5. Coordination of Care, 6. Follow-Up. Include dosing rationale and follow-up timeline.
+
+**icd_codes:** Comma-separated ICD-10 codes only.`,
+        model: "claude_sonnet_4_6",
+        response_json_schema: {
+          type: "object",
+          properties: {
+            subjective: { type: "string" },
+            objective: { type: "string" },
+            assessment: { type: "string" },
+            risk_assessment: { type: "string" },
+            plan: { type: "string" },
+            icd_codes: { type: "string" }
+          }
+        }
+      });
+
+      const soapContent = `## SUBJECTIVE\n${result.subjective}\n\n## OBJECTIVE\n${result.objective}\n\n## ASSESSMENT\n${result.assessment}\n\n## RISK ASSESSMENT\n${result.risk_assessment}\n\n## PLAN\n${result.plan}\n\n---\n**ICD-10 Codes:** ${result.icd_codes}`;
+
+      setSoapBubble({ role: "assistant", content: soapContent });
+
+      // Save to ClinicalNote entity
+      await base44.entities.ClinicalNote.create({
+        note_type: "soap",
+        subjective: result.subjective,
+        objective: result.objective,
+        assessment: result.assessment,
+        risk_assessment: result.risk_assessment,
+        plan: result.plan,
+        icd_codes: result.icd_codes,
+        status: "draft",
+        session_id: activeConversation?.id,
+      });
+
+      toast.success("SOAP note generated and saved");
+    } catch (e) {
+      toast.error("Failed to generate SOAP note");
+    } finally {
+      setIsGeneratingSoap(false);
+    }
+  };
+
   const hasMessages = messages.length > 0 || displayedMessages.length > 0;
 
   return (
