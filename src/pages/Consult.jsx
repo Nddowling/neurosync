@@ -94,10 +94,26 @@ export default function Consult() {
     setDisplayedMessages(curr);
   }, [messages]);
 
-  // Auto-scroll
+  // Detect manual scroll up
+  const handleScroll = () => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    userScrolledUp.current = distanceFromBottom > 80;
+  };
+
+  // Auto-scroll only if user hasn't scrolled up
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (!userScrolledUp.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   }, [displayedMessages, typewriterText]);
+
+  // When a new message is sent, force scroll to bottom and reset flag
+  const scrollToBottom = () => {
+    userScrolledUp.current = false;
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const loadConversations = async () => {
     setIsLoading(true);
