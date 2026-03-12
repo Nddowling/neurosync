@@ -23,6 +23,7 @@ const navItems = [
   { name: "SOAP Notes", page: "SOAPNotes", icon: FileText },
   { name: "Medications", page: "Medications", icon: Pill },
   { name: "DSM-5 Reference", page: "DSMReference", icon: BookOpen },
+  { name: "Knowledge Base", page: "KnowledgeBase", icon: Database },
 ];
 
 export default function Layout({ children, currentPageName }) {
