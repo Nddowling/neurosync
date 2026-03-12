@@ -246,13 +246,18 @@ export default function Consult() {
         objectiveGuidance = "Full MSE as a Markdown table (Domain | Findings). Include current medications.";
       }
 
+      // Truncate transcript to avoid oversized prompts (keep last ~6000 chars)
+      const truncatedTranscript = transcript.length > 6000
+        ? "...[earlier content omitted]...\n\n" + transcript.slice(-6000)
+        : transcript;
+
       const result = await base44.integrations.Core.InvokeLLM({
         prompt: `You are a board-certified psychiatrist generating a clinical SOAP note for billing and documentation compliance.
 
 ${billingContext}
 
 TRANSCRIPT:
-${transcript}
+${truncatedTranscript}
 
 Generate structured Markdown for each field. The note structure and depth MUST align with the billing code documentation requirements above.
 
@@ -269,7 +274,7 @@ Generate structured Markdown for each field. The note structure and depth MUST a
 **icd_codes:** Comma-separated ICD-10 codes only.
 
 **cpt_codes:** Comma-separated CPT codes that were applied: ${hasCodes ? codeList : "auto-detected from session type"}`,
-        model: "claude_sonnet_4_6",
+        model: "gpt_5",
         response_json_schema: {
           type: "object",
           properties: {
