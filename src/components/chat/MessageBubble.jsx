@@ -157,18 +157,6 @@ const SourcesPanel = ({ sources }) => {
           </div>
         )}
       </div>
-
-      {!bodyIsSoap && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => navigate("/SOAPNotes")}
-          className="w-full text-xs text-teal-600 border-teal-200 hover:bg-teal-50"
-        >
-          <FileText className="h-3.5 w-3.5 mr-1.5" />
-          Generate SOAP Note
-        </Button>
-      )}
     </div>
   );
 };
