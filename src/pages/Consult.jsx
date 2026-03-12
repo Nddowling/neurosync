@@ -315,7 +315,7 @@ Generate structured Markdown for each field:
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto" ref={scrollContainerRef} onScroll={handleScroll}>
           {isLoading ? (
             <div className="p-6 space-y-4">
               {[1, 2, 3].map(i => <Skeleton key={i} className="h-16 rounded-xl" />)}
