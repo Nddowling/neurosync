@@ -6,6 +6,7 @@ import MessageBubble from "../components/chat/MessageBubble";
 import ChatInput from "../components/chat/ChatInput";
 import PromptSuggestions from "../components/chat/PromptSuggestions";
 import AgentStatusBar from "../components/chat/AgentStatusBar";
+import CPTCodeSelector from "../components/soap/CPTCodeSelector";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
