@@ -106,6 +106,7 @@ function isSoapNote(body) {
 
 const SourcesPanel = ({ sources, bodyIsSoap }) => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   if (!sources?.length) return null;
 
