@@ -183,8 +183,14 @@ export default function Consult() {
     sendMessage(prompt);
   };
 
-  const handleGenerateSoap = async () => {
+  // Opens the CPT selector dialog first
+  const handleGenerateSoap = () => {
     if (!messages.length) return;
+    setShowCptSelector(true);
+  };
+
+  // Called after CPT codes are selected
+  const handleGenerateSoapWithCodes = async (selectedCodes) => {
     setIsGeneratingSoap(true);
     setSoapBubble(null);
     try {
@@ -193,25 +199,76 @@ export default function Consult() {
         .map(m => `${m.role === "user" ? "Clinician" : "Assistant"}: ${m.content}`)
         .join("\n\n");
 
+      const hasCodes = selectedCodes.length > 0;
+      const codeList = selectedCodes.map(c => `${c.code} (${c.label})`).join(", ");
+
+      // Detect note type from selected codes
+      const codes = selectedCodes.map(c => c.code);
+      const hasEM = codes.some(c => ["99211","99212","99213","99214","99215"].includes(c));
+      const hasAddOn = codes.some(c => ["90833","90836","90838"].includes(c));
+      const hasStandaloneTherapy = codes.some(c => ["90832","90834","90837","90839","90847"].includes(c));
+      const hasCrisis = codes.includes("90839");
+
+      let billingContext = "";
+      let planStructure = "";
+      let subjectiveGuidance = "";
+      let objectiveGuidance = "";
+
+      if (!hasCodes) {
+        billingContext = "Infer the session type from the transcript and format the SOAP note appropriately.";
+        planStructure = "1. Medications, 2. Therapy, 3. Labs, 4. Patient Education, 5. Coordination of Care, 6. Follow-Up";
+        subjectiveGuidance = "CC in patient's words, HPI, symptoms, functional impact, psychosocial stressors, medication adherence, substance use.";
+        objectiveGuidance = "Full MSE as a Markdown table (Domain | Findings) covering: Appearance, Behavior, Speech, Mood, Affect, Thought Process, Thought Content (SI/HI), Perceptual, Cognition, Insight, Judgment. End with bulleted current medications.";
+      } else if (hasEM && hasAddOn) {
+        billingContext = `BILLING CODES: ${codeList}. This is a COMBINED E&M + Psychotherapy visit. Documentation MUST satisfy BOTH the E&M complexity requirements AND the psychotherapy time threshold. The note must clearly delineate the E&M portion from the psychotherapy portion.`;
+        planStructure = "1. Medications (with dosing rationale and monitoring), 2. Psychotherapy (modality, goals, time spent, patient response), 3. Labs/Monitoring, 4. Patient Education, 5. Coordination of Care, 6. Follow-Up timeline";
+        subjectiveGuidance = "CC, HPI with duration and severity, medication adherence, side effects, psychotherapy engagement and progress, psychosocial stressors, substance use, functional impact.";
+        objectiveGuidance = "Full MSE table AND separate Time Documentation box (e.g. 'Total face-to-face time: 40 min. E&M time: ~10 min. Psychotherapy time: 30 min.'). Include current medications.";
+      } else if (hasEM && !hasAddOn) {
+        billingContext = `BILLING CODES: ${codeList}. This is a MEDICATION MANAGEMENT / E&M visit. Documentation must support the level of medical decision-making complexity. Focus on medication review, side effects, adherence, and clinical response.`;
+        planStructure = "1. Medication Changes (specific drug, dose, rationale), 2. Monitoring Requirements (labs, ECG, metabolic), 3. Patient Education (medication education), 4. Coordination of Care, 5. Follow-Up";
+        subjectiveGuidance = "CC focused on medication response and symptom trajectory, HPI, current medications and adherence, side effects, functional status, and pertinent review of systems.";
+        objectiveGuidance = "Focused MSE table relevant to medication monitoring. Include vital signs if relevant. Current medication list with doses.";
+      } else if (hasStandaloneTherapy && !hasEM) {
+        billingContext = `BILLING CODES: ${codeList}. This is a STANDALONE PSYCHOTHERAPY visit. No E&M component — do NOT include medication management as a primary plan element. Documentation should support psychotherapy time and medical necessity.`;
+        planStructure = "1. Psychotherapy (modality, session goals, techniques used, patient response, homework), 2. Progress Toward Treatment Goals, 3. Risk Assessment and Safety Planning, 4. Coordination of Care (if applicable), 5. Next Session Plan";
+        subjectiveGuidance = "CC in patient's own words, presenting concerns, mood/affect report, progress since last session, psychotherapy goals, relevant psychosocial context.";
+        objectiveGuidance = "Focused MSE with emphasis on affect, thought content, insight, and therapeutic alliance. Note session modality and approximate time.";
+      } else if (hasCrisis) {
+        billingContext = `BILLING CODES: ${codeList}. This is a CRISIS PSYCHOTHERAPY encounter. Documentation must establish the psychiatric crisis nature, safety assessment, and acute stabilization interventions.`;
+        planStructure = "1. Crisis Stabilization Interventions, 2. Safety Plan (detailed), 3. Disposition (outpatient, higher level of care, ED referral), 4. Medications (if applicable), 5. Coordination with supports/emergency contacts, 6. Follow-Up (urgent)";
+        subjectiveGuidance = "Nature of crisis, precipitating events, current suicidal/homicidal ideation with specifics, coping attempts, support system, prior crisis history.";
+        objectiveGuidance = "Full MSE with emphasis on safety indicators. Note patient's presentation at arrival vs. end of session. Include any collateral obtained.";
+      } else {
+        billingContext = `BILLING CODES: ${codeList}. Format the SOAP note to support the documentation requirements for these codes.`;
+        planStructure = "1. Medications, 2. Therapy, 3. Labs, 4. Patient Education, 5. Coordination of Care, 6. Follow-Up";
+        subjectiveGuidance = "CC in patient's words, HPI, symptoms, functional impact, psychosocial stressors, medication adherence, substance use.";
+        objectiveGuidance = "Full MSE as a Markdown table (Domain | Findings). Include current medications.";
+      }
+
       const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a board-certified psychiatrist. Based on the following clinical consultation transcript, generate a formal psychiatric SOAP note. Output detailed Markdown content for each section.
+        prompt: `You are a board-certified psychiatrist generating a clinical SOAP note for billing and documentation compliance.
+
+${billingContext}
 
 TRANSCRIPT:
 ${transcript}
 
-Generate structured Markdown for each field:
+Generate structured Markdown for each field. The note structure and depth MUST align with the billing code documentation requirements above.
 
-**subjective:** Narrative paragraph with CC in patient's words, HPI, symptoms, functional impact, psychosocial stressors, medication adherence, substance use.
+**subjective:** ${subjectiveGuidance}
 
-**objective:** Full MSE as a Markdown table (Domain | Findings) covering: Appearance, Behavior, Speech, Mood, Affect, Thought Process, Thought Content (SI/HI), Perceptual, Cognition, Insight, Judgment. End with bulleted current medications.
+**objective:** ${objectiveGuidance}
 
 **assessment:** Clinical formulation paragraph then ICD-10 table (ICD-10 | Diagnosis) including Z-codes. End with severity statement.
 
 **risk_assessment:** Markdown table (Domain | Finding): Suicidal Ideation, Plan, Intent, Means/Access, Homicidal Ideation, Self-Harm History, Protective Factors, Risk Level. One sentence on safety plan.
 
-**plan:** Numbered sections: 1. Medications, 2. Therapy, 3. Labs, 4. Patient Education, 5. Coordination of Care, 6. Follow-Up. Include dosing rationale and follow-up timeline.
+**plan:** Numbered sections: ${planStructure}. Include specific dosing rationale and follow-up timeline.
 
-**icd_codes:** Comma-separated ICD-10 codes only.`,
+**icd_codes:** Comma-separated ICD-10 codes only.
+
+**cpt_codes:** Comma-separated CPT codes that were applied: ${hasCodes ? codeList : "auto-detected from session type"}`,
         model: "claude_sonnet_4_6",
         response_json_schema: {
           type: "object",
@@ -221,16 +278,17 @@ Generate structured Markdown for each field:
             assessment: { type: "string" },
             risk_assessment: { type: "string" },
             plan: { type: "string" },
-            icd_codes: { type: "string" }
+            icd_codes: { type: "string" },
+            cpt_codes: { type: "string" },
           }
         }
       });
 
-      const soapContent = `## SUBJECTIVE\n${result.subjective}\n\n## OBJECTIVE\n${result.objective}\n\n## ASSESSMENT\n${result.assessment}\n\n## RISK ASSESSMENT\n${result.risk_assessment}\n\n## PLAN\n${result.plan}\n\n---\n**ICD-10 Codes:** ${result.icd_codes}`;
+      const cptHeader = result.cpt_codes ? `**CPT Codes:** ${result.cpt_codes}\n\n` : "";
+      const soapContent = `${cptHeader}## SUBJECTIVE\n${result.subjective}\n\n## OBJECTIVE\n${result.objective}\n\n## ASSESSMENT\n${result.assessment}\n\n## RISK ASSESSMENT\n${result.risk_assessment}\n\n## PLAN\n${result.plan}\n\n---\n**ICD-10 Codes:** ${result.icd_codes}`;
 
       setSoapBubble({ role: "assistant", content: soapContent });
 
-      // Save to ClinicalNote entity
       await base44.entities.ClinicalNote.create({
         note_type: "soap",
         subjective: result.subjective,
@@ -239,6 +297,7 @@ Generate structured Markdown for each field:
         risk_assessment: result.risk_assessment,
         plan: result.plan,
         icd_codes: result.icd_codes,
+        cpt_code: result.cpt_codes,
         status: "draft",
         session_id: activeConversation?.id,
       });
