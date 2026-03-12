@@ -103,17 +103,10 @@ function isSoapNote(body) {
   return (lower.includes("subjective") && lower.includes("objective") && lower.includes("assessment") && lower.includes("plan"));
 }
 
-const SourcesPanel = ({ sources, onRequestSOAP, bodyIsSoap }) => {
+const SourcesPanel = ({ sources, bodyIsSoap }) => {
   const [open, setOpen] = useState(false);
-  const [soapRequested, setSoapRequested] = useState(false);
-  
-  // Only show sources panel, don't show SOAP button if message is already a SOAP note
-  if (!sources?.length) return null;
 
-  const handleSOAP = () => {
-    setSoapRequested(true);
-    onRequestSOAP?.();
-  };
+  if (!sources?.length) return null;
 
   return (
     <div className="mt-2 space-y-2">
