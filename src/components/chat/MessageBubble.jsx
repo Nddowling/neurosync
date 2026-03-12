@@ -212,10 +212,6 @@ export default function MessageBubble({ message, onSendMessage }) {
     toast.success("Copied to clipboard");
   };
 
-  const handleRequestSOAP = () => {
-    onSendMessage?.("Please generate a SOAP note for this session.");
-  };
-
   return (
     <div className={cn("flex gap-3 group", isUser ? "justify-end" : "justify-start")}>
       {!isUser && (
