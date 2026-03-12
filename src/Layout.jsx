@@ -13,7 +13,8 @@ import {
   X,
   LogOut,
   Shield,
-  ChevronRight
+  ChevronRight,
+  Database
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
