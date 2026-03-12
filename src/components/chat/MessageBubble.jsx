@@ -103,9 +103,8 @@ function isSoapNote(body) {
   return (lower.includes("subjective") && lower.includes("objective") && lower.includes("assessment") && lower.includes("plan"));
 }
 
-const SourcesPanel = ({ sources, bodyIsSoap }) => {
+const SourcesPanel = ({ sources }) => {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
 
   if (!sources?.length) return null;
 
