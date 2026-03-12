@@ -151,6 +151,7 @@ export default function Consult() {
 
   const sendMessage = async (content) => {
     setSoapBubble(null);
+    scrollToBottom();
     setAgentStatus("received");
     setTimeout(() => setAgentStatus("thinking"), 800);
 
