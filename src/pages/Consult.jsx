@@ -23,6 +23,8 @@ export default function Consult() {
   const [typewriterIdx, setTypewriterIdx] = useState(null); // index of msg being typewritten
   const [typewriterText, setTypewriterText] = useState("");
   const messagesEndRef = useRef(null);
+  const scrollContainerRef = useRef(null);
+  const userScrolledUp = useRef(false);
   const prevMessagesRef = useRef([]);
 
   // Load conversations list and restore last active session
