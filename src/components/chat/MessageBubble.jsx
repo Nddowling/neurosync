@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Copy, CheckCircle2, AlertCircle, Loader2, ChevronRight, Clock, Zap, Stethoscope, BookOpen, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
