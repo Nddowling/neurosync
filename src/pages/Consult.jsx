@@ -313,14 +313,30 @@ Generate structured Markdown for each field:
             </div>
           ) : (
             <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
-              {displayedMessages.map((msg, idx) => (
-                <MessageBubble key={idx} message={msg} onSendMessage={sendMessage} />
-              ))}
+              {displayedMessages.map((msg, idx) => {
+                const isLastAssistant =
+                  !soapBubble &&
+                  typewriterIdx === null &&
+                  msg.role === "assistant" &&
+                  idx === displayedMessages.length - 1;
+                return (
+                  <MessageBubble
+                    key={idx}
+                    message={msg}
+                    isLastAssistant={isLastAssistant}
+                    onGenerateSoap={isLastAssistant ? handleGenerateSoap : undefined}
+                    isGeneratingSoap={isGeneratingSoap}
+                  />
+                );
+              })}
               {typewriterIdx !== null && (
                 <MessageBubble
                   key="typewriter"
                   message={{ role: "assistant", content: typewriterText + "▍" }}
                 />
+              )}
+              {soapBubble && (
+                <MessageBubble key="soap" message={soapBubble} />
               )}
               <AgentStatusBar status={typewriterIdx !== null ? null : agentStatus} />
               <div ref={messagesEndRef} />
