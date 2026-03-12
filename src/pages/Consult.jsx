@@ -7,6 +7,7 @@ import ChatInput from "../components/chat/ChatInput";
 import PromptSuggestions from "../components/chat/PromptSuggestions";
 import AgentStatusBar from "../components/chat/AgentStatusBar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 export default function Consult() {
   const [conversations, setConversations] = useState([]);
