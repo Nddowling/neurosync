@@ -183,9 +183,10 @@ const mdComponents = {
   ),
 };
 
-export default function MessageBubble({ message, onSendMessage }) {
+export default function MessageBubble({ message, isLastAssistant, onGenerateSoap, isGeneratingSoap }) {
   const isUser = message.role === "user";
   const { body, sources } = isUser ? { body: message.content, sources: [] } : parseSources(message.content);
+  const isSoap = isSoapNote(body);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content);
@@ -206,19 +207,27 @@ export default function MessageBubble({ message, onSendMessage }) {
               "rounded-2xl px-4 py-3 relative",
               isUser
                 ? "bg-gray-900 text-white rounded-tr-md"
-                : "bg-white border border-gray-100 shadow-sm rounded-tl-md"
+                : isSoap
+                  ? "bg-violet-50 border border-violet-100 shadow-sm rounded-tl-md"
+                  : "bg-white border border-gray-100 shadow-sm rounded-tl-md"
             )}
           >
             {isUser ? (
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{body}</p>
             ) : (
               <>
+                {isSoap && (
+                  <div className="flex items-center gap-1.5 mb-3 pb-2 border-b border-violet-200">
+                    <FileText className="h-3.5 w-3.5 text-violet-500" />
+                    <span className="text-xs font-semibold text-violet-600 uppercase tracking-wide">SOAP Note</span>
+                  </div>
+                )}
                 <div className="prose-clinical">
                   <ReactMarkdown className="text-sm text-gray-700 leading-relaxed" components={mdComponents}>
                     {body}
                   </ReactMarkdown>
                 </div>
-                <SourcesPanel sources={sources} bodyIsSoap={isSoapNote(body)} />
+                {!isSoap && <SourcesPanel sources={sources} />}
               </>
             )}
             {!isUser && (
@@ -239,6 +248,22 @@ export default function MessageBubble({ message, onSendMessage }) {
               <FunctionDisplay key={idx} toolCall={tc} />
             ))}
           </div>
+        )}
+        {/* SOAP button only on last assistant response (non-SOAP) */}
+        {isLastAssistant && !isUser && !isSoap && onGenerateSoap && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onGenerateSoap}
+            disabled={isGeneratingSoap}
+            className="mt-2 text-xs text-violet-600 border-violet-200 hover:bg-violet-50"
+          >
+            {isGeneratingSoap ? (
+              <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />Generating SOAP...</>
+            ) : (
+              <><FileText className="h-3.5 w-3.5 mr-1.5" />Generate SOAP Note</>
+            )}
+          </Button>
         )}
       </div>
     </div>
