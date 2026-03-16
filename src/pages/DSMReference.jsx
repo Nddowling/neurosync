@@ -4,6 +4,7 @@ import { BookOpen, Search, Loader2, AlertCircle, ChevronRight } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ReactMarkdown from "react-markdown";
+import ClinicalWarningBanner from "@/components/legal/ClinicalWarningBanner";
 
 const dsmCategories = [
   { label: "Depressive Disorders", query: "DSM-5-TR diagnostic criteria for Major Depressive Disorder, Persistent Depressive Disorder, and Disruptive Mood Dysregulation Disorder. Include specifiers." },
