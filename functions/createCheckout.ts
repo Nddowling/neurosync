@@ -22,8 +22,8 @@ Deno.serve(async (req) => {
 
     const { plan, promoCode, successUrl, cancelUrl } = await req.json();
 
-    // Handle promo code "JUSTIN"
-    if (promoCode && promoCode.toUpperCase() === 'JUSTIN') {
+    // Handle "Justin only" promo code → $100/mo Professional
+    if (promoCode && (promoCode.toUpperCase() === 'JUSTIN ONLY' || promoCode.toUpperCase() === 'JUSTIN')) {
       // Create a $100/mo price on the Professional product for Justin promo
       let justinPrice;
       try {
