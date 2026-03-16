@@ -322,17 +322,30 @@ Generate structured Markdown for each field. The note structure and depth MUST a
       setSoapBubble({ role: "assistant", content: soapContent });
 
       await trackUsage("soap_note");
+
+      // Write PHI clinical content to Supabase
+      const supaRes = await base44.functions.invoke("supabase", {
+        action: "insert",
+        table: "patient_notes",
+        data: {
+          note_type: "soap",
+          subjective: result.subjective,
+          objective: result.objective,
+          assessment: result.assessment,
+          risk_assessment: result.risk_assessment,
+          plan: result.plan,
+        }
+      });
+      const supabaseNoteId = supaRes?.data?.data?.[0]?.id || null;
+
+      // Store only non-PHI metadata in Base44
       await base44.entities.ClinicalNote.create({
         note_type: "soap",
-        subjective: result.subjective,
-        objective: result.objective,
-        assessment: result.assessment,
-        risk_assessment: result.risk_assessment,
-        plan: result.plan,
         icd_codes: result.icd_codes,
         cpt_code: result.cpt_codes,
         status: "draft",
         session_id: activeConversation?.id,
+        supabase_note_id: supabaseNoteId,
       });
 
       toast.success("SOAP note generated and saved");
