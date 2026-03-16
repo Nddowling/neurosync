@@ -8,6 +8,7 @@ import PromptSuggestions from "../components/chat/PromptSuggestions";
 import AgentStatusBar from "../components/chat/AgentStatusBar";
 import CPTCodeSelector from "../components/soap/CPTCodeSelector";
 import { Skeleton } from "@/components/ui/skeleton";
+import ClinicalWarningBanner from "@/components/legal/ClinicalWarningBanner";
 import { toast } from "sonner";
 import useSubscription from "@/hooks/useSubscription";
 import { Link } from "react-router-dom";
