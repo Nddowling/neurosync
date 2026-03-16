@@ -384,14 +384,24 @@ Generate structured Markdown for each field. The note structure and depth MUST a
               <p className="text-[11px] text-gray-400">AI-powered clinical decision support</p>
             </div>
           </div>
-          <Button
-            onClick={startNewConversation}
-            size="sm"
-            className="bg-gray-900 hover:bg-gray-800 text-white rounded-xl h-8 text-xs gap-1.5"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            New Session
-          </Button>
+          <div className="flex items-center gap-2">
+            {subscription && subscription.plan === "free" && (
+              <Link to="/Subscription">
+                <Button size="sm" variant="outline" className="h-8 text-xs rounded-xl border-amber-200 text-amber-700 hover:bg-amber-50 gap-1">
+                  <Lock className="w-3 h-3" />
+                  {subscription.consults_used || 0}/5 consults · Upgrade
+                </Button>
+              </Link>
+            )}
+            <Button
+              onClick={startNewConversation}
+              size="sm"
+              className="bg-gray-900 hover:bg-gray-800 text-white rounded-xl h-8 text-xs gap-1.5"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              New Session
+            </Button>
+          </div>
         </div>
 
         {/* Messages */}
