@@ -151,6 +151,7 @@ export default function Consult() {
     });
     setActiveConversation(conv);
     setMessages([]);
+    typewrittenIds.current = new Set();
     localStorage.setItem("neurosync_active_conv", conv.id);
     setIsLoading(false);
     setShowHistory(false);
