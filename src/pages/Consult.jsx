@@ -194,8 +194,12 @@ export default function Consult() {
   };
 
   // Opens the CPT selector dialog first
-  const handleGenerateSoap = () => {
+  const handleGenerateSoap = async () => {
     if (!messages.length) return;
+    if (!canGenerateSoap()) {
+      toast.error("SOAP note limit reached on your current plan. Please upgrade.");
+      return;
+    }
     setShowCptSelector(true);
   };
 
