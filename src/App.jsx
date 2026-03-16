@@ -42,7 +42,7 @@ const TosGate = ({ children }) => {
 
   if (tosAccepted === null) return null;
   if (tosAccepted === false) return <TermsOfServiceModal onAccept={handleAccept} onDecline={handleDecline} />;
-  return children;
+  return <>{children}</>;
 };
 
 const AuthenticatedApp = () => {
