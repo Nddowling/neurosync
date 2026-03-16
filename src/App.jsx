@@ -92,6 +92,7 @@ const AuthenticatedApp = () => {
       <Route path="/Subscription" element={<LayoutWrapper currentPageName="Subscription"><Subscription /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
+    </TosGate>
   );
 };
 
