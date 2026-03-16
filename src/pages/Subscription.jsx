@@ -105,12 +105,19 @@ export default function Subscription() {
 
   const handlePromo = async () => {
     if (!promoCode.trim()) return;
-    if (window.self !== window.top) {
-      alert("Checkout only works from the published app, not inside the preview.");
-      return;
-    }
     setPromoLoading(true);
     try {
+      // "God Mode" promo — activates unlimited free access silently
+      if (promoCode.trim().toLowerCase() === "god mode") {
+        await base44.functions.invoke("activateGodMode", {});
+        toast.success("Promo applied! Unlimited access enabled.");
+        window.location.reload();
+        return;
+      }
+      if (window.self !== window.top) {
+        alert("Checkout only works from the published app, not inside the preview.");
+        return;
+      }
       const origin = window.location.origin;
       const response = await base44.functions.invoke("createCheckout", {
         plan: "professional",
@@ -124,7 +131,7 @@ export default function Subscription() {
         toast.error("Invalid promo code or checkout failed.");
       }
     } catch (err) {
-      toast.error("Promo checkout error.");
+      toast.error("Promo code error. Please try again.");
     } finally {
       setPromoLoading(false);
     }
