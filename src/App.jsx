@@ -20,6 +20,31 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
   : <>{children}</>;
 
+const TosGate = ({ children }) => {
+  const [tosAccepted, setTosAccepted] = useState(null); // null=loading, true=accepted, false=needs acceptance
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated) { setTosAccepted(true); return; } // don't gate unauthenticated
+    base44.auth.me().then(user => {
+      setTosAccepted(!!user?.tos_accepted_at);
+    }).catch(() => setTosAccepted(true));
+  }, [isAuthenticated]);
+
+  const handleAccept = async () => {
+    await base44.auth.updateMe({ tos_accepted_at: new Date().toISOString() });
+    setTosAccepted(true);
+  };
+
+  const handleDecline = () => {
+    base44.auth.logout();
+  };
+
+  if (tosAccepted === null) return null;
+  if (tosAccepted === false) return <TermsOfServiceModal onAccept={handleAccept} onDecline={handleDecline} />;
+  return children;
+};
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
