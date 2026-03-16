@@ -11,7 +11,9 @@ export default function PatientFormModal({ open, onClose, onCreated }) {
   const [form, setForm] = useState({
     first_name: "", last_name: "", date_of_birth: "", sex: "",
     mrn: "", patient_code: "", phone: "", email: "",
-    address: "", emergency_contact: "", insurance_info: "",
+    address: "",
+    ec_name: "", ec_relationship: "", ec_phone: "",
+    insurance_carrier: "", insurance_plan: "", insurance_member_id: "", insurance_group: "",
   });
   const [saving, setSaving] = useState(false);
 
