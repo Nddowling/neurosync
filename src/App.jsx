@@ -5,6 +5,7 @@ import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import KnowledgeBase from './pages/KnowledgeBase';
+import Subscription from './pages/Subscription';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
@@ -59,6 +60,7 @@ const AuthenticatedApp = () => {
         />
       ))}
       <Route path="/KnowledgeBase" element={<LayoutWrapper currentPageName="KnowledgeBase"><KnowledgeBase /></LayoutWrapper>} />
+      <Route path="/Subscription" element={<LayoutWrapper currentPageName="Subscription"><Subscription /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

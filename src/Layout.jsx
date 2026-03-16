@@ -14,7 +14,8 @@ import {
   LogOut,
   Shield,
   ChevronRight,
-  Database
+  Database,
+  CreditCard
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -25,6 +26,7 @@ const navItems = [
   { name: "Medications", page: "Medications", icon: Pill },
   { name: "DSM-5 Reference", page: "DSMReference", icon: BookOpen },
   { name: "Knowledge Base", page: "KnowledgeBase", icon: Database },
+  { name: "Subscription", page: "Subscription", icon: CreditCard },
 ];
 
 export default function Layout({ children, currentPageName }) {
