@@ -68,11 +68,13 @@ export default function Consult() {
 
     if (curr.length > prev.length) {
       const newest = curr[curr.length - 1];
-      if (newest.role === "assistant" && newest.content) {
+      const newestId = newest.id || `msg-${curr.length - 1}`;
+      if (newest.role === "assistant" && newest.content && !typewrittenIds.current.has(newestId)) {
         const idx = curr.length - 1;
         prevMessagesRef.current = curr;
+        typewrittenIds.current.add(newestId);
         
-        // Start typewriter animation
+        // Start typewriter animation (only first time this message is seen)
         setAgentStatus("typing");
         setTypewriterIdx(idx);
         setTypewriterText("");
