@@ -80,6 +80,10 @@ export default function Subscription() {
   const isCanceled = params.get("canceled") === "true";
 
   const handleSubscribe = async (plan) => {
+    if (!tosConfirmed) {
+      toast.error("Please confirm you have read and agree to the Terms of Service before subscribing.");
+      return;
+    }
     if (window.self !== window.top) {
       alert("Checkout only works from the published app, not inside the preview.");
       return;
