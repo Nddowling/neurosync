@@ -31,6 +31,7 @@ export default function Consult() {
   const scrollContainerRef = useRef(null);
   const userScrolledUp = useRef(false);
   const prevMessagesRef = useRef([]);
+  const typewrittenIds = useRef(new Set()); // track already-animated message IDs
 
   // Load conversations list and restore last active session
   useEffect(() => {
