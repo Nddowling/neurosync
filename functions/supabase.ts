@@ -32,7 +32,7 @@ Deno.serve(async (req) => {
 
     switch (action) {
       case "select": {
-        // query = { column: value, ... } for filtering
+        // v2 - query = { column: value, ... } for filtering
         let path = `${table}?select=*`;
         if (query) {
           for (const [key, val] of Object.entries(query)) {
