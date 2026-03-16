@@ -308,6 +308,7 @@ Generate structured Markdown for each field. The note structure and depth MUST a
 
       setSoapBubble({ role: "assistant", content: soapContent });
 
+      await trackUsage("soap_note");
       await base44.entities.ClinicalNote.create({
         note_type: "soap",
         subjective: result.subjective,
