@@ -100,6 +100,9 @@ export default function Calendar() {
               </button>
             ))}
           </div>
+          <Button onClick={() => { setNewApptDate(null); setShowNewAppt(true); }} className="bg-gray-900 hover:bg-gray-800 rounded-xl gap-1.5" size="sm">
+            <Plus className="w-4 h-4" /> New Appointment
+          </Button>
           <Button variant="outline" size="sm" onClick={goToday}>Today</Button>
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}><ChevronLeft className="w-4 h-4" /></Button>
           <Button variant="ghost" size="icon" onClick={() => navigate(1)}><ChevronRight className="w-4 h-4" /></Button>
@@ -119,6 +122,7 @@ export default function Calendar() {
           patientMap={patientMap}
           onSelectAppt={setSelectedAppt}
           onDayClick={(d) => { setCurrentDate(d); setView("day"); }}
+          onNewAppt={(d) => { setNewApptDate(d); setShowNewAppt(true); }}
         />
       )}
       {view === "week" && (
@@ -143,6 +147,20 @@ export default function Calendar() {
           appointment={selectedAppt}
           patient={patientMap[selectedAppt.patient_id]}
           onClose={() => setSelectedAppt(null)}
+        />
+      )}
+
+      {showNewAppt && (
+        <NewAppointmentModal
+          open={showNewAppt}
+          onClose={() => setShowNewAppt(false)}
+          patients={patients}
+          initialDate={newApptDate}
+          onCreated={() => {
+            queryClient.invalidateQueries({ queryKey: ["all-appointments"] });
+            queryClient.invalidateQueries({ queryKey: ["upcoming-appointments"] });
+            setShowNewAppt(false);
+          }}
         />
       )}
     </div>
