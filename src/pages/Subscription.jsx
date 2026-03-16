@@ -72,6 +72,7 @@ export default function Subscription() {
   const [loadingPlan, setLoadingPlan] = useState(null);
   const [promoCode, setPromoCode] = useState("");
   const [promoLoading, setPromoLoading] = useState(false);
+  const [tosConfirmed, setTosConfirmed] = useState(false);
 
 
   const params = new URLSearchParams(window.location.search);
