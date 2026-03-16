@@ -92,6 +92,8 @@ const AuthenticatedApp = () => {
       ))}
       <Route path="/KnowledgeBase" element={<LayoutWrapper currentPageName="KnowledgeBase"><KnowledgeBase /></LayoutWrapper>} />
       <Route path="/Subscription" element={<LayoutWrapper currentPageName="Subscription"><Subscription /></LayoutWrapper>} />
+      <Route path="/Patients" element={<LayoutWrapper currentPageName="Patients"><Patients /></LayoutWrapper>} />
+      <Route path="/PatientDetail" element={<LayoutWrapper currentPageName="Patients"><PatientDetail /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
     </TosGate>
