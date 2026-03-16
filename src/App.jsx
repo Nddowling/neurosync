@@ -8,6 +8,7 @@ import KnowledgeBase from './pages/KnowledgeBase';
 import Subscription from './pages/Subscription';
 import Patients from './pages/Patients';
 import PatientDetail from './pages/PatientDetail';
+import CalendarPage from './pages/Calendar';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import TermsOfServiceModal from '@/components/legal/TermsOfServiceModal';
@@ -94,6 +95,7 @@ const AuthenticatedApp = () => {
       <Route path="/Subscription" element={<LayoutWrapper currentPageName="Subscription"><Subscription /></LayoutWrapper>} />
       <Route path="/Patients" element={<LayoutWrapper currentPageName="Patients"><Patients /></LayoutWrapper>} />
       <Route path="/PatientDetail" element={<LayoutWrapper currentPageName="Patients"><PatientDetail /></LayoutWrapper>} />
+      <Route path="/Calendar" element={<LayoutWrapper currentPageName="Calendar"><CalendarPage /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
     </TosGate>

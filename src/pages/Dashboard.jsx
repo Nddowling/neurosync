@@ -6,6 +6,7 @@ import StatCard from "../components/dashboard/StatCard";
 import QuickActions from "../components/dashboard/QuickActions";
 import RecentSessionCard from "../components/dashboard/RecentSessionCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import UpcomingAppointments from "../components/dashboard/UpcomingAppointments";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -61,6 +62,11 @@ export default function Dashboard() {
         <StatCard title="Today's Consults" value={completedToday} icon={Clock} color="violet" href="/Consult" />
         <StatCard title="Total Sessions" value={sessions.length} icon={MessageSquare} color="slate" href="/Consult" />
         <StatCard title="Notes Generated" value={notes.length} icon={FileText} color="amber" href="/SOAPNotes" />
+      </div>
+
+      {/* Upcoming Appointments */}
+      <div className="mb-8">
+        <UpcomingAppointments />
       </div>
 
       {/* Recent Sessions */}
