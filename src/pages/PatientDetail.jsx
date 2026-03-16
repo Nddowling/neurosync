@@ -13,6 +13,7 @@ import PatientGoalsTab from "@/components/patients/PatientGoalsTab";
 import PatientAppointmentsTab from "@/components/patients/PatientAppointmentsTab";
 import PatientBillingTab from "@/components/patients/PatientBillingTab";
 import PatientFormModal from "@/components/patients/PatientFormModal";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function PatientDetail() {
   const params = new URLSearchParams(window.location.search);
