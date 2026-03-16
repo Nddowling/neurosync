@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addMonths, subMonths, addWeeks, subWeeks, isSameDay, isSameMonth, parseISO } from "date-fns";
 import AppointmentDetailModal from "../components/calendar/AppointmentDetailModal";
+import NewAppointmentModal from "../components/calendar/NewAppointmentModal";
+import { useQueryClient } from "@tanstack/react-query";
 
 const fetchAppointments = () =>
   base44.functions.invoke("supabase", { action: "select", table: "patient_appointments", query: {} })
@@ -34,6 +36,9 @@ export default function Calendar() {
   const [view, setView] = useState("month"); // month | week | day
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedAppt, setSelectedAppt] = useState(null);
+  const [showNewAppt, setShowNewAppt] = useState(false);
+  const [newApptDate, setNewApptDate] = useState(null);
+  const queryClient = useQueryClient();
 
   const { data: appointments = [] } = useQuery({
     queryKey: ["all-appointments"],
