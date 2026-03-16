@@ -136,7 +136,23 @@ Generate each JSON field with detailed Markdown content following these exact st
   const finalizeNote = async (noteId) => {
     await base44.entities.ClinicalNote.update(noteId, { status: "finalized" });
     queryClient.invalidateQueries({ queryKey: ["clinical-notes"] });
+    setSelectedNote(prev => prev ? { ...prev, status: "finalized" } : prev);
     toast.success("Note finalized");
+  };
+
+  // Load full clinical content from Supabase when a note is selected
+  const handleSelectNote = async (note) => {
+    if (note.supabase_note_id) {
+      const res = await base44.functions.invoke("supabase", {
+        action: "select",
+        table: "patient_notes",
+        query: { id: note.supabase_note_id }
+      });
+      const clinical = res?.data?.data?.[0] || {};
+      setSelectedNote({ ...note, ...clinical });
+    } else {
+      setSelectedNote(note);
+    }
   };
 
   const statusColors = {
