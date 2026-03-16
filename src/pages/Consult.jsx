@@ -218,7 +218,8 @@ export default function Consult() {
   // Called after CPT codes are selected
   const handleGenerateSoapWithCodes = async (selectedCodes) => {
     setIsGeneratingSoap(true);
-    setSoapBubble(null);
+    setSoapBubble({ role: "assistant", content: "⏳ Generating SOAP note... this may take 15–30 seconds." });
+    scrollToBottom();
     try {
       const transcript = messages
         .filter(m => m.role === "user" || m.role === "assistant")
