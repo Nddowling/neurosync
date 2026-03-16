@@ -6,6 +6,7 @@ import { Check, Zap, Shield, Star, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import useSubscription, { PLAN_LABELS, PLAN_LIMITS } from "@/hooks/useSubscription";
 import { Link } from "react-router-dom";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const PLANS = [
   {
