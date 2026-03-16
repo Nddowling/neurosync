@@ -25,6 +25,7 @@ const navItems = [
   { name: "SOAP Notes", page: "SOAPNotes", icon: FileText },
   { name: "Medications", page: "Medications", icon: Pill },
   { name: "DSM-5 Reference", page: "DSMReference", icon: BookOpen },
+  { name: "Patients", page: "Patients", icon: User },
   { name: "Knowledge Base", page: "KnowledgeBase", icon: Database },
   { name: "Subscription", page: "Subscription", icon: CreditCard },
 ];
