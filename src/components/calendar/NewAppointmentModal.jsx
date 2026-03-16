@@ -18,6 +18,25 @@ const APPT_TYPES = [
 
 const DURATIONS = [30, 45, 50, 60, 90];
 
+const LOCATIONS = ["Office", "Telehealth", "Phone", "Hospital", "Home Visit", "Other"];
+
+// Generate times in 15-min increments from 6:00 AM to 9:00 PM
+const TIME_OPTIONS = (() => {
+  const times = [];
+  for (let h = 6; h <= 21; h++) {
+    for (let m = 0; m < 60; m += 15) {
+      const hh = String(h).padStart(2, "0");
+      const mm = String(m).padStart(2, "0");
+      const val = `${hh}:${mm}`;
+      const hour12 = h > 12 ? h - 12 : h === 0 ? 12 : h;
+      const ampm = h >= 12 ? "PM" : "AM";
+      const label = `${hour12}:${mm} ${ampm}`;
+      times.push({ value: val, label });
+    }
+  }
+  return times;
+})();
+
 // Step 1: Search or create patient
 // Step 2: Schedule appointment
 const STEPS = { SEARCH: "search", NEW_PATIENT: "new_patient", SCHEDULE: "schedule" };
@@ -288,7 +307,12 @@ export default function NewAppointmentModal({ open, onClose, patients, initialDa
               </div>
               <div className="space-y-1.5">
                 <Label className="text-xs text-gray-500">Time *</Label>
-                <Input type="time" value={appt.appointment_time} onChange={e => setA("appointment_time", e.target.value)} className="rounded-xl" />
+                <Select value={appt.appointment_time} onValueChange={v => setA("appointment_time", v)}>
+                  <SelectTrigger className="rounded-xl"><SelectValue placeholder="Select time" /></SelectTrigger>
+                  <SelectContent className="max-h-56">
+                    {TIME_OPTIONS.map(t => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
@@ -315,7 +339,12 @@ export default function NewAppointmentModal({ open, onClose, patients, initialDa
 
             <div className="space-y-1.5">
               <Label className="text-xs text-gray-500">Location (optional)</Label>
-              <Input value={appt.location} onChange={e => setA("location", e.target.value)} placeholder="e.g. Office, Telehealth" className="rounded-xl" />
+              <Select value={appt.location} onValueChange={v => setA("location", v)}>
+                <SelectTrigger className="rounded-xl"><SelectValue placeholder="Select location" /></SelectTrigger>
+                <SelectContent>
+                  {LOCATIONS.map(l => <SelectItem key={l} value={l}>{l}</SelectItem>)}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-1.5">
