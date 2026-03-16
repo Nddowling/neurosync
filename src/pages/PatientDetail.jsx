@@ -157,7 +157,6 @@ export default function PatientDetail() {
 function PatientEditModal({ patient, onClose, onSaved }) {
   const [form, setForm] = useState({ ...patient });
   const [saving, setSaving] = useState(false);
-  const { Dialog, DialogContent, DialogHeader, DialogTitle } = require("@/components/ui/dialog");
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
