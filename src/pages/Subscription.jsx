@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Check, Zap, Shield, Star, Loader2, Lock } from "lucide-react";
+import { Check, Zap, Shield, Star, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import useSubscription, { PLAN_LABELS, PLAN_LIMITS } from "@/hooks/useSubscription";
 import { Link } from "react-router-dom";
