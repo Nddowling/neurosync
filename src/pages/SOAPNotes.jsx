@@ -210,8 +210,8 @@ Generate each JSON field with detailed Markdown content following these exact st
             <div className="space-y-2">
               {notes.map(note => (
                 <button
-                  key={note.id}
-                  onClick={() => setSelectedNote(note)}
+                 key={note.id}
+                 onClick={() => handleSelectNote(note)}
                   className="w-full text-left flex items-center gap-4 px-5 py-4 bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-md hover:shadow-gray-100/50 transition-all"
                 >
                   <div className="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center flex-shrink-0">
