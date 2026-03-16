@@ -277,6 +277,14 @@ export default function Subscription() {
           </div>
         </div>
 
+        {/* ToS Confirmation before subscribing */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4 flex items-start gap-3">
+          <Checkbox id="sub-tos" checked={tosConfirmed} onCheckedChange={setTosConfirmed} className="mt-0.5" />
+          <label htmlFor="sub-tos" className="text-xs text-gray-600 leading-relaxed cursor-pointer">
+            By subscribing, I confirm that I am a licensed mental health professional, I will not enter PHI into this platform, and I agree to the <Link to="#" className="underline text-gray-900" onClick={e => { e.preventDefault(); window.scrollTo(0,0); }}>Terms of Service</Link>. I understand that NeuroSync is a clinical decision support tool only and all clinical decisions remain my sole professional responsibility.
+          </label>
+        </div>
+
         <p className="text-center text-xs text-gray-400">
           Payments securely processed by Stripe. Cancel anytime.
         </p>
