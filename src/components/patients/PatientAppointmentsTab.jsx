@@ -2,6 +2,23 @@ import React, { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Calendar, Plus, Trash2, Clock } from "lucide-react";
+
+const LOCATIONS = ["Office", "Telehealth", "Phone", "Hospital", "Home Visit", "Other"];
+
+const TIME_OPTIONS = (() => {
+  const times = [];
+  for (let h = 6; h <= 21; h++) {
+    for (let m = 0; m < 60; m += 15) {
+      const hh = String(h).padStart(2, "0");
+      const mm = String(m).padStart(2, "0");
+      const val = `${hh}:${mm}`;
+      const hour12 = h > 12 ? h - 12 : h === 0 ? 12 : h;
+      const ampm = h >= 12 ? "PM" : "AM";
+      times.push({ value: val, label: `${hour12}:${mm} ${ampm}` });
+    }
+  }
+  return times;
+})();
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -65,7 +82,12 @@ export default function PatientAppointmentsTab({ patientId }) {
         <div className="bg-gray-50 rounded-xl p-4 mb-4 space-y-3">
           <div className="grid grid-cols-3 gap-3">
             <Input type="date" value={form.appointment_date} onChange={e => set("appointment_date", e.target.value)} className="bg-white" />
-            <Input type="time" value={form.appointment_time} onChange={e => set("appointment_time", e.target.value)} className="bg-white" />
+            <Select value={form.appointment_time} onValueChange={v => set("appointment_time", v)}>
+              <SelectTrigger className="bg-white"><SelectValue placeholder="Time" /></SelectTrigger>
+              <SelectContent className="max-h-56">
+                {TIME_OPTIONS.map(t => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
+              </SelectContent>
+            </Select>
             <Input placeholder="Duration (min)" value={form.duration_minutes} onChange={e => set("duration_minutes", e.target.value)} className="bg-white" />
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -79,7 +101,12 @@ export default function PatientAppointmentsTab({ patientId }) {
                 <SelectItem value="crisis">Crisis</SelectItem>
               </SelectContent>
             </Select>
-            <Input placeholder="Location / Telehealth" value={form.location} onChange={e => set("location", e.target.value)} className="bg-white" />
+            <Select value={form.location} onValueChange={v => set("location", v)}>
+              <SelectTrigger className="bg-white"><SelectValue placeholder="Location" /></SelectTrigger>
+              <SelectContent>
+                {LOCATIONS.map(l => <SelectItem key={l} value={l}>{l}</SelectItem>)}
+              </SelectContent>
+            </Select>
           </div>
           <Input placeholder="Notes" value={form.notes} onChange={e => set("notes", e.target.value)} className="bg-white" />
           <div className="flex gap-2 justify-end">
