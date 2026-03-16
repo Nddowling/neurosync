@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import KnowledgeBase from './pages/KnowledgeBase';
 import Subscription from './pages/Subscription';
+import Patients from './pages/Patients';
+import PatientDetail from './pages/PatientDetail';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import TermsOfServiceModal from '@/components/legal/TermsOfServiceModal';
