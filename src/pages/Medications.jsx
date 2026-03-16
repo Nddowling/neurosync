@@ -73,10 +73,11 @@ Include:
 
   return (
     <div className="p-6 lg:p-10 max-w-4xl mx-auto">
-      <div className="mb-8">
+      <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Medication Reference</h1>
         <p className="text-sm text-gray-400 mt-1">Psychopharmacology reference powered by AI</p>
       </div>
+      <ClinicalWarningBanner variant="medications" className="mb-6" />
 
       {/* Search */}
       <div className="flex gap-2 mb-6">
