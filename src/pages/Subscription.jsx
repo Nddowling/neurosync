@@ -265,9 +265,9 @@ export default function Subscription() {
         </div>
 
         {/* Promo Code */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-4">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
           <h3 className="text-sm font-semibold text-gray-800 mb-1">Have a Promo Code?</h3>
-          <p className="text-xs text-gray-400 mb-3">Enter your promo code for special pricing on the Professional plan.</p>
+          <p className="text-xs text-gray-400 mb-3">Enter your promo code for special pricing or access.</p>
           <div className="flex gap-2">
             <Input
               placeholder="Enter promo code"
@@ -278,28 +278,6 @@ export default function Subscription() {
             />
             <Button onClick={handlePromo} disabled={!promoCode.trim() || promoLoading} className="bg-gray-900 hover:bg-gray-800 text-white">
               {promoLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Apply"}
-            </Button>
-          </div>
-        </div>
-
-        {/* God Mode */}
-        <div className="bg-gray-900 rounded-2xl p-6 mb-6">
-          <div className="flex items-center gap-2 mb-1">
-            <Lock className="w-4 h-4 text-amber-400" />
-            <h3 className="text-sm font-semibold text-white">God Mode</h3>
-          </div>
-          <p className="text-xs text-gray-400 mb-3">Authorized personnel only. 100% unlimited free access.</p>
-          <div className="flex gap-2">
-            <Input
-              type="password"
-              placeholder="Enter God Mode code"
-              value={godModeCode}
-              onChange={e => setGodModeCode(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && handleGodMode()}
-              className="max-w-xs bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
-            />
-            <Button onClick={handleGodMode} disabled={!godModeCode.trim() || godModeLoading} className="bg-amber-500 hover:bg-amber-600 text-white">
-              {godModeLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Activate"}
             </Button>
           </div>
         </div>
