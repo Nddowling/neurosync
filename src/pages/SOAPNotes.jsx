@@ -40,7 +40,6 @@ export default function SOAPNotes() {
   const createNoteMutation = useMutation({
     mutationFn: async (formData) => {
       setGenerating(true);
-      // Use LLM to generate SOAP note
       const prompt = `You are a board-certified psychiatrist generating a formal psychiatric SOAP note for an EHR. Output must be highly clinical, detailed, and formatted using Markdown. Use tables where specified below.
 
 ---
@@ -74,7 +73,6 @@ Generate each JSON field with detailed Markdown content following these exact st
 
 **icd_codes:** Comma-separated ICD-10 codes only (e.g. "F33.1, F41.1, Z63.0")`;
 
-
       const result = await base44.integrations.Core.InvokeLLM({
         prompt,
         model: "claude_sonnet_4_6",
@@ -91,23 +89,37 @@ Generate each JSON field with detailed Markdown content following these exact st
         }
       });
 
+      // Write PHI clinical content to Supabase
+      const supaRes = await base44.functions.invoke("supabase", {
+        action: "insert",
+        table: "patient_notes",
+        data: {
+          note_type: formData.note_type || "soap",
+          subjective: result.subjective,
+          objective: result.objective,
+          assessment: result.assessment,
+          risk_assessment: result.risk_assessment,
+          plan: result.plan,
+          provider_name: formData.provider_name,
+          patient_info: formData.patient_info,
+        }
+      });
+      const supabaseNoteId = supaRes?.data?.data?.[0]?.id || null;
+
+      // Store only non-PHI metadata in Base44
       const note = await base44.entities.ClinicalNote.create({
         note_type: formData.note_type || "soap",
-        subjective: result.subjective,
-        objective: result.objective,
-        assessment: result.assessment,
-        risk_assessment: result.risk_assessment,
-        plan: result.plan,
         icd_codes: result.icd_codes,
         status: "draft",
         provider_name: formData.provider_name,
-        patient_info: formData.patient_info,
         session_duration: formData.session_duration,
-        cpt_code: formData.cpt_code
+        cpt_code: formData.cpt_code,
+        supabase_note_id: supabaseNoteId,
       });
 
+      // Return enriched note object for immediate display
       setGenerating(false);
-      return note;
+      return { ...note, subjective: result.subjective, objective: result.objective, assessment: result.assessment, risk_assessment: result.risk_assessment, plan: result.plan };
     },
     onSuccess: (note) => {
       queryClient.invalidateQueries({ queryKey: ["clinical-notes"] });
