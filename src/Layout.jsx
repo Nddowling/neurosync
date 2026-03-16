@@ -15,7 +15,8 @@ import {
   Shield,
   ChevronRight,
   Database,
-  CreditCard
+  CreditCard,
+  User
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
