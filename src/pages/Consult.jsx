@@ -135,7 +135,14 @@ export default function Consult() {
     setIsLoading(true);
     const conv = await base44.agents.getConversation(id);
     setActiveConversation(conv);
-    setMessages(conv.messages || []);
+    const msgs = conv.messages || [];
+    // Mark all existing messages as already typewritten so they display instantly
+    typewrittenIds.current = new Set(
+      msgs.map((m, i) => m.id || `msg-${i}`)
+    );
+    prevMessagesRef.current = msgs;
+    setMessages(msgs);
+    setDisplayedMessages(msgs);
     localStorage.setItem("neurosync_active_conv", id);
     setIsLoading(false);
     setShowHistory(false);
