@@ -155,6 +155,13 @@ export default function Consult() {
   };
 
   const sendMessage = async (content) => {
+    // Enforce consult limit
+    const usage = await trackUsage("consult");
+    if (!usage?.allowed) {
+      toast.error(usage?.reason || "Consult limit reached.");
+      return;
+    }
+
     setSoapBubble(null);
     scrollToBottom();
     setAgentStatus("received");
