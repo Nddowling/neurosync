@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
-import { Plus, History, X, Stethoscope } from "lucide-react";
+import { Plus, History, X, Stethoscope, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MessageBubble from "../components/chat/MessageBubble";
 import ChatInput from "../components/chat/ChatInput";
@@ -9,6 +9,8 @@ import AgentStatusBar from "../components/chat/AgentStatusBar";
 import CPTCodeSelector from "../components/soap/CPTCodeSelector";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+import useSubscription from "@/hooks/useSubscription";
+import { Link } from "react-router-dom";
 
 export default function Consult() {
   const [conversations, setConversations] = useState([]);
