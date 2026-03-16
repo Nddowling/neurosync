@@ -300,7 +300,7 @@ Generate structured Markdown for each field. The note structure and depth MUST a
 **icd_codes:** Comma-separated ICD-10 codes only.
 
 **cpt_codes:** Comma-separated CPT codes that were applied: ${hasCodes ? codeList : "auto-detected from session type"}`,
-        model: "gpt_5",
+        model: "claude_sonnet_4_6",
         response_json_schema: {
           type: "object",
           properties: {
