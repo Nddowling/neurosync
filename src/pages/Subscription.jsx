@@ -136,23 +136,6 @@ export default function Subscription() {
     }
   };
 
-  const handleGodMode = async () => {
-    if (godModeCode.trim().toLowerCase() !== "godmode") {
-      toast.error("Invalid God Mode code.");
-      return;
-    }
-    setGodModeLoading(true);
-    try {
-      await base44.functions.invoke("activateGodMode", {});
-      toast.success("God Mode activated! Unlimited free access enabled.");
-      window.location.reload();
-    } catch (err) {
-      toast.error("God Mode activation failed.");
-    } finally {
-      setGodModeLoading(false);
-    }
-  };
-
   const currentPlan = subscription?.plan || "free";
   const limits = PLAN_LIMITS[currentPlan] || PLAN_LIMITS.free;
   const isUnlimited = limits.consults === null;
