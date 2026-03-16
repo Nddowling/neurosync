@@ -47,13 +47,13 @@ export default function Medications() {
 
     try {
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a senior psychopharmacology expert. Provide a thorough, evidence-based response to this medication query. Use clinical precision with drug names, dosing ranges, CYP450 interactions, black box warnings, and monitoring parameters. Format with clear headers, bullet points, and tables where helpful. Always note safety concerns prominently.
+        model: "claude_sonnet_4_6",
+        prompt: `You are a senior psychopharmacology expert. Provide a concise, evidence-based response to this medication query. Use clinical precision with drug names, dosing ranges, CYP450 interactions, black box warnings, and monitoring parameters. Format with clear headers and bullet points.
 
 Query: ${q}
 
 Include:
 - Mechanism of action where relevant
-- Evidence level for recommendations
 - Key drug-drug interactions
 - Black box warnings if applicable
 - Monitoring requirements
