@@ -54,19 +54,20 @@ export default function DSMReference() {
 
     try {
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a psychiatry professor and DSM-5-TR expert. Provide comprehensive diagnostic information for this query. Be thorough and clinically precise.
+        model: "claude_sonnet_4_6",
+        prompt: `You are a psychiatry professor and DSM-5-TR expert. Provide diagnostic information for this query. Be clinically precise and concise.
 
 Query: ${q}
 
 Structure your response with:
-1. **Diagnostic Criteria** — List all criteria (A, B, C, etc.) exactly as they appear in DSM-5-TR
-2. **Specifiers** — All relevant specifiers and subtypes
+1. **Diagnostic Criteria** — Key criteria (A, B, C, etc.) from DSM-5-TR
+2. **Specifiers** — Relevant specifiers and subtypes
 3. **Key Differential Diagnoses** — How to distinguish from similar conditions
 4. **Clinical Pearls** — Practical diagnostic tips
 5. **Common Comorbidities** — Frequently co-occurring conditions
-6. **Assessment Tools** — Validated scales/instruments for screening and monitoring
+6. **Assessment Tools** — Validated scales for screening and monitoring
 
-Use clear formatting with headers and bullet points.`,
+Use clear headers and bullet points.`,
       });
       setResult(response);
     } finally {
