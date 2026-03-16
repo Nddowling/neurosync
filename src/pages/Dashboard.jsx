@@ -57,10 +57,10 @@ export default function Dashboard() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-        <StatCard title="Active Sessions" value={activeSessions} icon={Activity} color="teal" />
-        <StatCard title="Today's Consults" value={completedToday} icon={Clock} color="violet" />
-        <StatCard title="Total Sessions" value={sessions.length} icon={MessageSquare} color="slate" />
-        <StatCard title="Notes Generated" value={notes.length} icon={FileText} color="amber" />
+        <StatCard title="Active Sessions" value={activeSessions} icon={Activity} color="teal" href="/Consult" />
+        <StatCard title="Today's Consults" value={completedToday} icon={Clock} color="violet" href="/Consult" />
+        <StatCard title="Total Sessions" value={sessions.length} icon={MessageSquare} color="slate" href="/Consult" />
+        <StatCard title="Notes Generated" value={notes.length} icon={FileText} color="amber" href="/SOAPNotes" />
       </div>
 
       {/* Recent Sessions */}

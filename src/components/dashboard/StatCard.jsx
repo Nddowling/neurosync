@@ -1,7 +1,9 @@
 import React from "react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
-export default function StatCard({ title, value, subtitle, icon: Icon, color = "teal" }) {
+export default function StatCard({ title, value, subtitle, icon: Icon, color = "teal", href }) {
+  const navigate = useNavigate();
   const colors = {
     teal: "from-teal-500 to-teal-600 shadow-teal-500/20",
     slate: "from-slate-600 to-slate-700 shadow-slate-600/20",
@@ -10,7 +12,10 @@ export default function StatCard({ title, value, subtitle, icon: Icon, color = "
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg hover:shadow-gray-100/50 transition-all duration-300">
+    <div
+      className={cn("bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg hover:shadow-gray-100/50 transition-all duration-300", href && "cursor-pointer hover:border-gray-200")}
+      onClick={href ? () => navigate(href) : undefined}
+    >
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm text-gray-400 font-medium">{title}</p>
