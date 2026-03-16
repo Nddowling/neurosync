@@ -4,6 +4,7 @@ import { Pill, Search, Loader2, AlertTriangle, BookOpen, Zap } from "lucide-reac
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ReactMarkdown from "react-markdown";
+import ClinicalWarningBanner from "@/components/legal/ClinicalWarningBanner";
 
 const quickQueries = [
   { label: "SSRI Comparison", query: "Compare all SSRIs: efficacy, side effect profiles, half-lives, CYP interactions, and best candidates for specific patient populations" },

@@ -8,6 +8,9 @@ import KnowledgeBase from './pages/KnowledgeBase';
 import Subscription from './pages/Subscription';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import TermsOfServiceModal from '@/components/legal/TermsOfServiceModal';
+import { useState, useEffect } from 'react';
+import { base44 } from '@/api/base44Client';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
