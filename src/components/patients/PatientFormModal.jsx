@@ -93,14 +93,46 @@ export default function PatientFormModal({ open, onClose, onCreated }) {
             <Input value={form.address} onChange={e => set("address", e.target.value)} placeholder="123 Main St, City, State ZIP" />
           </div>
 
-          <div className="space-y-1.5">
-            <Label>Emergency Contact</Label>
-            <Input value={form.emergency_contact} onChange={e => set("emergency_contact", e.target.value)} placeholder="Name — Relationship — Phone" />
+          {/* Emergency Contact */}
+          <div>
+            <Label className="text-sm font-semibold text-gray-700 mb-2 block">Emergency Contact</Label>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-1.5">
+                <Label className="text-xs text-gray-500">Name</Label>
+                <Input value={form.ec_name} onChange={e => set("ec_name", e.target.value)} placeholder="Full name" />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs text-gray-500">Relationship</Label>
+                <Input value={form.ec_relationship} onChange={e => set("ec_relationship", e.target.value)} placeholder="e.g. Spouse" />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs text-gray-500">Phone</Label>
+                <Input value={form.ec_phone} onChange={e => set("ec_phone", e.target.value)} placeholder="(555) 000-0000" />
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-1.5">
-            <Label>Insurance Info</Label>
-            <Input value={form.insurance_info} onChange={e => set("insurance_info", e.target.value)} placeholder="Carrier, Plan, Member ID, Group #" />
+          {/* Insurance Info */}
+          <div>
+            <Label className="text-sm font-semibold text-gray-700 mb-2 block">Insurance Info</Label>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label className="text-xs text-gray-500">Carrier</Label>
+                <Input value={form.insurance_carrier} onChange={e => set("insurance_carrier", e.target.value)} placeholder="e.g. Blue Cross" />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs text-gray-500">Plan</Label>
+                <Input value={form.insurance_plan} onChange={e => set("insurance_plan", e.target.value)} placeholder="e.g. PPO Gold" />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs text-gray-500">Member ID</Label>
+                <Input value={form.insurance_member_id} onChange={e => set("insurance_member_id", e.target.value)} placeholder="Member ID" />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs text-gray-500">Group #</Label>
+                <Input value={form.insurance_group} onChange={e => set("insurance_group", e.target.value)} placeholder="Group number" />
+              </div>
+            </div>
           </div>
 
           <div className="flex justify-end gap-3 pt-2">
