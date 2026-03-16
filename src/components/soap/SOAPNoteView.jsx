@@ -61,8 +61,31 @@ export default function SOAPNoteView({ note, onClose, onFinalize }) {
       `\nP — PLAN\n${note.plan || ""}`,
       note.icd_codes ? `\nICD-10 CODES: ${note.icd_codes}` : "",
     ].filter(Boolean).join("\n");
-    navigator.clipboard.writeText(parts);
-    toast.success("Note copied to clipboard");
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(parts).then(() => {
+        toast.success("Note copied to clipboard");
+      }).catch(() => fallbackCopy(parts));
+    } else {
+      fallbackCopy(parts);
+    }
+  };
+
+  const fallbackCopy = (text) => {
+    const el = document.createElement("textarea");
+    el.value = text;
+    el.style.position = "fixed";
+    el.style.opacity = "0";
+    document.body.appendChild(el);
+    el.focus();
+    el.select();
+    try {
+      document.execCommand("copy");
+      toast.success("Note copied to clipboard");
+    } catch {
+      toast.error("Copy failed — please select and copy manually");
+    }
+    document.body.removeChild(el);
   };
 
   const statusColors = {
