@@ -35,14 +35,14 @@ export default function useSubscription() {
   useEffect(() => { fetchSubscription(); }, [fetchSubscription]);
 
   const canConsult = () => {
-    if (!subscription) return false;
+    if (!subscription) return true; // allow while loading, server will enforce
     const limits = PLAN_LIMITS[subscription.plan] || PLAN_LIMITS.free;
     if (limits.consults === null) return true;
     return (subscription.consults_used || 0) < limits.consults;
   };
 
   const canGenerateSoap = () => {
-    if (!subscription) return false;
+    if (!subscription) return true; // allow while loading, server will enforce
     const limits = PLAN_LIMITS[subscription.plan] || PLAN_LIMITS.free;
     if (limits.soap_notes === null) return true;
     return (subscription.soap_notes_used || 0) < limits.soap_notes;
