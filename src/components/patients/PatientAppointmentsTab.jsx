@@ -28,7 +28,7 @@ export default function PatientAppointmentsTab({ patientId }) {
   const addAppointment = async () => {
     await base44.functions.invoke("supabase", {
       action: "insert", table: "patient_appointments",
-      data: { ...form, patient_id: patientId },
+      data: { ...form, patient_id: patientId, duration_minutes: Number(form.duration_minutes) || 50 },
     });
     queryClient.invalidateQueries({ queryKey: ["patient_appointments", patientId] });
     setShowForm(false);
