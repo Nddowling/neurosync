@@ -120,9 +120,22 @@ Include:
 
       {/* Loading */}
       {isLoading && (
-        <div className="flex flex-col items-center py-16">
-          <Loader2 className="w-8 h-8 text-teal-500 animate-spin mb-4" />
-          <p className="text-sm text-gray-400">Searching psychopharmacology database...</p>
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <div className="flex items-center gap-3 mb-5 pb-4 border-b border-gray-50">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 animate-pulse" />
+            <div className="space-y-2 flex-1">
+              <div className="h-3.5 bg-gray-100 rounded-full animate-pulse w-1/3" />
+              <div className="h-3 bg-gray-100 rounded-full animate-pulse w-1/4" />
+            </div>
+          </div>
+          <div className="space-y-3">
+            {[1,0.9,0.7,1,0.8,0.6,1,0.75].map((w, i) => (
+              <div key={i} className="h-3 bg-gray-100 rounded-full animate-pulse" style={{ width: `${w * 100}%`, animationDelay: `${i * 80}ms` }} />
+            ))}
+          </div>
+          <p className="text-xs text-gray-400 mt-5 flex items-center gap-1.5">
+            <Loader2 className="w-3 h-3 animate-spin" /> Generating medication reference...
+          </p>
         </div>
       )}
 
