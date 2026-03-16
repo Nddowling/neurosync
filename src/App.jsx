@@ -70,6 +70,7 @@ const AuthenticatedApp = () => {
 
   // Render the main app
   return (
+    <TosGate>
     <Routes>
       <Route path="/" element={
         <LayoutWrapper currentPageName={mainPageKey}>
