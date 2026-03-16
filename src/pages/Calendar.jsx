@@ -167,7 +167,7 @@ export default function Calendar() {
   );
 }
 
-function MonthView({ currentDate, apptsByDate, patientMap, onSelectAppt, onDayClick }) {
+function MonthView({ currentDate, apptsByDate, patientMap, onSelectAppt, onDayClick, onNewAppt }) {
   const start = startOfWeek(startOfMonth(currentDate));
   const end = endOfWeek(endOfMonth(currentDate));
   const days = [];
@@ -195,11 +195,17 @@ function MonthView({ currentDate, apptsByDate, patientMap, onSelectAppt, onDayCl
             return (
               <div
                 key={di}
-                className={`min-h-[100px] p-2 border-b border-gray-50 cursor-pointer hover:bg-gray-50/80 transition-colors ${!isCurrentMonth ? "bg-gray-50/30" : ""}`}
+                className={`min-h-[100px] p-2 border-b border-gray-50 cursor-pointer hover:bg-gray-50/80 transition-colors group/day ${!isCurrentMonth ? "bg-gray-50/30" : ""}`}
                 onClick={() => onDayClick(day)}
               >
-                <div className={`w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-1 ${isToday ? "bg-gray-900 text-white" : isCurrentMonth ? "text-gray-800" : "text-gray-300"}`}>
-                  {format(day, "d")}
+                <div className="flex items-center justify-between mb-1">
+                  <div className={`w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium ${isToday ? "bg-gray-900 text-white" : isCurrentMonth ? "text-gray-800" : "text-gray-300"}`}>
+                    {format(day, "d")}
+                  </div>
+                  <button
+                    onClick={e => { e.stopPropagation(); onNewAppt(day); }}
+                    className="opacity-0 group-hover/day:opacity-100 w-5 h-5 rounded flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-200 transition-all text-sm font-bold"
+                  >+</button>
                 </div>
                 <div className="space-y-0.5">
                   {dayAppts.slice(0, 3).map(appt => {
