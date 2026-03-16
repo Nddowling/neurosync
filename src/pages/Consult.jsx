@@ -417,6 +417,11 @@ Generate structured Markdown for each field. The note structure and depth MUST a
           </div>
         </div>
 
+        {/* PHI Warning */}
+        <div className="px-4 lg:px-6 pt-3">
+          <ClinicalWarningBanner variant="phi" />
+        </div>
+
         {/* Messages */}
         <div className="flex-1 overflow-auto" ref={scrollContainerRef} onScroll={handleScroll}>
           {isLoading ? (
