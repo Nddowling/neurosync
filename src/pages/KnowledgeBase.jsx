@@ -30,12 +30,86 @@ const CATEGORY_LABELS = {
   other: "Other",
 };
 
+// fileUploads: { name, status: 'pending'|'uploading'|'extracting'|'saving'|'done'|'error', progress: 0-100, error? }
 export default function KnowledgeBase() {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [showAddDialog, setShowAddDialog] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
+  const [fileUploads, setFileUploads] = useState([]); // per-file upload states
   const [form, setForm] = useState({ title: "", content: "", category: "other", tags: "", source: "" });
+  const fileInputRef = useRef(null);
+
+  const isUploading = fileUploads.some(f => ["pending", "uploading", "extracting", "saving"].includes(f.status));
+
+  const updateFile = (idx, patch) =>
+    setFileUploads(prev => prev.map((f, i) => i === idx ? { ...f, ...patch } : f));
+
+  const processSingleFile = async (file, idx) => {
+    try {
+      // Step 1: Upload (0→40%)
+      updateFile(idx, { status: "uploading", progress: 10 });
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      updateFile(idx, { progress: 40 });
+
+      // Step 2: Extract (40→75%)
+      updateFile(idx, { status: "extracting", progress: 50 });
+      const extracted = await base44.integrations.Core.ExtractDataFromUploadedFile({
+        file_url,
+        json_schema: {
+          type: "object",
+          properties: {
+            title: { type: "string", description: "Document title or best-guess title" },
+            content: { type: "string", description: "Full extracted text content" },
+            summary: { type: "string", description: "Brief 1-2 sentence summary" },
+            category: { type: "string", description: "One of: cpt_codes, clinical_reference, protocol, medication, billing, other" },
+            tags: { type: "string", description: "Comma-separated relevant tags" },
+          },
+        },
+      });
+      updateFile(idx, { progress: 75 });
+
+      if (extracted.status !== "success" || !extracted.output) {
+        throw new Error("Could not extract content from PDF");
+      }
+
+      // Step 3: Save (75→100%)
+      updateFile(idx, { status: "saving", progress: 85 });
+      const data = extracted.output;
+      await base44.entities.KnowledgeBase.create({
+        title: data.title || file.name.replace(/\.pdf$/i, ""),
+        content: data.content || data.summary || "Extracted from PDF",
+        category: data.category || "other",
+        tags: data.tags || "",
+        source: file.name,
+        file_url,
+      });
+
+      updateFile(idx, { status: "done", progress: 100 });
+    } catch (err) {
+      updateFile(idx, { status: "error", progress: 0, error: err.message || "Upload failed" });
+    }
+  };
+
+  const handlePdfUpload = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    // Initialize state for all files
+    const initialStates = files.map(f => ({ name: f.name, status: "pending", progress: 0 }));
+    setFileUploads(initialStates);
+
+    // Process all files in parallel
+    await Promise.all(files.map((file, idx) => processSingleFile(file, idx)));
+
+    // Refresh list and notify
+    queryClient.invalidateQueries({ queryKey: ["knowledge_base"] });
+    const succeeded = initialStates.length; // we'll check actual state after
+    toast.success(`Upload complete — ${files.length} file${files.length > 1 ? "s" : ""} processed`);
+
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const dismissUploads = () => setFileUploads([]);
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["knowledge_base"],
