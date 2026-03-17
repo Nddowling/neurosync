@@ -474,7 +474,7 @@ Generate structured Markdown for each field. The note structure and depth MUST a
               {typewriterIdx !== null && (
                 <MessageBubble
                   key="typewriter"
-                  message={{ role: "assistant", content: typewriterText + "▍" }}
+                  message={{ role: "assistant", content: typewriterText + (typewriterText.length > 0 ? "▍" : "") }}
                 />
               )}
               {soapBubble && (
