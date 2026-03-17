@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
@@ -8,8 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
-import { Plus, Trash2, Upload, BookOpen, FileText, Loader2, Search, Tag } from "lucide-react";
+import { Plus, Trash2, Upload, BookOpen, FileText, Loader2, Search, Tag, CheckCircle2, AlertCircle, X } from "lucide-react";
 
 const CATEGORY_COLORS = {
   cpt_codes: "bg-violet-100 text-violet-700 border-violet-200",
