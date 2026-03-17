@@ -259,12 +259,12 @@ export default function MessageBubble({ message, isLastAssistant, onGenerateSoap
           </div>
         )}
         {/* SOAP button only on last assistant response (non-SOAP) */}
-        {isLastAssistant && !isUser && !isSoap && onGenerateSoap && (
+        {isLastAssistant && !isUser && !isSoap && (
           <Button
             variant="outline"
             size="sm"
             onClick={onGenerateSoap}
-            disabled={isGeneratingSoap}
+            disabled={isGeneratingSoap || !onGenerateSoap}
             className="mt-2 text-xs text-violet-600 border-violet-200 hover:bg-violet-50"
           >
             {isGeneratingSoap ? (
