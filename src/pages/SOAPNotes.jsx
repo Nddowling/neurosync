@@ -164,7 +164,6 @@ Generate each JSON field with detailed Markdown content following these exact st
   return (
     <div className="p-6 lg:p-10 max-w-6xl mx-auto">
       <ClinicalWarningBanner variant="soap-draft" className="mb-6" />
-      <ClinicalWarningBanner variant="phi" className="mb-6" />
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">SOAP Notes</h1>

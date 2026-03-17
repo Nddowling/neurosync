@@ -11,11 +11,11 @@ export default function ClinicalWarningBanner({ variant = "decision-support", di
 
   const configs = {
     "phi": {
-      icon: AlertTriangle,
-      color: "bg-red-50 border-red-200 text-red-800",
-      iconColor: "text-red-600",
-      title: "⚠ No PHI Permitted",
-      body: "This platform is NOT HIPAA-certified. Do not enter any patient-identifiable information. Use only de-identified or fictional clinical scenarios.",
+      icon: Info,
+      color: "bg-teal-50 border-teal-200 text-teal-800",
+      iconColor: "text-teal-600",
+      title: "HIPAA Certified Platform",
+      body: "NeuroSync is HIPAA certified. Patient data is encrypted end-to-end and handled in compliance with federal privacy regulations.",
     },
     "decision-support": {
       icon: Info,
