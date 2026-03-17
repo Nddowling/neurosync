@@ -185,8 +185,10 @@ const mdComponents = {
 
 export default function MessageBubble({ message, isLastAssistant, onGenerateSoap, isGeneratingSoap }) {
   const isUser = message.role === "user";
+  const rawContent = message.content?.replace(/▍$/, "") || message.content;
   const { body, sources } = isUser ? { body: message.content, sources: [] } : parseSources(message.content);
-  const isSoap = isSoapNote(body);
+  const cleanBody = body?.replace(/▍$/, "") || body;
+  const isSoap = isSoapNote(cleanBody);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content);
