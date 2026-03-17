@@ -205,10 +205,10 @@ export default function KnowledgeBase() {
             >
               <span>
                 {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-                {isUploading ? "Uploading..." : "Upload PDF"}
+                {isUploading ? "Uploading..." : "Upload PDFs"}
               </span>
             </Button>
-            <input type="file" accept=".pdf" className="hidden" onChange={handlePdfUpload} />
+            <input ref={fileInputRef} type="file" accept=".pdf" multiple className="hidden" onChange={handlePdfUpload} />
           </label>
           <Button onClick={() => setShowAddDialog(true)} className="bg-gray-900 hover:bg-gray-800 text-white gap-1.5">
             <Plus className="h-4 w-4" />
