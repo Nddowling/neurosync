@@ -134,48 +134,6 @@ export default function KnowledgeBase() {
     },
   });
 
-  const handlePdfUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setIsUploading(true);
-    try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      const extracted = await base44.integrations.Core.ExtractDataFromUploadedFile({
-        file_url,
-        json_schema: {
-          type: "object",
-          properties: {
-            title: { type: "string", description: "Document title or best-guess title" },
-            content: { type: "string", description: "Full extracted text content" },
-            summary: { type: "string", description: "Brief 1-2 sentence summary" },
-            category: { type: "string", description: "One of: cpt_codes, clinical_reference, protocol, medication, billing, other" },
-            tags: { type: "string", description: "Comma-separated relevant tags" },
-          },
-        },
-      });
-      if (extracted.status === "success" && extracted.output) {
-        const data = extracted.output;
-        await base44.entities.KnowledgeBase.create({
-          title: data.title || file.name.replace(/\.pdf$/i, ""),
-          content: data.content || data.summary || "Extracted from PDF",
-          category: data.category || "other",
-          tags: data.tags || "",
-          source: file.name,
-          file_url,
-        });
-        queryClient.invalidateQueries({ queryKey: ["knowledge_base"] });
-        toast.success(`"${data.title || file.name}" added to Knowledge Base`);
-      } else {
-        toast.error("Could not extract content from PDF");
-      }
-    } catch (err) {
-      toast.error("Upload failed");
-    } finally {
-      setIsUploading(false);
-      e.target.value = "";
-    }
-  };
-
   const filtered = entries.filter(e => {
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
