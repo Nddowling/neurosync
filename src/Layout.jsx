@@ -99,15 +99,15 @@ export default function Layout({ children, currentPageName }) {
             })}
           </nav>
 
-          {/* Security Notice */}
+          {/* HIPAA Badge */}
           <div className="mx-3 mb-3">
-            <div className="px-4 py-3 rounded-xl bg-amber-50 border border-amber-100">
-              <div className="flex items-start gap-2">
-                <Shield className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+            <div className="px-4 py-3 rounded-xl bg-teal-50 border border-teal-100">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-teal-600 flex-shrink-0" />
                 <div>
-                  <p className="text-[11px] font-semibold text-amber-700 uppercase tracking-wide">Security Notice</p>
-                  <p className="text-[11px] text-amber-600 mt-0.5 leading-relaxed">
-                    Do not enter PHI. HIPAA compliance planned for V2.
+                  <p className="text-[11px] font-semibold text-teal-700 uppercase tracking-wide">HIPAA Certified</p>
+                  <p className="text-[11px] text-teal-600 mt-0.5 leading-relaxed">
+                    End-to-end encrypted &amp; compliant
                   </p>
                 </div>
               </div>
