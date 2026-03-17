@@ -239,6 +239,7 @@ export default function MessageBubble({ message, isLastAssistant, onGenerateSoap
                   </ReactMarkdown>
                 </div>
                 {!isSoap && <SourcesPanel sources={sources} />}
+
               </>
             )}
             {!isUser && (
