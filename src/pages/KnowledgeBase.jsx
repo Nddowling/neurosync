@@ -217,6 +217,46 @@ export default function KnowledgeBase() {
         </div>
       </div>
 
+      {/* Upload Progress Panel */}
+      {fileUploads.length > 0 && (
+        <div className="mb-6 bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-gray-50">
+            <span className="text-sm font-semibold text-gray-800">
+              Uploading {fileUploads.length} file{fileUploads.length > 1 ? "s" : ""}
+            </span>
+            {!isUploading && (
+              <button onClick={dismissUploads} className="text-gray-300 hover:text-gray-500 transition-colors">
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+          <div className="divide-y divide-gray-50">
+            {fileUploads.map((f, idx) => (
+              <div key={idx} className="px-5 py-3">
+                <div className="flex items-center gap-3 mb-1.5">
+                  <FileText className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                  <span className="text-sm text-gray-700 flex-1 truncate">{f.name}</span>
+                  <span className="text-xs text-gray-400 flex-shrink-0">
+                    {f.status === "uploading" && "Uploading..."}
+                    {f.status === "extracting" && "Extracting..."}
+                    {f.status === "saving" && "Saving..."}
+                    {f.status === "done" && <CheckCircle2 className="h-4 w-4 text-teal-500" />}
+                    {f.status === "error" && <AlertCircle className="h-4 w-4 text-red-400" />}
+                    {f.status === "pending" && "Queued"}
+                  </span>
+                  <span className="text-xs font-medium text-gray-500 w-8 text-right">{f.status === "done" ? "100" : f.progress}%</span>
+                </div>
+                <Progress
+                  value={f.status === "done" ? 100 : f.progress}
+                  className={`h-1.5 ${f.status === "error" ? "[&>div]:bg-red-400" : f.status === "done" ? "[&>div]:bg-teal-500" : "[&>div]:bg-teal-400"}`}
+                />
+                {f.error && <p className="text-[11px] text-red-500 mt-1">{f.error}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Search */}
       <div className="relative mb-6">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
