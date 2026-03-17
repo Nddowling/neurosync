@@ -218,7 +218,7 @@ export default function MessageBubble({ message, isLastAssistant, onGenerateSoap
               "rounded-2xl px-4 py-3 relative",
               isUser
                 ? "bg-gray-900 text-white rounded-tr-md"
-                : isSoap
+                : cleanBody && isSoap
                   ? "bg-violet-50 border border-violet-100 shadow-sm rounded-tl-md"
                   : "bg-white border border-gray-100 shadow-sm rounded-tl-md"
             )}
