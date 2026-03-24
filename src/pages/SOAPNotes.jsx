@@ -56,6 +56,7 @@ SESSION DATA:
 - Additional Notes / Labs: ${formData.additional || "None"}
 - Session Duration: ${formData.session_duration || "45"} minutes
 - CPT Code: ${formData.cpt_code || ""}
+- Pre-selected ICD-10 Codes (include these in your diagnosis table): ${formData.icd_codes || "None pre-selected"}
 
 ---
 
