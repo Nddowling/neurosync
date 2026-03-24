@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
 
+// TESTING MODE: all plans unlimited
 export const PLAN_LIMITS = {
-  free: { consults: 5, soap_notes: 2 },
+  free: { consults: null, soap_notes: null },
   professional: { consults: null, soap_notes: null },
   enterprise: { consults: null, soap_notes: null },
   promo_justin: { consults: null, soap_notes: null },

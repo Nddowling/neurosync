@@ -1,8 +1,9 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 // Plan limits — null = unlimited
+// TESTING MODE: all plans unlimited
 const PLAN_LIMITS = {
-  free: { consults: 5, soap_notes: 2 },
+  free: { consults: null, soap_notes: null },
   professional: { consults: null, soap_notes: null },
   enterprise: { consults: null, soap_notes: null },
   promo_justin: { consults: null, soap_notes: null },
