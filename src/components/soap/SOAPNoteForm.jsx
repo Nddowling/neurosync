@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2, Sparkles, X } from "lucide-react";
 import { motion } from "framer-motion";
+import IcdCodeInput from "./IcdCodeInput";
+import CptCodeSelect from "./CptCodeSelect";
 
 export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
   const [formData, setFormData] = useState({
