@@ -106,13 +106,15 @@ export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
           </div>
           <div>
             <Label className="text-xs text-gray-500 mb-1.5 block">CPT Code</Label>
-            <Input
-              placeholder="e.g., 90837, 90833"
-              value={formData.cpt_code}
-              onChange={(e) => update("cpt_code", e.target.value)}
-              className="rounded-xl"
-            />
+            <CptCodeSelect value={formData.cpt_code} onChange={(v) => update("cpt_code", v)} />
           </div>
+        </div>
+
+        {/* ICD-10 Codes */}
+        <div>
+          <Label className="text-xs text-gray-500 mb-1.5 block">ICD-10 Diagnosis Codes</Label>
+          <IcdCodeInput value={formData.icd_codes} onChange={(v) => update("icd_codes", v)} />
+          <p className="text-[11px] text-gray-400 mt-1">AI will also auto-generate ICD codes — this pre-populates the assessment.</p>
         </div>
 
         <div>
