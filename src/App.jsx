@@ -9,6 +9,7 @@ import Subscription from './pages/Subscription';
 import Patients from './pages/Patients';
 import PatientDetail from './pages/PatientDetail';
 import CalendarPage from './pages/Calendar';
+import Landing from './pages/Landing';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import TermsOfServiceModal from '@/components/legal/TermsOfServiceModal';
