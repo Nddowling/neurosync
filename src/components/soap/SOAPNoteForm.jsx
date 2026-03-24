@@ -21,7 +21,8 @@ export default function SOAPNoteForm({ onSubmit, onCancel, isGenerating }) {
     provider_name: "",
     patient_info: "",
     session_duration: "45",
-    cpt_code: "90837"
+    cpt_code: "90837",
+    icd_codes: ""
   });
 
   const update = (field, value) => setFormData(prev => ({ ...prev, [field]: value }));
