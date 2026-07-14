@@ -1,0 +1,43 @@
+{
+  "name": "KnowledgeBase",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the knowledge base entry"
+    },
+    "content": {
+      "type": "string",
+      "description": "Full text content of the entry"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "cpt_codes",
+        "clinical_reference",
+        "protocol",
+        "medication",
+        "billing",
+        "other"
+      ],
+      "default": "other",
+      "description": "Category for organization"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "URL of uploaded PDF source file"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Comma-separated tags for searching"
+    },
+    "source": {
+      "type": "string",
+      "description": "Source reference (guideline, textbook, etc.)"
+    }
+  },
+  "required": [
+    "title",
+    "content"
+  ]
+}

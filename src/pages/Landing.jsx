@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import {
   Stethoscope, Brain, FileText, Shield, ChevronRight, CheckCircle2,
-  Zap, BookOpen, Users, Calendar, Database, MessageSquare, Star,
-  ArrowRight, Lock, Activity, Pill
+  BookOpen, Database, ArrowRight, Pill
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -41,8 +40,8 @@ const features = [
   },
   {
     icon: Shield,
-    title: "HIPAA Certified",
-    desc: "End-to-end encrypted, HIPAA-compliant infrastructure. Patient data is protected at every layer.",
+    title: "Security-First Architecture",
+    desc: "Data is encrypted in transit and at rest, with authenticated access controls at every layer.",
     color: "bg-green-50 text-green-600",
   },
 ];
@@ -50,7 +49,7 @@ const features = [
 const stats = [
   { value: "< 30s", label: "SOAP note generation" },
   { value: "ICD-10", label: "Auto-coded diagnoses" },
-  { value: "HIPAA", label: "Certified & compliant" },
+  { value: "DSM-5", label: "Aligned clinical reference" },
   { value: "24/7", label: "AI clinical support" },
 ];
 
@@ -61,28 +60,16 @@ const workflow = [
   { step: "04", title: "Document & Bill", desc: "Notes are automatically coded, stored securely, and ready for your EHR and billing workflow." },
 ];
 
-const testimonials = [
-  {
-    name: "Dr. Sarah Mitchell, MD",
-    role: "Psychiatrist — Private Practice",
-    text: "NeuroSync has cut my documentation time in half. The SOAP notes are clinically accurate and billing-ready right out of the box.",
-    stars: 5,
-  },
-  {
-    name: "Dr. James Reyes, DO",
-    role: "Child & Adolescent Psychiatry",
-    text: "The DSM-5 integration and ICD-10 auto-coding alone are worth it. I use it as a second opinion on every complex case.",
-    stars: 5,
-  },
-  {
-    name: "Dr. Priya Nair, PMHNP",
-    role: "Nurse Practitioner — Telehealth",
-    text: "Finally an AI tool built specifically for psychiatric practice. The medication guidance is evidence-based and the HIPAA compliance gives me peace of mind.",
-    stars: 5,
-  },
-];
-
 export default function Landing() {
+  const navigate = useNavigate();
+
+  // Logged-in visitors go straight to the Dashboard
+  useEffect(() => {
+    base44.auth.isAuthenticated().then((authed) => {
+      if (authed) navigate("/Dashboard");
+    }).catch(() => {});
+  }, [navigate]);
+
   const handleLogin = () => {
     base44.auth.redirectToLogin("/Dashboard");
   };
@@ -120,7 +107,7 @@ export default function Landing() {
         <div className="max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 border border-teal-100 text-teal-700 text-xs font-semibold mb-8">
             <Shield className="w-3.5 h-3.5" />
-            HIPAA Certified · End-to-End Encrypted
+            Encrypted in transit and at rest
           </div>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
             The AI Clinical Assistant{" "}
@@ -129,7 +116,7 @@ export default function Landing() {
             </span>
           </h1>
           <p className="text-xl text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Evidence-based clinical decision support, automated SOAP note generation, and ICD-10 / CPT coding — all in one HIPAA-compliant platform.
+            Evidence-based clinical decision support, automated SOAP note generation, and ICD-10 / CPT coding — all in one security-first platform.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -171,7 +158,7 @@ export default function Landing() {
                   <Stethoscope className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 bg-white rounded-2xl rounded-tl-md border border-gray-100 shadow-sm p-4 max-w-xl">
-                  <p className="text-sm text-gray-700 leading-relaxed">I've reviewed the case. Based on the presentation — 6-week history of persistent low mood, anhedonia, psychomotor retardation, and poor sleep — the primary consideration is <strong>Major Depressive Disorder, moderate severity (F33.1)</strong>. I recommend initiating sertraline 50mg with titration to 100mg after 2 weeks, combined with CBT referral...</p>
+                  <p className="text-sm text-gray-700 leading-relaxed">Based on the presentation — 6-week history of persistent low mood, anhedonia, psychomotor retardation, and poor sleep — diagnostic considerations for your evaluation include <strong>Major Depressive Disorder, moderate severity (F33.1)</strong> per DSM-5 criteria. I can pull the full diagnostic criteria and relevant evidence summaries for your review, and draft the documentation whenever you're ready...</p>
                 </div>
               </div>
               <div className="flex gap-3 justify-end">
@@ -254,32 +241,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-sm font-semibold text-teal-600 uppercase tracking-wide mb-3">Testimonials</p>
-            <h2 className="text-4xl font-bold text-gray-900 tracking-tight">Trusted by clinicians</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <div key={i} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:shadow-gray-100/50 transition-all">
-                <div className="flex gap-0.5 mb-4">
-                  {Array.from({ length: t.stars }).map((_, j) => (
-                    <Star key={j} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <p className="text-sm text-gray-600 leading-relaxed mb-5">"{t.text}"</p>
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">{t.name}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{t.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Pricing */}
       <section id="pricing" className="py-24 px-6 bg-gray-50">
         <div className="max-w-4xl mx-auto">
@@ -346,7 +307,7 @@ export default function Landing() {
           <h2 className="text-4xl font-bold text-gray-900 tracking-tight mb-4">
             Ready to transform your practice?
           </h2>
-          <p className="text-gray-500 mb-8 text-lg">Join psychiatrists and mental health providers using NeuroSync to deliver better care and reduce administrative burden.</p>
+          <p className="text-gray-500 mb-8 text-lg">Built for psychiatrists and mental health providers who want to reduce administrative burden and focus on care.</p>
           <Button
             size="lg"
             onClick={handleLogin}
@@ -355,7 +316,7 @@ export default function Landing() {
             Start Free Today
             <ArrowRight className="w-4 h-4" />
           </Button>
-          <p className="text-xs text-gray-400 mt-4">No credit card required · HIPAA Certified</p>
+          <p className="text-xs text-gray-400 mt-4">No credit card required</p>
         </div>
       </section>
 
@@ -370,7 +331,7 @@ export default function Landing() {
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-400">
             <Shield className="w-3.5 h-3.5 text-teal-500" />
-            HIPAA Certified · End-to-end encrypted · © 2026 NeuroSync
+            Encrypted in transit and at rest · © 2026 NeuroSync
           </div>
           <div className="flex gap-5 text-xs text-gray-400">
             <a href="#" className="hover:text-gray-600 transition-colors">Privacy Policy</a>

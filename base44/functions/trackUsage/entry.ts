@@ -1,13 +1,11 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 // Plan limits — null = unlimited
-// TESTING MODE: all plans unlimited
 const PLAN_LIMITS = {
-  free: { consults: null, soap_notes: null },
+  free: { consults: 5, soap_notes: 3 },
   professional: { consults: null, soap_notes: null },
   enterprise: { consults: null, soap_notes: null },
   promo_justin: { consults: null, soap_notes: null },
-  god_mode: { consults: null, soap_notes: null },
 };
 
 Deno.serve(async (req) => {
@@ -32,6 +30,19 @@ Deno.serve(async (req) => {
         soap_notes_used: 0,
         period_start: new Date().toISOString().split('T')[0],
       });
+    }
+
+    // Monthly reset: if period_start is missing or from a previous calendar month, reset usage
+    const todayStr = new Date().toISOString().split('T')[0];
+    const currentMonth = todayStr.slice(0, 7); // YYYY-MM
+    const periodMonth = sub.period_start ? String(sub.period_start).slice(0, 7) : null;
+    if (periodMonth !== currentMonth) {
+      await base44.entities.UserSubscription.update(sub.id, {
+        consults_used: 0,
+        soap_notes_used: 0,
+        period_start: todayStr,
+      });
+      sub = { ...sub, consults_used: 0, soap_notes_used: 0, period_start: todayStr };
     }
 
     const plan = sub.plan || 'free';

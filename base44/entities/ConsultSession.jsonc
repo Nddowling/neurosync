@@ -1,0 +1,37 @@
+{
+  "name": "ConsultSession",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Brief non-PHI title for the consultation session"
+    },
+    "session_type": {
+      "type": "string",
+      "enum": [
+        "initial_evaluation",
+        "follow_up",
+        "crisis",
+        "medication_management",
+        "therapy_session"
+      ],
+      "description": "Type of clinical session"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "completed",
+        "archived"
+      ],
+      "default": "active"
+    },
+    "conversation_id": {
+      "type": "string",
+      "description": "Agent conversation ID linked to this session"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

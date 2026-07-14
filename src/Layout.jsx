@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import {
@@ -10,7 +10,6 @@ import {
   BookOpen,
   LayoutDashboard,
   Menu,
-  X,
   LogOut,
   Shield,
   ChevronRight,
@@ -36,7 +35,6 @@ const navItems = [
 export default function Layout({ children, currentPageName }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});

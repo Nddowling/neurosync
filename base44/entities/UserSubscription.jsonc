@@ -1,0 +1,56 @@
+{
+  "name": "UserSubscription",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "User email"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "User ID"
+    },
+    "plan": {
+      "type": "string",
+      "enum": [
+        "free",
+        "professional",
+        "enterprise",
+        "promo_justin"
+      ],
+      "default": "free",
+      "description": "Subscription plan"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "canceled",
+        "past_due"
+      ],
+      "default": "active"
+    },
+    "stripe_customer_id": {
+      "type": "string"
+    },
+    "stripe_subscription_id": {
+      "type": "string"
+    },
+    "consults_used": {
+      "type": "number",
+      "default": 0
+    },
+    "soap_notes_used": {
+      "type": "number",
+      "default": 0
+    },
+    "period_start": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "user_email",
+    "plan"
+  ]
+}

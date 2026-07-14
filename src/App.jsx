@@ -16,9 +16,7 @@ import TermsOfServiceModal from '@/components/legal/TermsOfServiceModal';
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 
-const { Pages, Layout, mainPage } = pagesConfig;
-const mainPageKey = mainPage ?? Object.keys(Pages)[0];
-const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
+const { Pages, Layout } = pagesConfig;
 
 const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
@@ -76,12 +74,7 @@ const AuthenticatedApp = () => {
   return (
     <TosGate>
     <Routes>
-      <Route path="/Dashboard" element={
-        <LayoutWrapper currentPageName={mainPageKey}>
-          <MainPage />
-        </LayoutWrapper>
-      } />
-      {Object.entries(Pages).map(([path, Page]) => (
+      {Object.entries(Pages).filter(([path]) => path !== "Landing").map(([path, Page]) => (
         <Route
           key={path}
           path={`/${path}`}

@@ -3,6 +3,25 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
+const ALLOWED_TABLES = [
+  "patients",
+  "patient_notes",
+  "patient_appointments",
+  "patient_billing",
+  "patient_goals",
+  "patient_medications",
+  "patient_sessions",
+];
+
+// Strip keys with empty-string values so empty date/numeric form fields don't fail Postgres casts
+function stripEmptyStrings(obj) {
+  const out = {};
+  for (const [k, v] of Object.entries(obj || {})) {
+    if (v !== "") out[k] = v;
+  }
+  return out;
+}
+
 async function supabaseQuery(method, path, body = null) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     method,
@@ -10,7 +29,7 @@ async function supabaseQuery(method, path, body = null) {
       "apikey": SUPABASE_SERVICE_ROLE_KEY,
       "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
       "Content-Type": "application/json",
-      "Prefer": method === "POST" ? "return=representation" : "return=representation",
+      "Prefer": "return=representation",
     },
     body: body ? JSON.stringify(body) : null,
   });
@@ -28,41 +47,60 @@ Deno.serve(async (req) => {
 
     const { action, table, data, query } = await req.json();
 
+    if (!ALLOWED_TABLES.includes(table)) {
+      return Response.json({ error: `Table not allowed: ${table}` }, { status: 403 });
+    }
+
     let result;
 
     switch (action) {
       case "select": {
-        // v2 - query = { column: value, ... } for filtering
         let path = `${table}?select=*`;
-        if (query) {
-          for (const [key, val] of Object.entries(query)) {
-            path += `&${key}=eq.${encodeURIComponent(val)}`;
-          }
+        const q = { ...(query || {}) };
+        delete q.user_id;
+        for (const [key, val] of Object.entries(q)) {
+          path += `&${key}=eq.${encodeURIComponent(val)}`;
         }
+        path += `&user_id=eq.${encodeURIComponent(user.id)}`;
         result = await supabaseQuery("GET", path);
         break;
       }
 
       case "insert": {
-        result = await supabaseQuery("POST", table, data);
+        // Stamp user_id server-side; ignore any client-supplied user_id
+        const payload = Array.isArray(data)
+          ? data.map((row) => ({ ...stripEmptyStrings(row), user_id: user.id }))
+          : { ...stripEmptyStrings(data), user_id: user.id };
+        result = await supabaseQuery("POST", table, payload);
         break;
       }
 
       case "update": {
-        // query = { id: "..." } to identify the row
+        if (!query?.id) {
+          return Response.json({ error: "Update requires an id in query" }, { status: 400 });
+        }
         let path = `${table}?`;
-        for (const [key, val] of Object.entries(query)) {
+        const q = { ...query };
+        delete q.user_id;
+        for (const [key, val] of Object.entries(q)) {
           path += `${key}=eq.${encodeURIComponent(val)}&`;
         }
-        result = await supabaseQuery("PATCH", path, data);
+        path += `user_id=eq.${encodeURIComponent(user.id)}`;
+        result = await supabaseQuery("PATCH", path, stripEmptyStrings(data));
         break;
       }
 
       case "delete": {
+        if (!query?.id) {
+          return Response.json({ error: "Delete requires an id in query" }, { status: 400 });
+        }
         let path = `${table}?`;
-        for (const [key, val] of Object.entries(query)) {
+        const q = { ...query };
+        delete q.user_id;
+        for (const [key, val] of Object.entries(q)) {
           path += `${key}=eq.${encodeURIComponent(val)}&`;
         }
+        path += `user_id=eq.${encodeURIComponent(user.id)}`;
         result = await supabaseQuery("DELETE", path);
         break;
       }

@@ -112,13 +112,6 @@ export default function Subscription() {
     if (!promoCode.trim()) return;
     setPromoLoading(true);
     try {
-      // "God Mode" promo — activates unlimited free access silently
-      if (promoCode.trim().toLowerCase() === "god mode") {
-        await base44.functions.invoke("activateGodMode", {});
-        toast.success("Promo applied! Unlimited access enabled.");
-        window.location.reload();
-        return;
-      }
       if (window.self !== window.top) {
         alert("Checkout only works from the published app, not inside the preview.");
         return;

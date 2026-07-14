@@ -1,0 +1,53 @@
+{
+  "name": "ClinicalNote",
+  "type": "object",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "description": "Reference to ConsultSession or agent conversation ID"
+    },
+    "supabase_note_id": {
+      "type": "string",
+      "description": "ID of the corresponding record in Supabase patient_notes table"
+    },
+    "note_type": {
+      "type": "string",
+      "enum": [
+        "soap",
+        "progress",
+        "intake",
+        "discharge",
+        "medication_change"
+      ],
+      "description": "Type of clinical note"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "finalized",
+        "amended"
+      ],
+      "default": "draft"
+    },
+    "icd_codes": {
+      "type": "string",
+      "description": "Relevant ICD-10 codes (billing reference only)"
+    },
+    "cpt_code": {
+      "type": "string",
+      "description": "CPT billing code"
+    },
+    "session_duration": {
+      "type": "string",
+      "description": "Session duration in minutes"
+    },
+    "provider_name": {
+      "type": "string",
+      "description": "Clinician name and credentials (non-PHI)"
+    }
+  },
+  "required": [
+    "note_type"
+  ]
+}

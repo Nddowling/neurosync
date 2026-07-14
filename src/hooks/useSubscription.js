@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
 
-// TESTING MODE: all plans unlimited
+// Plan limits — null = unlimited
 export const PLAN_LIMITS = {
-  free: { consults: null, soap_notes: null },
+  free: { consults: 5, soap_notes: 3 },
   professional: { consults: null, soap_notes: null },
   enterprise: { consults: null, soap_notes: null },
   promo_justin: { consults: null, soap_notes: null },
-  god_mode: { consults: null, soap_notes: null },
 };
 
 export const PLAN_LABELS = {
@@ -15,7 +14,6 @@ export const PLAN_LABELS = {
   professional: "Professional",
   enterprise: "Enterprise",
   promo_justin: "Professional (Promo)",
-  god_mode: "God Mode",
 };
 
 export default function useSubscription() {

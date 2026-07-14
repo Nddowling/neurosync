@@ -9,7 +9,7 @@ import AgentStatusBar from "../components/chat/AgentStatusBar";
 import CPTCodeSelector from "../components/soap/CPTCodeSelector";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import useSubscription from "@/hooks/useSubscription";
+import useSubscription, { PLAN_LIMITS } from "@/hooks/useSubscription";
 import { Link } from "react-router-dom";
 
 export default function Consult() {
@@ -272,10 +272,12 @@ export default function Consult() {
         objectiveGuidance = "Full MSE as a Markdown table (Domain | Findings). Include current medications.";
       }
 
-      // Truncate transcript to avoid oversized prompts (keep last ~6000 chars)
-      const truncatedTranscript = transcript.length > 6000
-        ? "...[earlier content omitted]...\n\n" + transcript.slice(-6000)
-        : transcript;
+      // Truncate oversized transcripts: keep the beginning and end
+      let truncatedTranscript = transcript;
+      if (transcript.length > 6000) {
+        truncatedTranscript = transcript.slice(0, 2000) + "\n\n...[middle content omitted]...\n\n" + transcript.slice(-4000);
+        toast.info("Long transcript: the middle portion was omitted from the SOAP note context.");
+      }
 
       const result = await base44.integrations.Core.InvokeLLM({
         prompt: `You are a board-certified psychiatrist generating a clinical SOAP note for billing and documentation compliance.
@@ -415,7 +417,7 @@ Generate structured Markdown for each field. The note structure and depth MUST a
               <Link to="/Subscription">
                 <Button size="sm" variant="outline" className="h-8 text-xs rounded-xl border-amber-200 text-amber-700 hover:bg-amber-50 gap-1">
                   <Lock className="w-3 h-3" />
-                  {subscription.consults_used || 0}/5 consults · Upgrade
+                  {subscription.consults_used || 0}/{PLAN_LIMITS.free.consults} consults · Upgrade
                 </Button>
               </Link>
             )}

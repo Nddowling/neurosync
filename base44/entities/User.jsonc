@@ -1,0 +1,21 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "user"
+      ],
+      "default": "user"
+    },
+    "tos_accepted_at": {
+      "type": "string",
+      "description": "ISO timestamp when the user accepted the Terms of Service"
+    }
+  },
+  "required": [
+    "tos_accepted_at"
+  ]
+}

@@ -52,6 +52,7 @@ import Consult from './pages/Consult';
 import DSMReference from './pages/DSMReference';
 import Dashboard from './pages/Dashboard';
 import KnowledgeBase from './pages/KnowledgeBase';
+import Landing from './pages/Landing';
 import Medications from './pages/Medications';
 import PatientDetail from './pages/PatientDetail';
 import Patients from './pages/Patients';
@@ -66,6 +67,7 @@ export const PAGES = {
     "DSMReference": DSMReference,
     "Dashboard": Dashboard,
     "KnowledgeBase": KnowledgeBase,
+    "Landing": Landing,
     "Medications": Medications,
     "PatientDetail": PatientDetail,
     "Patients": Patients,
@@ -74,7 +76,7 @@ export const PAGES = {
 }
 
 export const pagesConfig = {
-    mainPage: "Dashboard",
+    mainPage: "Landing",
     Pages: PAGES,
     Layout: __Layout,
 };

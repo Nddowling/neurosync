@@ -22,6 +22,20 @@ Deno.serve(async (req) => {
 
     const { plan, promoCode, successUrl, cancelUrl } = await req.json();
 
+    // Reuse an existing Stripe customer to avoid duplicates
+    let customerId = null;
+    try {
+      const subs = await base44.entities.UserSubscription.filter({ user_email: user.email });
+      customerId = subs?.[0]?.stripe_customer_id || null;
+      if (!customerId) {
+        const existing = await stripe.customers.list({ email: user.email, limit: 1 });
+        customerId = existing.data?.[0]?.id || null;
+      }
+    } catch (e) {
+      console.error('Customer lookup error:', e.message);
+    }
+    const customerParams = customerId ? { customer: customerId } : { customer_email: user.email };
+
     // Handle "Justin only" promo code → $100/mo Professional
     if (promoCode && (promoCode.toUpperCase() === 'JUSTIN ONLY' || promoCode.toUpperCase() === 'JUSTIN')) {
       // Create a $100/mo price on the Professional product for Justin promo
@@ -48,7 +62,7 @@ Deno.serve(async (req) => {
         mode: 'subscription',
         payment_method_types: ['card'],
         line_items: [{ price: justinPrice.id, quantity: 1 }],
-        customer_email: user.email,
+        ...customerParams,
         success_url: successUrl,
         cancel_url: cancelUrl,
         metadata: {
@@ -68,7 +82,7 @@ Deno.serve(async (req) => {
       mode: 'subscription',
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
-      customer_email: user.email,
+      ...customerParams,
       success_url: successUrl,
       cancel_url: cancelUrl,
       metadata: {
