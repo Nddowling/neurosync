@@ -246,13 +246,23 @@ export default function MessageBubble({ message, isLastAssistant, onGenerateSoap
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute -right-10 top-0 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-gray-300 hover:text-gray-500"
+                className="hidden lg:inline-flex absolute -right-10 top-0 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-gray-300 hover:text-gray-500"
                 onClick={handleCopy}
               >
                 <Copy className="h-3.5 w-3.5" />
               </Button>
             )}
           </div>
+        )}
+        {!isUser && message.content && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="lg:hidden h-6 px-2 mt-1 text-[11px] text-gray-400 hover:text-gray-600 gap-1"
+            onClick={handleCopy}
+          >
+            <Copy className="h-3 w-3" /> Copy
+          </Button>
         )}
         {message.tool_calls?.length > 0 && (
           <div className="space-y-1 mt-1">

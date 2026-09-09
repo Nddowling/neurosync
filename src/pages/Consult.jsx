@@ -365,7 +365,7 @@ Generate structured Markdown for each field. The note structure and depth MUST a
       {showHistory && (
         <>
           <div className="fixed inset-0 bg-black/10 z-30 lg:hidden" onClick={() => setShowHistory(false)} />
-          <div className="fixed lg:static inset-y-0 left-0 z-40 w-80 bg-white border-r border-gray-100 flex flex-col">
+          <div className="fixed lg:static inset-y-0 left-0 z-40 w-[85%] max-w-xs bg-white border-r border-gray-100 flex flex-col">
             <div className="flex items-center justify-between px-5 py-4 border-b border-gray-50">
               <h3 className="text-sm font-semibold text-gray-900">History</h3>
               <Button variant="ghost" size="icon" className="h-7 w-7 lg:hidden" onClick={() => setShowHistory(false)}>
@@ -401,33 +401,33 @@ Generate structured Markdown for each field. The note structure and depth MUST a
       <div className="flex-1 flex flex-col min-w-0">
         {/* Chat Header */}
         <div className="flex items-center justify-between px-4 lg:px-6 py-3 border-b border-gray-100 bg-white/80 backdrop-blur-xl">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setShowHistory(!showHistory)}>
+          <div className="flex items-center gap-2 min-w-0">
+            <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={() => setShowHistory(!showHistory)}>
               <History className="w-4 h-4" />
             </Button>
-            <div>
-              <h2 className="text-sm font-semibold text-gray-900">
+            <div className="min-w-0">
+              <h2 className="text-sm font-semibold text-gray-900 truncate">
                 {activeConversation?.metadata?.name || "New Consultation"}
               </h2>
-              <p className="text-[11px] text-gray-400">AI-powered clinical decision support</p>
+              <p className="text-[11px] text-gray-400 hidden sm:block">AI-powered clinical decision support</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             {subscription && subscription.plan === "free" && (
               <Link to="/Subscription">
-                <Button size="sm" variant="outline" className="h-8 text-xs rounded-xl border-amber-200 text-amber-700 hover:bg-amber-50 gap-1">
+                <Button size="sm" variant="outline" className="h-8 text-xs rounded-xl border-amber-200 text-amber-700 hover:bg-amber-50 gap-1 px-2 sm:px-3">
                   <Lock className="w-3 h-3" />
-                  {subscription.consults_used || 0}/{PLAN_LIMITS.free.consults} consults · Upgrade
+                  {subscription.consults_used || 0}/{PLAN_LIMITS.free.consults}<span className="hidden sm:inline">&nbsp;consults · Upgrade</span>
                 </Button>
               </Link>
             )}
             <Button
               onClick={startNewConversation}
               size="sm"
-              className="bg-gray-900 hover:bg-gray-800 text-white rounded-xl h-8 text-xs gap-1.5"
+              className="bg-gray-900 hover:bg-gray-800 text-white rounded-xl h-8 text-xs gap-1.5 px-2.5 sm:px-3"
             >
               <Plus className="w-3.5 h-3.5" />
-              New Session
+              <span className="hidden sm:inline">New Session</span>
             </Button>
           </div>
         </div>
