@@ -48,15 +48,33 @@ export default function useSubscription() {
   };
 
   const trackUsage = async (action) => {
-    const res = await base44.functions.invoke("trackUsage", { action });
-    if (res.data) {
-      setSubscription(prev => ({
-        ...prev,
-        consults_used: res.data.consults_used ?? prev?.consults_used,
-        soap_notes_used: res.data.soap_notes_used ?? prev?.soap_notes_used,
-      }));
+    try {
+      const res = await base44.functions.invoke("trackUsage", { action });
+      if (res.data) {
+        setSubscription(prev => ({
+          ...prev,
+          consults_used: res.data.consults_used ?? prev?.consults_used,
+          soap_notes_used: res.data.soap_notes_used ?? prev?.soap_notes_used,
+        }));
+      }
+      return res.data;
+    } catch (e) {
+      // Backend function unavailable (e.g. plan restriction) — enforce limits locally
+      const isConsult = action === "consult";
+      const usedKey = isConsult ? "consults_used" : "soap_notes_used";
+      const limitKey = isConsult ? "consults" : "soap_notes";
+      const limits = PLAN_LIMITS[subscription?.plan] || PLAN_LIMITS.free;
+      const used = subscription?.[usedKey] || 0;
+      if (limits[limitKey] !== null && used >= limits[limitKey]) {
+        return {
+          allowed: false,
+          reason: `Monthly limit reached on your current plan. Please upgrade.`,
+        };
+      }
+      const nextUsed = used + 1;
+      setSubscription(prev => ({ ...(prev || { plan: "free" }), [usedKey]: nextUsed }));
+      return { allowed: true, [usedKey]: nextUsed };
     }
-    return res.data;
   };
 
   const isUnlimited = () => {
