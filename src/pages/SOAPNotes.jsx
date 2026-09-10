@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import SOAPNoteForm from "../components/soap/SOAPNoteForm";
 import SOAPNoteView from "../components/soap/SOAPNoteView";
+import { saveClinicalNoteContent, fetchClinicalNoteContent } from "@/lib/clinicalNotes";
 
 export default function SOAPNotes() {
   const [showForm, setShowForm] = useState(false);
@@ -90,22 +91,18 @@ Generate each JSON field with detailed Markdown content following these exact st
         }
       });
 
-      // Write PHI clinical content to Supabase
-      const supaRes = await base44.functions.invoke("supabase", {
-        action: "insert",
-        table: "patient_notes",
-        data: {
-          note_type: formData.note_type || "soap",
-          subjective: result.subjective,
-          objective: result.objective,
-          assessment: result.assessment,
-          risk_assessment: result.risk_assessment,
-          plan: result.plan,
-          provider_name: formData.provider_name,
-          patient_info: formData.patient_info,
-        }
+      // Write PHI clinical content to the clinical database (best effort —
+      // when unavailable the note still displays but is not persisted)
+      const supabaseNoteId = await saveClinicalNoteContent({
+        note_type: formData.note_type || "soap",
+        subjective: result.subjective,
+        objective: result.objective,
+        assessment: result.assessment,
+        risk_assessment: result.risk_assessment,
+        plan: result.plan,
+        provider_name: formData.provider_name,
+        patient_info: formData.patient_info,
       });
-      const supabaseNoteId = supaRes?.data?.data?.[0]?.id || null;
 
       // Store only non-PHI metadata in Base44
       const note = await base44.entities.ClinicalNote.create({
@@ -126,7 +123,11 @@ Generate each JSON field with detailed Markdown content following these exact st
       queryClient.invalidateQueries({ queryKey: ["clinical-notes"] });
       setShowForm(false);
       setSelectedNote(note);
-      toast.success("SOAP note generated");
+      if (note.supabase_note_id) {
+        toast.success("SOAP note generated");
+      } else {
+        toast.warning("Note generated — clinical database unavailable on your current plan. Copy or print it now; only billing metadata was saved.");
+      }
     },
     onError: () => {
       setGenerating(false);
@@ -141,18 +142,16 @@ Generate each JSON field with detailed Markdown content following these exact st
     toast.success("Note finalized");
   };
 
-  // Load full clinical content from Supabase when a note is selected
+  // Load full clinical content from the clinical database when a note is selected
   const handleSelectNote = async (note) => {
-    if (note.supabase_note_id) {
-      const res = await base44.functions.invoke("supabase", {
-        action: "select",
-        table: "patient_notes",
-        query: { id: note.supabase_note_id }
-      });
-      const clinical = res?.data?.data?.[0] || {};
+    const clinical = note.supabase_note_id
+      ? await fetchClinicalNoteContent(note.supabase_note_id)
+      : null;
+    if (clinical) {
       setSelectedNote({ ...note, ...clinical });
     } else {
       setSelectedNote(note);
+      toast.warning("Note content unavailable — the clinical database connection is restricted on your current plan.");
     }
   };
 

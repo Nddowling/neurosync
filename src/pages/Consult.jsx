@@ -7,6 +7,7 @@ import ChatInput from "../components/chat/ChatInput";
 import PromptSuggestions from "../components/chat/PromptSuggestions";
 import AgentStatusBar from "../components/chat/AgentStatusBar";
 import CPTCodeSelector from "../components/soap/CPTCodeSelector";
+import { saveClinicalNoteContent } from "@/lib/clinicalNotes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import useSubscription, { PLAN_LIMITS } from "@/hooks/useSubscription";
@@ -324,20 +325,16 @@ Generate structured Markdown for each field. The note structure and depth MUST a
 
       await trackUsage("soap_note");
 
-      // Write PHI clinical content to Supabase
-      const supaRes = await base44.functions.invoke("supabase", {
-        action: "insert",
-        table: "patient_notes",
-        data: {
-          note_type: "soap",
-          subjective: result.subjective,
-          objective: result.objective,
-          assessment: result.assessment,
-          risk_assessment: result.risk_assessment,
-          plan: result.plan,
-        }
+      // Write PHI clinical content to the clinical database (best effort —
+      // when unavailable the note still displays below but is not persisted)
+      const supabaseNoteId = await saveClinicalNoteContent({
+        note_type: "soap",
+        subjective: result.subjective,
+        objective: result.objective,
+        assessment: result.assessment,
+        risk_assessment: result.risk_assessment,
+        plan: result.plan,
       });
-      const supabaseNoteId = supaRes?.data?.data?.[0]?.id || null;
 
       // Store only non-PHI metadata in Base44
       await base44.entities.ClinicalNote.create({
@@ -349,7 +346,11 @@ Generate structured Markdown for each field. The note structure and depth MUST a
         supabase_note_id: supabaseNoteId,
       });
 
-      toast.success("SOAP note generated and saved");
+      if (supabaseNoteId) {
+        toast.success("SOAP note generated and saved");
+      } else {
+        toast.warning("SOAP note generated — clinical database unavailable on your current plan. Copy it now; only billing metadata was saved.");
+      }
     } catch (e) {
       toast.error("Failed to generate SOAP note");
     } finally {
