@@ -20,3 +20,12 @@ Decision: task-specific gateway, versioned prompts, strict output schemas; confi
 
 ## ADR-007 — Separate hosting from contractual eligibility
 Decision: prepare Vercel-compatible frontend/API packaging but keep backend portable. Alternatives: assume Vercel or Google stack BAA coverage. Reason: no contractual evidence in repo. Consequence: production PHI flows require verification of each service. Reversibility: deploy backend elsewhere without rewriting domain.
+
+## ADR-008 — Foundation authentication is deny-by-default
+Decision: expose IdentityVerifier and authenticated Identity transaction boundary, with no default identity in the standalone API. Tests inject synthetic verifiers only in test modules. Alternatives: trust a developer header or immediately couple to one hosted provider. Reason: cannot mistake a development shortcut for verified clinician identity. Consequence: API patient endpoints return 401 until the session adapter/provisioning milestone; this is explicitly not authentication feature completion. Reversibility: wire a verified adapter without changing repositories.
+
+## ADR-009 — Test real PostgreSQL in an ephemeral local cluster
+Decision: npm test provisions a new socket-only PostgreSQL cluster and uses an actual app_rw connection; never consumes an existing DATABASE_URL. Alternatives: mocked SQL, SQLite, production integration database. Reason: actual RLS/privilege/transaction semantics with no PHI exposure. Consequence: local PostgreSQL binaries required (PG_BIN supported); no persistent service needed. Reversibility: identical integration suite can move to an isolated CI PostgreSQL container.
+
+## ADR-010 — Fail closed on unknown schema provenance
+Decision: migration runner records checksums, rejects edited/missing/out-of-order history and refuses an existing untracked patients schema. Alternatives: blindly rerun IF NOT EXISTS DDL or label existing migrations applied. Reason: checked schema differs from live adapter contract. Consequence: existing deployment needs an explicit reviewed adoption procedure and data preflight; no automatic real-data migration. Reversibility: add reviewed adoption tooling later without modifying historical SQL.

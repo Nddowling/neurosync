@@ -1,3 +1,4 @@
+import tseslint from "typescript-eslint";
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import pluginReact from "eslint-plugin-react";
@@ -5,6 +6,8 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginUnusedImports from "eslint-plugin-unused-imports";
 
 export default [
+  ...tseslint.configs.recommended.map(config => ({ ...config, files: ["server/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"] })),
+  { files: ["server/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"], languageOptions: { globals: globals.node } },
   {
     files: [
       "src/components/**/*.{js,mjs,cjs,jsx}",

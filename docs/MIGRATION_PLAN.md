@@ -1,12 +1,12 @@
 # Migration plan
 
-Status: baseline/reconnaissance complete; extraction not complete. Work only on codex/base44-extraction. No remote push, deployment, live data access or paid resources. Phase gates retain visibility of known legacy failures; they must not be relabeled as passing. New backend checks must pass independently.
+Status: baseline/reconnaissance and first PostgreSQL/API foundation milestone complete; extraction not complete. Work only on codex/base44-extraction. No remote push, deployment, live data access or paid resources. Phase gates retain visibility of known legacy failures; they must not be relabeled as passing. New backend checks must pass independently.
 
 | Phase | Scope | Complexity | State / gate |
 |---|---|---|---|
 | 0 | Baseline and audit | Low | Complete; existing failures recorded |
 | 1 | Architecture/dependency mapping | Medium | Complete; hosted behavior unknown |
-| 2 | Owned PostgreSQL/API foundation | High | Next; runtime-role isolation tests |
+| 2 | Owned PostgreSQL/API foundation | High | First milestone complete; 29 tests pass; no UI cutover |
 | 3 | Compatibility facade | Medium | Pending entity/auth contracts |
 | 4 | Authentication replacement | High | Pending verified sessions and provisioning |
 | 5 | Entity persistence/field parity | High | Pending schema mappings |
@@ -31,3 +31,15 @@ Tests: actual PostgreSQL as app_rw shows A cannot read/update/delete B, missing 
 ## Gates and recovery
 
 Each phase: git status, build/lint/typecheck/applicable tests, compare parity and extraction maps, update decisions/plan, inspect diff, coherent local commit. Existing type debt is carried visibly until replaced. Cutover only after golden synthetic workflow fixtures, deployment restore exercise and full ownership checklist pass. Import tooling must dry-run counts, identity mapping, referential integrity and reconcile both note stores before any authorized real-data move. Do not infer existing hosted schema from this incomplete SQL snapshot. Keep original Git history and export strategy; never delete remote resources to establish ownership.
+
+## Phase 2 completion report
+
+Changed: strict TypeScript API/auth boundary, canonical patient CRUD repository, parameterized identity transactions and startup role guard, atomic migration ledger, 0004 security correction, isolated PostgreSQL harness, local setup and environment template. Added HTTP transport, bounded bodies, safe errors/logging and per-process limits. Original SQL migrations and frontend source unchanged.
+
+Validated: 29 tests pass with PostgreSQL 17.11; includes original audit bug reproduction, actual runtime login, clinical-note/related-record ownership, negative owner/parent/session cases, knowledge isolation, audit immutability, pool rollback, role refusal, schema rejection, HTTP CRUD/health/body-size handling and migration checksums. New strict typecheck/lint pass; build passes; legacy lint 16 and frontend typecheck 381/36 remain unchanged.
+
+Remains: compatibility facade, full authentication/session lifecycle and provisioning, complete UI field mapping, all AI/conversation/knowledge/commerce replacements. Patient API exposes only canonical SQL fields and is not a feature-parity claim. No Base44 behavior has been redirected or deleted. No paid services or real data touched.
+
+Known risks: no production auth adapter yet (all protected routes deny by default); local-only HTTP listener; non-distributed rate limiting; production TLS and operations unverified; npm audit 27 existing findings. Fresh migration execution only; existing schemas need reviewed ledger adoption and tenant-data reconciliation.
+
+Next: phase 3 facade contracts and phase 4 verified sessions/provisioning, followed by phase 5 field-complete entities. Stage facade behavior behind tests; do not point existing pages at the foundation slice prematurely. The first-milestone scope is complete, not the overall migration.

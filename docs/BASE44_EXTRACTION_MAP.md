@@ -1,5 +1,7 @@
 # Base44 extraction map
 
+Update after phase 2: PostgreSQL transaction/security infrastructure and a canonical patient repository are implemented and tested. Every legacy runtime call below remains **Not started** for cutover; no imports removed and no behavior falsely marked extracted.
+
 Evidence: 4bdb09e; each static frontend call site plus backend SDK calls, agent tools, configuration and bypass paths. These entries are **not extracted** until behavior is replaced and tested. Runtime behavior hidden in the hosted platform remains an explicit unknown.
 
 | Existing dependency | Current file/caller | Current purpose | Data involved | Proposed replacement | Phase | Status | Validation method | Notes |

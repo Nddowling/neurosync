@@ -1,0 +1,42 @@
+
+> base44-app@0.0.0 test
+> tsx scripts/test-db.ts
+
+✔ default authentication denies missing identity and forged browser headers (17.683583ms)
+✔ health is liveness-only and does not access patient storage (1.868458ms)
+✔ safe errors and logs never include upstream content, query text or headers (3.396333ms)
+✔ request size and media restrictions, invalid IDs, strict pagination (1.97875ms)
+✔ patient schemas reject owner fields, arbitrary updates, impossible dates and invalid email (2.142125ms)
+✔ rate limit fails closed at capacity and resets after expiration (0.410375ms)
+✔ plain objects cannot impersonate verified identity at repository boundary (0.209709ms)
+✔ real HTTP transport serves health and rejects oversized bodies without credentials (53.659792ms)
+▶ actual PostgreSQL migrations, non-owner isolation and HTTP ownership
+  ✔ reproduces original audit flaw before applying hardening (2.213208ms)
+  ✔ migration replay is no-op, checksum changes rejected atomically (47.610458ms)
+  ✔ real application login is non-owner, cannot SET ROLE or bypass RLS (16.680792ms)
+  ✔ guard rejects privileged role membership and BYPASSRLS configuration (4.493542ms)
+  ✔ A cannot read/update/delete B via repository; own CRUD remains usable (25.767875ms)
+  ✔ missing identity returns zero protected rows, including profile/audit (12.666042ms)
+  ✔ forged owner fields and SQL injection subjects cannot grant access (14.170125ms)
+  ✔ patient_notes: direct SQL without owner filters remains isolated; parent forgery denied (21.93875ms)
+  ✔ patient_medications: direct SQL without owner filters remains isolated; parent forgery denied (18.176291ms)
+  ✔ patient_appointments: direct SQL without owner filters remains isolated; parent forgery denied (9.34825ms)
+  ✔ patient_sessions: direct SQL without owner filters remains isolated; parent forgery denied (10.508ms)
+  ✔ patient_goals: direct SQL without owner filters remains isolated; parent forgery denied (9.801667ms)
+  ✔ patient_billing: direct SQL without owner filters remains isolated; parent forgery denied (7.764375ms)
+  ✔ clinical notes cannot link to another clinician session (4.289834ms)
+  ✔ knowledge content isolation and audit coverage (6.220333ms)
+  ✔ app.role=admin cannot widen access; profiles and subscriptions cannot escalate (8.937709ms)
+  ✔ audit is append-only, actor-scoped and excludes clinical values (32.072875ms)
+  ✔ temporary table cannot divert SECURITY DEFINER audit writes (9.347375ms)
+  ✔ rollback and pool reuse do not leak identity or uncommitted rows (11.268084ms)
+  ✔ HTTP CRUD is authenticated and cannot cross ownership or reflect sensitive errors (40.000875ms)
+✔ actual PostgreSQL migrations, non-owner isolation and HTTP ownership (514.603791ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 739.772667

@@ -24,3 +24,9 @@
 The SQL identity setting protects against missing filters, not a fully compromised database credential or arbitrary SQL execution: app_rw can set custom session settings. Do not expose raw SQL, owner/role inputs or credentials. Verify identity before opening domain transactions. Test RLS as the actual runtime login, not only SET ROLE from a superuser.
 
 Sources checked 2026-09-11: [PostgreSQL RLS](https://www.postgresql.org/docs/17/ddl-rowsecurity.html) confirms owner bypass and that referential integrity checks bypass RLS; [CREATE FUNCTION](https://www.postgresql.org/docs/17/sql-createfunction.html) covers trusted search paths for SECURITY DEFINER. [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) documents service-role bypass. No live exploitation or production access performed.
+
+## Phase 2 verification
+
+S03/S04/S05/S06: corrected for the **new owned database** by 0004_runtime_security.sql and exercised against PostgreSQL 17.11. Original 0001–0003 remain unchanged and are unsafe alone. S07: runtime profile role/subscription writes now denied; provisioning/commerce adapters still pending. S01/S02: a safe canonical patient repository exists, but the legacy adapter is still active. S15: foundation HTTP limits/headers and patient-read audit implemented; sessions/CSRF, other domain reads and distributed limits pending. These changes do not repair the hosted Base44/Supabase environment.
+
+npm audit after additions still reports 27 findings; the critical package is jspdf. No force upgrades performed. Triage and workflow regression checks remain phase 13.

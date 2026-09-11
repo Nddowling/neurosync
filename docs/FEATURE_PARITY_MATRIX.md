@@ -1,5 +1,7 @@
 # Feature parity matrix
 
+Phase 2 adds tested database isolation and a patient API foundation. All product workflows remain unmigrated; the existing frontend still calls Base44.
+
 Source-observed behavior at 4bdb09e; live behavior unverified. No feature is complete merely because it renders.
 
 | Feature | Current state | Base44 dependency | Target implementation | Migration status | Test/validation | Known gaps |

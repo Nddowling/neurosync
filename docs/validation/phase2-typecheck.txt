@@ -1,0 +1,655 @@
+
+> base44-app@0.0.0 typecheck
+> tsc -p tsconfig.server.json && tsc -p ./jsconfig.json
+
+src/components/calendar/AppointmentDetailModal.jsx(28,8): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/AppointmentDetailModal.jsx(29,10): error TS2741: Property 'className' is missing in type '{ children: Element; }' but required in type '{ [x: string]: any; className: any; }'.
+src/components/calendar/AppointmentDetailModal.jsx(30,12): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/AppointmentDetailModal.jsx(69,16): error TS2322: Type '{ children: (string | Element)[]; variant: string; className: string; size: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(132,8): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(133,10): error TS2741: Property 'className' is missing in type '{ children: Element[]; }' but required in type '{ [x: string]: any; className: any; }'.
+src/components/calendar/NewAppointmentModal.jsx(143,14): error TS2559: Type '{ children: string[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(174,17): error TS2322: Type '{ autoFocus: true; placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'autoFocus' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(234,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(235,24): error TS2322: Type '{ required: true; value: string; onChange: (e: any) => void; placeholder: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'required' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(238,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(239,24): error TS2322: Type '{ required: true; value: string; onChange: (e: any) => void; placeholder: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'required' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(244,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(245,24): error TS2322: Type '{ type: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'type' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(248,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(250,20): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(251,20): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(252,22): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(253,22): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(254,22): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(255,22): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(262,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(263,24): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(266,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(267,24): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(271,16): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(272,22): error TS2322: Type '{ type: string; value: string; onChange: (e: any) => void; placeholder: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'type' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(276,16): error TS2322: Type '{ children: string; variant: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(277,16): error TS2322: Type '{ children: string | Element; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(305,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(306,24): error TS2322: Type '{ type: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'type' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(309,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(311,20): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(312,20): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(313,45): error TS2322: Type '{ children: string; key: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(321,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(323,20): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(324,20): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(325,43): error TS2322: Type '{ children: string; key: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(330,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(332,20): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(333,20): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(334,42): error TS2322: Type '{ children: (string | number)[]; key: number; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(341,16): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(343,18): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(344,18): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(345,40): error TS2322: Type '{ children: string; key: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(351,16): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(352,22): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(356,16): error TS2322: Type '{ children: string; variant: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/calendar/NewAppointmentModal.jsx(357,16): error TS2322: Type '{ children: string | Element; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/chat/ChatInput.jsx(42,12): error TS2322: Type '{ children: Element; onClick: () => void; disabled: any; size: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/chat/MessageBubble.jsx(246,16): error TS2322: Type '{ children: Element; variant: string; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/chat/MessageBubble.jsx(258,12): error TS2322: Type '{ children: (string | Element)[]; variant: string; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/chat/MessageBubble.jsx(276,12): error TS2322: Type '{ children: Element; variant: string; size: string; onClick: any; disabled: any; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(76,10): error TS2322: Type '{ children: (string | Element)[]; size: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(84,20): error TS2322: Type '{ type: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'type' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(86,16): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(87,16): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(88,41): error TS2322: Type '{ children: string; key: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(91,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(95,16): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(96,16): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(97,18): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(98,18): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(99,18): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(100,18): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(101,18): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(105,16): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(106,16): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(107,38): error TS2322: Type '{ children: string; key: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(111,18): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(113,14): error TS2322: Type '{ children: string; variant: string; size: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(114,14): error TS2322: Type '{ children: string; size: string; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientAppointmentsTab.jsx(127,31): error TS2741: Property 'faded' is missing in type '{ key: any; apt: any; onRemove: (id: any) => Promise<void>; statusColors: { scheduled: string; completed: string; cancelled: string; no_show: string; }; }' but required in type '{ apt: any; onRemove: any; statusColors: any; faded: any; }'.
+src/components/patients/PatientBillingTab.jsx(89,10): error TS2322: Type '{ children: (string | Element)[]; size: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(97,20): error TS2322: Type '{ type: string; placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'type' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(99,16): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(100,16): error TS2559: Type '{ children: (Element | Element[])[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(101,40): error TS2322: Type '{ children: string; key: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(102,18): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(107,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(109,18): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(111,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(112,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(113,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(116,14): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(117,14): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(118,16): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(119,16): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(120,16): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(121,16): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(122,16): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(125,18): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(127,14): error TS2322: Type '{ children: string; variant: string; size: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientBillingTab.jsx(128,14): error TS2322: Type '{ children: string; size: string; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(39,8): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(40,10): error TS2741: Property 'className' is missing in type '{ children: Element; }' but required in type '{ [x: string]: any; className: any; }'.
+src/components/patients/PatientFormModal.jsx(41,12): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(47,16): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(48,22): error TS2322: Type '{ required: true; value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'required' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(51,16): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(52,22): error TS2322: Type '{ required: true; value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'required' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(58,16): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(59,22): error TS2322: Type '{ type: string; value: string; onChange: (e: any) => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'type' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(62,16): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(64,18): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(65,18): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(66,20): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(67,20): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(68,20): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(69,20): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(74,16): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(75,22): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(82,16): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(83,22): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(86,16): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(87,22): error TS2322: Type '{ type: string; value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'type' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(92,14): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(93,20): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(98,14): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(101,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(102,24): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(105,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(106,24): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(109,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(110,24): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(117,14): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(120,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(121,24): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(124,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(125,24): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(128,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(129,24): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(132,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(133,24): error TS2322: Type '{ value: string; onChange: (e: any) => void; placeholder: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(139,14): error TS2322: Type '{ children: string; type: string; variant: string; onClick: any; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientFormModal.jsx(140,14): error TS2322: Type '{ children: string | Element; type: string; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientGoalsTab.jsx(65,10): error TS2322: Type '{ children: (string | Element)[]; size: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientGoalsTab.jsx(73,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientGoalsTab.jsx(74,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientGoalsTab.jsx(76,18): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientGoalsTab.jsx(77,18): error TS2322: Type '{ type: string; placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'type' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientGoalsTab.jsx(79,14): error TS2322: Type '{ children: string; variant: string; size: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientGoalsTab.jsx(80,14): error TS2322: Type '{ children: string; size: string; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientGoalsTab.jsx(92,32): error TS2741: Property 'faded' is missing in type '{ key: any; goal: any; onToggle: (goal: any) => Promise<void>; onRemove: (id: any) => Promise<void>; }' but required in type '{ goal: any; onToggle: any; onRemove: any; faded: any; }'.
+src/components/patients/PatientMedsTab.jsx(56,10): error TS2322: Type '{ children: (string | Element)[]; size: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientMedsTab.jsx(64,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientMedsTab.jsx(65,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientMedsTab.jsx(68,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientMedsTab.jsx(69,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientMedsTab.jsx(72,20): error TS2322: Type '{ type: string; placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'type' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientMedsTab.jsx(73,20): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientMedsTab.jsx(76,14): error TS2322: Type '{ children: string; variant: string; size: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientMedsTab.jsx(77,14): error TS2322: Type '{ children: string; size: string; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/patients/PatientMedsTab.jsx(90,31): error TS2741: Property 'faded' is missing in type '{ key: any; med: any; onRemove: (id: any) => Promise<void>; }' but required in type '{ med: any; onRemove: any; faded: any; }'.
+src/components/soap/CptCodeSelect.jsx(47,8): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/CptCodeSelect.jsx(61,8): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/CptCodeSelect.jsx(63,12): error TS2322: Type '{ children: Element[]; key: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/CPTCodeSelector.jsx(72,62): error TS2339: Property 'split' does not exist on type 'string | object'.
+  Property 'split' does not exist on type 'object'.
+src/components/soap/CPTCodeSelector.jsx(91,8): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/CPTCodeSelector.jsx(93,12): error TS2322: Type '{ children: (string | Element)[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/CPTCodeSelector.jsx(107,16): error TS2741: Property 'variant' is missing in type '{ children: Element[]; key: any; className: string; }' but required in type '{ [x: string]: any; className: any; variant: any; }'.
+src/components/soap/CPTCodeSelector.jsx(160,17): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; onKeyDown: (e: any) => Promise<void>; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/CPTCodeSelector.jsx(166,16): error TS2322: Type '{ children: (string | Element)[]; variant: string; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/CPTCodeSelector.jsx(183,20): error TS2322: Type '{ children: string; size: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/CPTCodeSelector.jsx(200,14): error TS2322: Type '{ children: string; variant: string; onClick: any; disabled: any; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/CPTCodeSelector.jsx(201,14): error TS2322: Type '{ children: (string | Element)[]; onClick: () => void; disabled: any; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(41,10): error TS2322: Type '{ children: Element; variant: string; size: string; className: string; onClick: any; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(50,14): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(52,16): error TS2322: Type '{ children: Element; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(55,16): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(56,18): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(57,18): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(58,18): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(59,18): error TS2322: Type '{ children: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(64,14): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(66,15): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(77,14): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(79,15): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(86,14): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(88,15): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(99,14): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(101,15): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(108,14): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(115,12): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(121,12): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(123,13): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(131,12): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(133,13): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(141,12): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(143,13): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(151,12): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(153,13): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(161,12): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(163,13): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(171,12): error TS2322: Type '{ children: string; variant: string; onClick: any; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteForm.jsx(172,12): error TS2322: Type '{ children: Element; onClick: () => any; disabled: any; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteView.jsx(114,12): error TS2322: Type '{ children: Element; variant: string; size: string; className: string; onClick: any; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteView.jsx(126,12): error TS2322: Type '{ children: (string | Element)[]; variant: string; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteView.jsx(129,12): error TS2322: Type '{ children: (string | Element)[]; variant: string; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/soap/SOAPNoteView.jsx(133,14): error TS2322: Type '{ children: (string | Element)[]; size: string; className: string; onClick: any; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/components/ui/button.jsx(37,36): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/button.jsx(37,47): error TS2339: Property 'variant' does not exist on type '{}'.
+src/components/ui/button.jsx(37,56): error TS2339: Property 'size' does not exist on type '{}'.
+src/components/ui/button.jsx(37,62): error TS2339: Property 'asChild' does not exist on type '{}'.
+src/components/ui/checkbox.jsx(7,38): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/dialog.jsx(17,43): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/dialog.jsx(28,43): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/dialog.jsx(28,54): error TS2339: Property 'children' does not exist on type '{}'.
+src/components/ui/dialog.jsx(69,41): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/dialog.jsx(77,47): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/input.jsx(5,35): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/input.jsx(5,46): error TS2339: Property 'type' does not exist on type '{}'.
+src/components/ui/label.jsx(11,35): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/progress.jsx(8,38): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/progress.jsx(8,49): error TS2339: Property 'value' does not exist on type '{}'.
+src/components/ui/select.jsx(15,43): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/select.jsx(15,54): error TS2339: Property 'children' does not exist on type '{}'.
+src/components/ui/select.jsx(31,50): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/select.jsx(41,52): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/select.jsx(52,43): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/select.jsx(52,54): error TS2339: Property 'children' does not exist on type '{}'.
+src/components/ui/select.jsx(52,64): error TS2339: Property 'position' does not exist on type '{}'.
+src/components/ui/select.jsx(76,41): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/select.jsx(84,40): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/select.jsx(84,51): error TS2339: Property 'children' does not exist on type '{}'.
+src/components/ui/select.jsx(85,4): error TS2741: Property 'value' is missing in type '{ children: Element[]; ref: ForwardedRef<any>; className: string; }' but required in type 'SelectItemProps'.
+src/components/ui/select.jsx(102,45): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/tabs.jsx(8,38): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/tabs.jsx(19,41): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/tabs.jsx(20,4): error TS2741: Property 'value' is missing in type '{ ref: ForwardedRef<any>; className: string; }' but required in type 'TabsTriggerProps'.
+src/components/ui/tabs.jsx(30,41): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/tabs.jsx(31,4): error TS2741: Property 'value' is missing in type '{ ref: ForwardedRef<any>; className: string; }' but required in type 'TabsContentProps'.
+src/components/ui/textarea.jsx(5,38): error TS2339: Property 'className' does not exist on type '{}'.
+src/Layout.jsx(125,16): error TS2322: Type '{ children: Element; variant: string; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/Layout.jsx(137,12): error TS2322: Type '{ children: Element; variant: string; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/lib/app-params.js(23,11): error TS2339: Property 'setItem' does not exist on type 'Map<any, any> | Storage'.
+  Property 'setItem' does not exist on type 'Map<any, any>'.
+src/lib/app-params.js(27,11): error TS2339: Property 'setItem' does not exist on type 'Map<any, any> | Storage'.
+  Property 'setItem' does not exist on type 'Map<any, any>'.
+src/lib/app-params.js(30,30): error TS2339: Property 'getItem' does not exist on type 'Map<any, any> | Storage'.
+  Property 'getItem' does not exist on type 'Map<any, any>'.
+src/lib/app-params.js(39,11): error TS2339: Property 'removeItem' does not exist on type 'Map<any, any> | Storage'.
+  Property 'removeItem' does not exist on type 'Map<any, any>'.
+src/lib/app-params.js(40,11): error TS2339: Property 'removeItem' does not exist on type 'Map<any, any> | Storage'.
+  Property 'removeItem' does not exist on type 'Map<any, any>'.
+src/lib/app-params.js(43,65): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+src/lib/app-params.js(46,87): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+src/lib/app-params.js(47,76): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+src/pages/Calendar.jsx(103,12): error TS2322: Type '{ children: (string | Element)[]; onClick: () => void; className: string; size: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Calendar.jsx(106,12): error TS2322: Type '{ children: string; variant: string; size: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Calendar.jsx(107,12): error TS2322: Type '{ children: Element; variant: string; size: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Calendar.jsx(108,12): error TS2322: Type '{ children: Element; variant: string; size: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Consult.jsx(129,59): error TS2353: Object literal may only specify known properties, and 'agent_name' does not exist in type 'ModelFilterParams'.
+src/pages/Consult.jsx(321,32): error TS2339: Property 'cpt_codes' does not exist on type 'string | object'.
+  Property 'cpt_codes' does not exist on type 'string'.
+src/pages/Consult.jsx(321,69): error TS2339: Property 'cpt_codes' does not exist on type 'string | object'.
+  Property 'cpt_codes' does not exist on type 'string'.
+src/pages/Consult.jsx(322,64): error TS2339: Property 'subjective' does not exist on type 'string | object'.
+  Property 'subjective' does not exist on type 'string'.
+src/pages/Consult.jsx(322,102): error TS2339: Property 'objective' does not exist on type 'string | object'.
+  Property 'objective' does not exist on type 'string'.
+src/pages/Consult.jsx(322,140): error TS2339: Property 'assessment' does not exist on type 'string | object'.
+  Property 'assessment' does not exist on type 'string'.
+src/pages/Consult.jsx(322,184): error TS2339: Property 'risk_assessment' does not exist on type 'string | object'.
+  Property 'risk_assessment' does not exist on type 'string'.
+src/pages/Consult.jsx(322,222): error TS2339: Property 'plan' does not exist on type 'string | object'.
+  Property 'plan' does not exist on type 'string'.
+src/pages/Consult.jsx(322,263): error TS2339: Property 'icd_codes' does not exist on type 'string | object'.
+  Property 'icd_codes' does not exist on type 'string'.
+src/pages/Consult.jsx(332,28): error TS2339: Property 'subjective' does not exist on type 'string | object'.
+  Property 'subjective' does not exist on type 'string'.
+src/pages/Consult.jsx(333,27): error TS2339: Property 'objective' does not exist on type 'string | object'.
+  Property 'objective' does not exist on type 'string'.
+src/pages/Consult.jsx(334,28): error TS2339: Property 'assessment' does not exist on type 'string | object'.
+  Property 'assessment' does not exist on type 'string'.
+src/pages/Consult.jsx(335,33): error TS2339: Property 'risk_assessment' does not exist on type 'string | object'.
+  Property 'risk_assessment' does not exist on type 'string'.
+src/pages/Consult.jsx(336,22): error TS2339: Property 'plan' does not exist on type 'string | object'.
+  Property 'plan' does not exist on type 'string'.
+src/pages/Consult.jsx(342,27): error TS2339: Property 'icd_codes' does not exist on type 'string | object'.
+  Property 'icd_codes' does not exist on type 'string'.
+src/pages/Consult.jsx(343,26): error TS2339: Property 'cpt_codes' does not exist on type 'string | object'.
+  Property 'cpt_codes' does not exist on type 'string'.
+src/pages/Consult.jsx(372,16): error TS2322: Type '{ children: Element; variant: string; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Consult.jsx(406,14): error TS2322: Type '{ children: Element; variant: string; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Consult.jsx(419,18): error TS2322: Type '{ children: any[]; size: string; variant: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Consult.jsx(425,14): error TS2322: Type '{ children: Element[]; onClick: () => Promise<void>; size: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Consult.jsx(472,18): error TS2739: Type '{ key: string; message: { role: string; content: string; }; }' is missing the following properties from type '{ message: any; isLastAssistant: any; onGenerateSoap: any; isGeneratingSoap: any; }': isLastAssistant, onGenerateSoap, isGeneratingSoap
+src/pages/Consult.jsx(478,18): error TS2739: Type '{ key: string; message: any; }' is missing the following properties from type '{ message: any; isLastAssistant: any; onGenerateSoap: any; isGeneratingSoap: any; }': isLastAssistant, onGenerateSoap, isGeneratingSoap
+src/pages/Dashboard.jsx(61,10): error TS2741: Property 'subtitle' is missing in type '{ title: string; value: number; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; color: string; href: string; }' but required in type '{ title: any; value: any; subtitle: any; icon: any; color?: string; href: any; }'.
+src/pages/Dashboard.jsx(62,10): error TS2741: Property 'subtitle' is missing in type '{ title: string; value: number; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; color: string; href: string; }' but required in type '{ title: any; value: any; subtitle: any; icon: any; color?: string; href: any; }'.
+src/pages/Dashboard.jsx(63,10): error TS2741: Property 'subtitle' is missing in type '{ title: string; value: number; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; color: string; href: string; }' but required in type '{ title: any; value: any; subtitle: any; icon: any; color?: string; href: any; }'.
+src/pages/Dashboard.jsx(64,10): error TS2741: Property 'subtitle' is missing in type '{ title: string; value: number; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; color: string; href: string; }' but required in type '{ title: any; value: any; subtitle: any; icon: any; color?: string; href: any; }'.
+src/pages/DSMReference.jsx(92,13): error TS2322: Type '{ value: string; onChange: (e: any) => void; onKeyDown: (e: any) => Promise<void>; placeholder: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/DSMReference.jsx(99,10): error TS2322: Type '{ children: string | Element; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/DSMReference.jsx(150,12): error TS2322: Type '{ children: string; variant: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(71,21): error TS2339: Property 'status' does not exist on type 'object'.
+src/pages/KnowledgeBase.jsx(71,56): error TS2339: Property 'output' does not exist on type 'object'.
+src/pages/KnowledgeBase.jsx(77,30): error TS2339: Property 'output' does not exist on type 'object'.
+src/pages/KnowledgeBase.jsx(120,64): error TS2345: Argument of type 'void' is not assignable to parameter of type 'Partial<any>'.
+src/pages/KnowledgeBase.jsx(130,62): error TS2345: Argument of type 'void' is not assignable to parameter of type 'string'.
+src/pages/KnowledgeBase.jsx(158,14): error TS2322: Type '{ children: Element; variant: string; className: string; asChild: true; disabled: boolean; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(171,12): error TS2322: Type '{ children: (string | Element)[]; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(208,19): error TS2322: Type '{ value: any; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(222,11): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(270,22): error TS2741: Property 'variant' is missing in type '{ children: any; className: string; }' but required in type '{ [x: string]: any; className: any; variant: any; }'.
+src/pages/KnowledgeBase.jsx(274,24): error TS2741: Property 'variant' is missing in type '{ children: (string | Element)[]; className: string; }' but required in type '{ [x: string]: any; className: any; variant: any; }'.
+src/pages/KnowledgeBase.jsx(292,18): error TS2322: Type '{ children: Element; variant: string; size: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(308,10): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(309,12): error TS2741: Property 'className' is missing in type '{ children: Element; }' but required in type '{ [x: string]: any; className: any; }'.
+src/pages/KnowledgeBase.jsx(310,14): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(314,16): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(316,17): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(322,16): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(324,18): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(327,18): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(329,22): error TS2322: Type '{ children: string; key: string; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(335,16): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(337,17): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(345,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(347,19): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(353,18): error TS2322: Type '{ children: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(355,19): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(363,14): error TS2322: Type '{ children: string; variant: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(364,14): error TS2322: Type '{ children: (string | Element)[]; onClick: () => void; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/KnowledgeBase.jsx(365,52): error TS2345: Argument of type '{ title: string; content: string; category: string; tags: string; source: string; }' is not assignable to parameter of type 'void'.
+src/pages/Landing.jsx(94,14): error TS2322: Type '{ children: string; variant: string; size: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Landing.jsx(97,14): error TS2322: Type '{ children: (string | Element)[]; size: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Landing.jsx(122,14): error TS2322: Type '{ children: (string | Element)[]; size: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Landing.jsx(130,14): error TS2322: Type '{ children: string; size: string; variant: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Landing.jsx(272,16): error TS2322: Type '{ children: (string | Element)[]; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Landing.jsx(293,16): error TS2322: Type '{ children: string; onClick: () => void; variant: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Landing.jsx(311,12): error TS2322: Type '{ children: (string | Element)[]; size: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Medications.jsx(87,13): error TS2322: Type '{ value: string; onChange: (e: any) => void; onKeyDown: (e: any) => void; placeholder: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'value' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Medications.jsx(94,10): error TS2322: Type '{ children: string | Element; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/OAuthConsent.jsx(41,37): error TS2322: Type '{ Authorization: string; }' is not assignable to type 'HeadersInit'.
+  Type '{ Authorization: string; }' is not assignable to type 'Record<string, string>'.
+    Index signature for type 'string' is missing in type '{ Authorization: string; }'.
+src/pages/OAuthConsent.jsx(139,8): error TS2739: Type '{ children: Element; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; title: string; }' is missing the following properties from type '{ icon: any; title: any; subtitle: any; footer: any; children: any; }': subtitle, footer
+src/pages/OAuthConsent.jsx(153,8): error TS2739: Type '{ icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; title: string; subtitle: string; }' is missing the following properties from type '{ icon: any; title: any; subtitle: any; footer: any; children: any; }': footer, children
+src/pages/OAuthConsent.jsx(166,8): error TS2739: Type '{ children: Element; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; title: string; }' is missing the following properties from type '{ icon: any; title: any; subtitle: any; footer: any; children: any; }': subtitle, footer
+src/pages/OAuthConsent.jsx(179,8): error TS2739: Type '{ children: Element; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; title: string; }' is missing the following properties from type '{ icon: any; title: any; subtitle: any; footer: any; children: any; }': subtitle, footer
+src/pages/OAuthConsent.jsx(190,6): error TS2741: Property 'footer' is missing in type '{ children: Element[]; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; title: string; subtitle: string; }' but required in type '{ icon: any; title: any; subtitle: any; footer: any; children: any; }'.
+src/pages/OAuthConsent.jsx(220,10): error TS2322: Type '{ children: string; variant: string; className: string; disabled: boolean; onClick: () => Promise<void>; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/OAuthConsent.jsx(228,10): error TS2322: Type '{ children: (string | Element)[]; className: string; disabled: boolean; onClick: () => Promise<void>; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(56,19): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+src/pages/PatientDetail.jsx(56,32): error TS2363: The right-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+src/pages/PatientDetail.jsx(85,12): error TS2322: Type '{ children: (string | Element)[]; variant: string; size: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(109,10): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(111,14): error TS2322: Type '{ children: string; key: string; value: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(117,10): error TS2322: Type '{ children: Element; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(134,10): error TS2322: Type '{ children: Element; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(135,10): error TS2322: Type '{ children: Element; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(135,75): error TS2322: Type '{ patientId: string; patient: any; }' is not assignable to type 'IntrinsicAttributes & { patientId: any; }'.
+  Property 'patient' does not exist on type 'IntrinsicAttributes & { patientId: any; }'. Did you mean 'patientId'?
+src/pages/PatientDetail.jsx(136,10): error TS2322: Type '{ children: Element; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(137,10): error TS2322: Type '{ children: Element; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(138,10): error TS2322: Type '{ children: Element; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(139,10): error TS2322: Type '{ children: Element; value: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(185,8): error TS2322: Type '{ children: Element[]; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(186,10): error TS2741: Property 'className' is missing in type '{ children: Element; }' but required in type '{ [x: string]: any; className: any; }'.
+src/pages/PatientDetail.jsx(186,24): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(207,14): error TS2322: Type '{ children: string; type: string; variant: string; onClick: any; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/PatientDetail.jsx(208,14): error TS2322: Type '{ children: string; type: string; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Patients.jsx(53,10): error TS2322: Type '{ children: (string | Element)[]; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Patients.jsx(63,11): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/SOAPNotes.jsx(49,28): error TS2339: Property 'note_type' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(50,24): error TS2339: Property 'provider_name' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(51,23): error TS2339: Property 'patient_info' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(52,28): error TS2339: Property 'demographics' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(53,31): error TS2339: Property 'chief_complaint' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(54,32): error TS2339: Property 'subjective' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(55,37): error TS2339: Property 'objective' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(56,35): error TS2339: Property 'medications' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(57,39): error TS2339: Property 'additional' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(58,32): error TS2339: Property 'session_duration' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(59,24): error TS2339: Property 'cpt_code' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(60,81): error TS2339: Property 'icd_codes' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(97,29): error TS2339: Property 'note_type' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(98,28): error TS2339: Property 'subjective' does not exist on type 'string | object'.
+  Property 'subjective' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(99,27): error TS2339: Property 'objective' does not exist on type 'string | object'.
+  Property 'objective' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(100,28): error TS2339: Property 'assessment' does not exist on type 'string | object'.
+  Property 'assessment' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(101,33): error TS2339: Property 'risk_assessment' does not exist on type 'string | object'.
+  Property 'risk_assessment' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(102,22): error TS2339: Property 'plan' does not exist on type 'string | object'.
+  Property 'plan' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(103,33): error TS2339: Property 'provider_name' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(104,32): error TS2339: Property 'patient_info' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(109,29): error TS2339: Property 'note_type' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(110,27): error TS2339: Property 'icd_codes' does not exist on type 'string | object'.
+  Property 'icd_codes' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(112,33): error TS2339: Property 'provider_name' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(113,36): error TS2339: Property 'session_duration' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(114,28): error TS2339: Property 'cpt_code' does not exist on type 'void'.
+src/pages/SOAPNotes.jsx(120,44): error TS2339: Property 'subjective' does not exist on type 'string | object'.
+  Property 'subjective' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(120,74): error TS2339: Property 'objective' does not exist on type 'string | object'.
+  Property 'objective' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(120,104): error TS2339: Property 'assessment' does not exist on type 'string | object'.
+  Property 'assessment' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(120,140): error TS2339: Property 'risk_assessment' does not exist on type 'string | object'.
+  Property 'risk_assessment' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(120,170): error TS2339: Property 'plan' does not exist on type 'string | object'.
+  Property 'plan' does not exist on type 'string'.
+src/pages/SOAPNotes.jsx(172,10): error TS2322: Type '{ children: (string | Element)[]; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Subscription.jsx(191,18): error TS2322: Type '{ children: string; size: string; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Subscription.jsx(241,22): error TS2322: Type '{ children: string | Element; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Subscription.jsx(261,15): error TS2322: Type '{ placeholder: string; value: string; onChange: (e: any) => void; onKeyDown: (e: any) => Promise<void>; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'placeholder' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Subscription.jsx(267,14): error TS2322: Type '{ children: string | Element; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Subscription.jsx(275,21): error TS2322: Type '{ id: string; checked: boolean; onCheckedChange: Dispatch<SetStateAction<boolean>>; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'id' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
