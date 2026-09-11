@@ -39,7 +39,7 @@ The in-app browser runtime could not initialize (`browser-client is not trusted`
 
 ## Release gates
 
-`npm ci`, build, lint and full typecheck pass. Typecheck: zero errors. Integration/unit suite: 42 passing tests, including production password login, rejected credentials and secure session cookies. Compatible security updates reduced the audit to four moderate findings; no high or critical findings remain. Major-version dependency upgrades were not forced. The first deployed PDF-parser packaging failure and direct IPv6 connection incompatibility were corrected with explicit native dependencies, lazy parser loading and the verified IPv4 transaction pooler.
+`npm ci`, build, lint and full typecheck pass. Typecheck: zero errors. Integration/unit suite: 48 passing tests, including production password login, rejected credentials and secure session cookies. Compatible security updates reduced the audit to four moderate findings; no high or critical findings remain. Major-version dependency upgrades were not forced. The first deployed PDF-parser packaging failure and direct IPv6 connection incompatibility were corrected with explicit native dependencies, lazy parser loading and the verified IPv4 transaction pooler.
 
 Supabase's security advisor identified one NeuroSync-specific mutable search path inherited from the original timestamp trigger. Additive migration 0012 pins it to pg_catalog; unrelated existing public-schema findings were not modified. [Advisor remediation reference](https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable).
 
@@ -68,3 +68,15 @@ Three live provider requests using a temporary synthetic clinician verified:
 The verification session was logged out, and its temporary records and identity were removed; audit metadata remains. The user's administrator account was unchanged. Exact provider charges and account balance were not queried; the user reported approximately $2 available. These checks establish API functionality and persistence, not clinical accuracy or browser interaction. All 42 tests, lint, typecheck and build pass.
 
 Configuration reference: [GPT-5 API reasoning controls](https://openai.com/index/introducing-gpt-5-for-developers/) and [GPT-5 mini model](https://developers.openai.com/api/docs/models/gpt-5-mini).
+
+## Shared medication library and private DSM demo (2026-09-11)
+
+Production deployment: `neurosync-fvxqffr2m-nicks-projects-0994fdbd.vercel.app`, aliased to `https://neurosync-navy.vercel.app`. Medication Reference and Knowledge Base now include the same authenticated FDA label search, with manufacturer/source dates, label sections and DailyMed links. It uses no AI credits. Source updates are weekly and cached lookups expire after one hour; no full offline corpus or scheduled bulk-import job is claimed.
+
+Medication and DSM pages render completed AI answers immediately instead of replaying a typewriter animation. General reference calls use a smaller/minimal-reasoning GPT-5 mini configuration. Measured examples: source search 943 ms, opening a label 391 ms, repeated search 115 ms, short AI medication response 2,746 ms. These are sample timings, not guarantees.
+
+At the user's request, their local 970-page DSM-5 (2013) scan was split into 28 private PDF parts and OCR-processed locally. All 2,168 extracted chunks were indexed under the administrator's existing owner identity. No API credits were used for OCR/embeddings. The original remains local; no PDF or book text was committed or published as a public asset. DSM subscriber-wide licensing remains separate from this private demo import.
+
+DSM Lookup now retrieves private knowledge excerpts, distinguishes source edition, and returns authenticated PDF links. Live checks verified all 28 catalog entries, about 41 KB of catalog previews, topic-relevant ADHD sources including the chapter, a model response, successful PDF download and anonymous denial. A representative lookup plus source download took about 8.1 seconds. Tests independently verify two-clinician retrieval isolation. OCR recognition and clinical accuracy still require human verification.
+
+The Chrome-based browser CLI worked where the earlier native in-app bridge had failed. Medication search/selection, Knowledge Base resources and DSM Lookup source display were checked in the browser. Full typecheck, lint, build and all 48 tests pass. See [REFERENCE_LIBRARY.md](REFERENCE_LIBRARY.md) for source licensing, coverage, refresh behavior and remaining limits.

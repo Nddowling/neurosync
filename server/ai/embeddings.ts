@@ -22,6 +22,11 @@ export class Embeddings {
   // Content hash comparison prevents a slow indexing request overwriting a newer revision.
   const chunks=await withIdentity(this.pool,identity,async client=>(await client.query('select id,content from neurosync.knowledge_chunks where knowledge_id=$1 and owner_uid=$2',[knowledgeId,identity.subject])).rows);
   const vectors=await Promise.all(chunks.map(async chunk=>({...chunk,vector:await this.provider.embed(chunk.content)})));
-  await withIdentity(this.pool,identity,async client=>{for(const row of vectors)await client.query('update neurosync.knowledge_chunks set embedding=$1,embedding_model=$2 where id=$3 and owner_uid=$4 and content=$5',[row.vector,this.provider.model,row.id,identity.subject,row.content]);});
+  await withIdentity(this.pool,identity,async client=>{
+   for(let start=0;start<vectors.length;start+=100){
+    const batch=vectors.slice(start,start+100).map(row=>({id:row.id,content:row.content,embedding:row.vector}));
+    await client.query(`update neurosync.knowledge_chunks c set embedding=v.embedding,embedding_model=$2 from jsonb_to_recordset($1::jsonb) as v(id uuid,content text,embedding double precision[]) where c.id=v.id and c.owner_uid=$3 and c.content=v.content`,[JSON.stringify(batch),this.provider.model,identity.subject]);
+   }
+  });
  }
 }

@@ -1,5 +1,5 @@
 import { ApiError } from '../../api/errors.js';
-export interface Inference { system:string; input:string; structured:boolean }
+export interface Inference { system:string; input:string; structured:boolean; fast?:boolean }
 export interface Provider { generate(request:Inference):Promise<string> }
 export type ProviderName='openai'|'anthropic'|'google';
 export class HttpProvider implements Provider {
@@ -9,7 +9,7 @@ export class HttpProvider implements Provider {
   const jsonInstruction=request.structured?'\nReturn only one valid JSON object. No prose or code fences.':'';
   if(this.provider==='openai') {
    url='https://api.openai.com/v1/chat/completions';headers.Authorization=`Bearer ${this.key}`;
-   body={model:this.model,store:false,max_completion_tokens:8192,...(/^gpt-5-mini(?:-|$)/.test(this.model)?{reasoning_effort:'low'}:{}),messages:[{role:'system',content:request.system+jsonInstruction},{role:'user',content:request.input}],...(request.structured?{response_format:{type:'json_object'}}:{})};
+   body={model:this.model,store:false,max_completion_tokens:request.fast?4096:8192,...(/^gpt-5-mini(?:-|$)/.test(this.model)?{reasoning_effort:request.fast?'minimal':'low'}:{}),messages:[{role:'system',content:request.system+jsonInstruction},{role:'user',content:request.input}],...(request.structured?{response_format:{type:'json_object'}}:{})};
   }else if(this.provider==='anthropic') {
    url='https://api.anthropic.com/v1/messages';headers['x-api-key']=this.key;headers['anthropic-version']='2023-06-01';
    body={model:this.model,max_tokens:8192,system:request.system+jsonInstruction,messages:[{role:'user',content:request.input}]};

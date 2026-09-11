@@ -7,7 +7,7 @@ export interface ClinicalRecord {
 export interface Message {id:string;role:'user'|'assistant';content:string;status:string}
 export interface Conversation {id:string;created_date:string;metadata:{name:string;session_id:string};messages:Message[]}
 export interface Subscription {plan:'free'|'professional'|'enterprise'|'promo_justin';status:string;consults_used:number;soap_notes_used:number}
-export class RequestError extends Error {constructor(readonly status:number,readonly code:string){super(code === 'limit_reached' ? 'Monthly plan limit reached.' : code === 'service_unavailable' ? 'This service is unavailable. Please try again later.' : 'The request could not be completed.');}}
+export class RequestError extends Error {constructor(readonly status:number,readonly code:string){super(code === 'ocr_required' ? 'This PDF contains no searchable text. Run OCR before uploading it.' : code === 'limit_reached' ? 'Monthly plan limit reached.' : code === 'service_unavailable' ? 'This service is unavailable. Please try again later.' : 'The request could not be completed.');}}
 export async function request<T>(path:string,method='GET',data?:unknown):Promise<T> {
  const csrf=document.cookie.split('; ').find(item=>item.startsWith('neurosync_csrf='))?.split('=')[1];
  const response=await fetch(path,{method,credentials:'same-origin',headers:{...(data===undefined?{}:{'Content-Type':'application/json'}),...(csrf?{'X-CSRF-Token':csrf}:{})},...(data===undefined?{}:{body:JSON.stringify(data)})});
@@ -30,7 +30,7 @@ export const neurosync={
   logout:async()=>{await request('/api/auth/logout','POST',{});localStorage.removeItem('neurosync_active_conv');window.location.assign('/');},
   redirectToLogin:(returnTo?:string)=>{void returnTo;window.location.assign('/Login');},
  },
- knowledge:{upload:async(file:File)=>{
+ knowledge:{list:()=>request<ClinicalRecord[]>('/api/knowledge'),upload:async(file:File)=>{
   if(file.size>2097152)throw new Error('PDF files must be 2 MB or smaller.');
   const bytes=new Uint8Array(await file.arrayBuffer());let binary='';for(const byte of bytes)binary+=String.fromCharCode(byte);
   return request<ClinicalRecord>('/api/knowledge/upload','POST',{name:file.name,data:btoa(binary)});
@@ -44,6 +44,7 @@ export const neurosync={
  }},
  ai:{
   soap:(input:unknown)=>request<ClinicalRecord>('/api/ai/soap','POST',input),
+  diagnostic: (query:string)=>request<{content:string;sources:{sourceId:string;title:string;fileUrl:string|null}[]}>('/api/ai/reference','POST',{task:'diagnostic',query}),
   reference:async(task:'medication'|'diagnostic'|'cpt',query:string)=>(await request<{content:string}>('/api/ai/reference','POST',{task,query})).content,
  },
  agents:{

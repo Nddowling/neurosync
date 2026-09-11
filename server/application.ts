@@ -1,4 +1,6 @@
 import Stripe from 'stripe';
+import {diagnosticRetrievalQuery} from './ai/diagnostic-query.js';
+import {MedicationLibrary} from './domain/medication-library.js';
 import {Billing} from './billing/service.js';
 import {createPool} from './db/pool.js';
 import { Knowledge } from './domain/knowledge.js';
@@ -21,11 +23,16 @@ export function application(pool: Pool, settings: AuthConfig, ai: AIGateway = co
  const soap = new Soap(pool, ai);
  const usage = new Usage(pool);
  const knowledge = new Knowledge(pool);
+ const medicationLibrary = new MedicationLibrary();
  const env=process.env;
  const billing=env.STRIPE_SECRET_KEY&&env.STRIPE_WEBHOOK_SECRET&&env.BILLING_DATABASE_URL?new Billing(pool,createPool(env.BILLING_DATABASE_URL),new Stripe(env.STRIPE_SECRET_KEY,{timeout:10000,maxNetworkRetries:1}),settings.origin,env.STRIPE_WEBHOOK_SECRET,{professional:env.STRIPE_PROFESSIONAL_PRICE_ID??'',enterprise:env.STRIPE_ENTERPRISE_PRICE_ID??''}):null;
  return createApp({ patients: new Patients(pool), auth:{route: async request=>{if(new URL(request.url).pathname==='/api/billing/webhook'){if(!billing)throw new ApiError(503,'service_unavailable');return billing.webhook(request);}return auth.route(request);}}, verifier: auth.sessions, route: async (request, identity) => {
   const path = new URL(request.url).pathname;
+  if(path === '/api/library/medications' && request.method==='GET') return Response.json(await medicationLibrary.search({query:new URL(request.url).searchParams.get('query')??'',offset:new URL(request.url).searchParams.get('offset')??0}));
+  const medicationLabel=/^\/api\/library\/medications\/([^/]+)$/.exec(path);
+  if(medicationLabel && request.method==='GET') return Response.json(await medicationLibrary.get(medicationLabel[1]!));
   if(path === '/api/billing/checkout' && request.method==='POST'){if(!billing)throw new ApiError(503,'service_unavailable');return billing.checkout(request,identity);}
+  if(path === '/api/knowledge' && request.method==='GET') return Response.json(await knowledge.list(identity));
   if(path === '/api/knowledge/upload' && request.method === 'POST') return Response.json(await knowledge.ingest(identity,await readJson(request,3000000)));
   const document=/^\/api\/documents\/([^/]+)$/.exec(path);
   if(document && request.method==='GET')return knowledge.download(identity,z.string().uuid().parse(document[1]));
@@ -34,7 +41,8 @@ export function application(pool: Pool, settings: AuthConfig, ai: AIGateway = co
   if (path === '/api/ai/soap' && request.method === 'POST') return Response.json(await soap.generate(identity, await readJson(request, 512000)));
   if (path === '/api/ai/reference' && request.method === 'POST') {
    const input = z.object({task: z.enum(['medication','diagnostic','cpt']), query: z.string().min(1).max(20000)}).strict().parse(await readJson(request));
-   return Response.json({content: await ai.reference(input.task, input.query)});
+   const evidence=input.task==='diagnostic'?await knowledge.retrieve(identity,diagnosticRetrievalQuery(input.query)):[];
+   return Response.json({content: await ai.reference(input.task, input.query,evidence),sources:evidence.map(({sourceId,title,fileUrl})=>({sourceId,title,fileUrl}))});
   }
   if (path === '/api/conversations') {
    if (request.method === 'GET') return Response.json(await conversations.list(identity));

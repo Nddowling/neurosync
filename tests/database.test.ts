@@ -268,6 +268,10 @@ test('actual PostgreSQL migrations, non-owner isolation and HTTP ownership', asy
     await records.execute(b,{table:'knowledge_base',action:'insert',data:{title:'Other tenant',content:'SYNTHETIC_PRIVATE_RARETERM other tenant only'}});
     const knowledge=new Knowledge(runtime);
     assert.deepEqual(await knowledge.retrieve(a,'SYNTHETIC_PRIVATE_RARETERM'),[]);
+    assert.ok(!(await knowledge.list(a)).some(row=>row.title==='Other tenant'));
+    const longEntry=(await records.execute(a,{table:'knowledge_base',action:'insert',data:{title:'Catalog preview check',content:'x'.repeat(3000)}}))[0]!;
+    assert.equal(String((await knowledge.list(a)).find(row=>row.id===longEntry.id)?.content).length,1000);
+    assert.equal(String((await records.execute(a,{table:'knowledge_base',action:'select',query:{id:longEntry.id}}))[0]?.content).length,3000);
     const entry=(await records.execute(a,{table:'knowledge_base',action:'insert',data:{title:'Owned reference',content:'Synthetic sleep monitoring protocol and sleep assessment.'}}))[0]!;
     assert.equal((await knowledge.retrieve(a,'sleep monitoring'))[0]?.title,'Owned reference');
     let requests=0;
@@ -315,6 +319,37 @@ test('actual PostgreSQL migrations, non-owner isolation and HTTP ownership', asy
     const rejection=results.find(result=>result.status==='rejected');assert.ok(rejection?.status==='rejected');assert.equal(rejection.reason.code,'limit_reached');
     assert.equal((await usage.subscription(a)).soap_notes_used,3);
    }finally{await concurrent.end();}
+  });
+  await t.test('PDF ingestion rejects marker-only extraction and indexes real text',async()=>{
+   const {Knowledge}=await import('../server/domain/knowledge.js');
+   const {jsPDF}=await import('jspdf');const knowledge=new Knowledge(runtime);
+   const blank=new jsPDF();
+   await assert.rejects(knowledge.ingest(a,{name:'blank.pdf',data:Buffer.from(blank.output('arraybuffer')).toString('base64')}),{status:422,code:'ocr_required'});
+   const text=new jsPDF();text.text('Synthetic searchable PDF ingestion reference.',15,20);
+   const record=await knowledge.ingest(a,{name:'searchable.pdf',data:Buffer.from(text.output('arraybuffer')).toString('base64')});assert.ok(String(record.content).includes('Synthetic searchable'));
+   const docId=String(record.file_url).split('/').pop()!;assert.equal((await knowledge.download(a,docId)).status,200);await assert.rejects(knowledge.download(b,docId),{status:404});
+   assert.ok((await knowledge.retrieve(a,'searchable PDF ingestion')).some(source=>source.sourceId===record.id));
+  });
+  await t.test('DSM reference endpoint retrieves only the signed-in clinician sources',async()=>{
+   const {application}=await import('../server/application.js');
+   const {AIGateway}=await import('../server/ai/gateway.js');
+   const {Records}=await import('../server/compat/records.js');
+   const {Sessions}=await import('../server/auth/session.js');
+   const records=new Records(runtime);
+   const ka=(await records.execute(a,{table:'knowledge_base',action:'insert',data:{title:'DSM-5 synthetic edition A',content:'Rarelookupdisorder clinician A private reference'}}))[0]!;
+   const kb=(await records.execute(b,{table:'knowledge_base',action:'insert',data:{title:'DSM-5 synthetic edition B',content:'Rarelookupdisorder clinician B private reference'}}))[0]!;
+   let seen='';const provider={generate:async(input:{input:string})=>{seen=input.input;return 'Synthetic diagnostic summary';}};
+   const app=application(runtime,{mode:'local',environment:'development',origin:'http://localhost'},new AIGateway({reference:{provider,providerName:'synthetic',model:'fixture'}}));
+   await owner.query("insert into neurosync_auth.identities(provider,external_subject,owner_uid) values('synthetic-dsm','b','synthetic-b')");
+   const sessions=new Sessions(runtime,'http://localhost',false);
+   for(const [identity,expected,foreign] of [[a,ka,kb],[b,kb,ka]] as const){
+    const session=await sessions.create(identity.subject,'test');
+    const cookie=[session.cookie,session.csrfCookie].map(value=>value.split(';')[0]).join('; ');
+    const csrf=session.csrfCookie.split(';')[0]!.split('=')[1]!;
+    const response=await app(new Request('http://localhost/api/ai/reference',{method:'POST',headers:{cookie,origin:'http://localhost','x-csrf-token':csrf,'content-type':'application/json'},body:JSON.stringify({task:'diagnostic',query:'Rarelookupdisorder'})}));
+    assert.equal(response.status,200);const body=await response.json();assert.equal(body.content,'Synthetic diagnostic summary');assert.ok(body.sources.some((source:{sourceId:string})=>source.sourceId===expected.id));assert.ok(!body.sources.some((source:{sourceId:string})=>source.sourceId===foreign.id));assert.ok(seen.includes(String(expected.title)));assert.ok(!seen.includes(String(foreign.title)));
+   }
+   assert.equal((await app(new Request('http://localhost/api/library/medications?query=sertraline'))).status,401);
   });
   await t.test('commerce authority cannot read clinical data and runtime cannot write entitlements',async()=>{
    const client=await owner.connect();
