@@ -3,7 +3,7 @@ import * as oidc from 'openid-client';
 import type { Pool } from 'pg';
 import { z } from 'zod';
 import { Sessions,cookie,digest,secret,sameSecret } from './session.js';
-import { verifyLocalLogin } from './local.js';
+import { verifyPasswordLogin } from './password.js';
 import { Identity } from './identity.js';
 import { withIdentity } from '../db/transaction.js';
 import { ApiError } from '../api/errors.js';
@@ -46,12 +46,12 @@ export class AuthRouter {
     }
     if(url.pathname==='/api/auth/login' && request.method==='POST') {
       this.sessions.assertOrigin(request);
-      if(this.settings.mode!=='local') throw new ApiError(404,'not_found');
+      if(this.settings.mode!=='local' && this.settings.mode!=='supabase') throw new ApiError(404,'not_found');
       if(!this.attempts.allow('login')) throw new ApiError(429,'rate_limited');
       const input=z.object({email:z.string().email().max(320),password:z.string().min(1).max(256)}).strict().parse(await readJson(request));
-      const subject=await verifyLocalLogin(this.pool,input.email,input.password);
+      const subject=await verifyPasswordLogin(this.pool,input.email,input.password,this.settings.mode==='local'?'local':'password');
       if(!subject) throw new ApiError(401,'unauthorized');
-      return this.establish(subject,'local-password');
+      return this.establish(subject,this.settings.mode==='local'?'local-password':'password');
     }
     if(url.pathname==='/api/auth/start' && request.method==='GET') {
       if(this.settings.mode!=='oidc') throw new ApiError(404,'not_found');

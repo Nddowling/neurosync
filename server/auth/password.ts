@@ -8,8 +8,8 @@ export async function hashPassword(password: string) {
   const salt=randomBytes(16).toString('hex');
   return `scrypt-v1:${salt}:${(await derive(password,salt)).toString('hex')}`;
 }
-export async function verifyLocalLogin(pool: Pool,email: string,password: string): Promise<string|null> {
-  const result = await pool.query<{owner_uid:string;password_hash:string}>('select * from neurosync_auth.identity_lookup($1,$2)',['local',email.toLowerCase()]);
+export async function verifyPasswordLogin(pool: Pool,email: string,password: string,provider: 'local'|'password' = 'local'): Promise<string|null> {
+  const result = await pool.query<{owner_uid:string;password_hash:string}>('select * from neurosync_auth.identity_lookup($1,$2)',[provider,email.trim().toLowerCase()]);
   const row=result.rows[0];
   const parts=(row?.password_hash ?? '').split(':');
   // Run the KDF even for an unknown user to reduce username enumeration via timing.

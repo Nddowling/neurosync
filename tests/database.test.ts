@@ -212,7 +212,7 @@ test('actual PostgreSQL migrations, non-owner isolation and HTTP ownership', asy
   });
   await t.test('real local password login, server sessions, CSRF, expiry, logout and isolation', async () => {
     const { AuthRouter } = await import('../server/auth/router.js');
-    const { hashPassword } = await import('../server/auth/local.js');
+    const { hashPassword } = await import('../server/auth/password.js');
     const hash=await hashPassword('synthetic-test-password');
     await owner.query("insert into neurosync_auth.identities(provider,external_subject,owner_uid,password_hash) values ('local','a@example.invalid','synthetic-a',$1)",[hash]);
     const auth=new AuthRouter(runtime,{mode:'local',environment:'development',origin:'http://localhost'});
@@ -240,6 +240,18 @@ test('actual PostgreSQL migrations, non-owner isolation and HTTP ownership', asy
     assert.throws(()=>new AuthRouter(runtime,{mode:'local',environment:'production',origin:'https://example.invalid'}));
   });
 
+
+  await t.test('production password login issues secure sessions and rejects bad credentials',async()=>{
+   const {AuthRouter}=await import('../server/auth/router.js');const {hashPassword}=await import('../server/auth/password.js');
+   await owner.query("insert into neurosync_auth.identities(provider,external_subject,owner_uid,password_hash) values('password','admin@example.invalid',$1,$2)",[a.subject,await hashPassword('synthetic-admin-password')]);
+   const auth=new AuthRouter(runtime,{mode:'supabase',environment:'production',origin:'https://example.invalid',supabaseUrl:'https://provider.example.invalid',supabaseKey:'synthetic-public-key'});
+   const app=createApp({patients,auth,verifier:auth.sessions,logger:()=>{}});
+   const login=(password:string)=>app(new Request('https://example.invalid/api/auth/login',{method:'POST',headers:{origin:'https://example.invalid','content-type':'application/json'},body:JSON.stringify({email:'ADMIN@example.invalid',password})}));
+   assert.equal((await login('wrong-password')).status,401);
+   const good=await login('synthetic-admin-password');assert.equal(good.status,200);
+   assert.ok(good.headers.getSetCookie().some(value=>value.startsWith('__Host-neurosync=')&&value.includes('HttpOnly')&&value.includes('Secure')));
+   const profile=await app(new Request('https://example.invalid/api/auth/me',{headers:{cookie:good.headers.getSetCookie().map(value=>value.split(';')[0]).join('; ')}}));assert.equal(profile.status,200);assert.equal((await profile.json()).id,a.subject);
+  });
   await t.test('owned record mappings, note immutability, retrieval and AI persistence', async () => {
     const { Records } = await import('../server/compat/records.js');
     const { Knowledge } = await import('../server/domain/knowledge.js');

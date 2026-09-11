@@ -15,7 +15,7 @@ Production Supabase uses the `neurosync`, `neurosync_auth` and `neurosync_migrat
 
 Supabase and OIDC adapters require real external provider configuration. Approved identities are provisioned offline; the runtime cannot create clinicians or grant itself roles. `scripts/provision-user.ts <email>` creates Supabase email invitation eligibility with MIGRATION_DATABASE_URL; it sends no email.
 
-For local-only password testing, AUTH_MODE=local is accepted only when NODE_ENV=development and APP_ORIGIN is localhost/127.0.0.1. Use `hashPassword()` in server/auth/local.ts to generate a scrypt hash, then insert a clinician and a `local` identity with that hash using the offline operator connection. Never deploy this mode. The automated test suite exercises this process without creating persistent development accounts.
+For local-only password testing, AUTH_MODE=local is accepted only when NODE_ENV=development and APP_ORIGIN is localhost/127.0.0.1. Use `hashPassword()` in server/auth/password.ts to generate a scrypt hash, then insert a clinician and a `local` identity with that hash using the offline operator connection. Never deploy this mode. The automated test suite exercises this process without creating persistent development accounts.
 
 ## AI, knowledge and commerce
 
@@ -26,3 +26,5 @@ Stripe uses separate commerce authority and credentials. Do not grant the ordina
 ## Operational limits
 
 Per-process request throttles supplement provider limits but are not a distributed perimeter. Uploads are bounded and parsed but are not malware-scanned or OCR'd. Local lexical embeddings are not learned semantic search. Backups, restore drills, retention, external identity disablement propagation and healthcare deployment agreements remain explicit operator responsibilities; security controls do not establish compliance.
+
+Production Supabase mode also accepts operator-provisioned `password` identities through `/api/auth/login`. Password hashes use the shared scrypt helper; this path issues normal secure production sessions and does not enable local development mode. Public password registration is not enabled.
