@@ -1,0 +1,53 @@
+
+> neurosync@0.0.0 test
+> tsx scripts/test-db.ts
+
+✔ billing context preserves crisis and combined documentation branches (0.788875ms)
+✔ openai adapter owns credentials, model routing and structured output request (12.462708ms)
+✔ anthropic adapter owns credentials, model routing and structured output request (0.270834ms)
+✔ google adapter owns credentials, model routing and structured output request (0.235333ms)
+✔ provider failures do not expose upstream payloads (0.54125ms)
+✔ local lexical embeddings are deterministic and have unit norm (1.025292ms)
+✔ default authentication denies missing identity and forged browser headers (14.778458ms)
+✔ health is liveness-only and does not access patient storage (1.170167ms)
+✔ safe errors and logs never include upstream content, query text or headers (3.872958ms)
+✔ request size and media restrictions, invalid IDs, strict pagination (3.061792ms)
+✔ patient schemas reject owner fields, arbitrary updates, impossible dates and invalid email (1.430625ms)
+✔ rate limit fails closed at capacity and resets after expiration (0.395792ms)
+✔ plain objects cannot impersonate verified identity at repository boundary (0.190125ms)
+✔ real HTTP transport serves health and rejects oversized bodies without credentials (32.08125ms)
+▶ actual PostgreSQL migrations, non-owner isolation and HTTP ownership
+  ✔ reproduces original audit flaw before applying hardening (1.788375ms)
+  ✔ migration replay is no-op, checksum changes rejected atomically (9.9665ms)
+  ✔ real application login is non-owner, cannot SET ROLE or bypass RLS (2.850208ms)
+  ✔ guard rejects privileged role membership and BYPASSRLS configuration (1.786583ms)
+  ✔ A cannot read/update/delete B via repository; own CRUD remains usable (8.858042ms)
+  ✔ missing identity returns zero protected rows, including profile/audit (2.309708ms)
+  ✔ forged owner fields and SQL injection subjects cannot grant access (4.700834ms)
+  ✔ patient_notes: direct SQL without owner filters remains isolated; parent forgery denied (6.840916ms)
+  ✔ patient_medications: direct SQL without owner filters remains isolated; parent forgery denied (5.659584ms)
+  ✔ patient_appointments: direct SQL without owner filters remains isolated; parent forgery denied (5.305958ms)
+  ✔ patient_sessions: direct SQL without owner filters remains isolated; parent forgery denied (4.972625ms)
+  ✔ patient_goals: direct SQL without owner filters remains isolated; parent forgery denied (5.267125ms)
+  ✔ patient_billing: direct SQL without owner filters remains isolated; parent forgery denied (4.75125ms)
+  ✔ clinical notes cannot link to another clinician session (1.654334ms)
+  ✔ knowledge content isolation and audit coverage (6.12425ms)
+  ✔ app.role=admin cannot widen access; profiles and subscriptions cannot escalate (4.611833ms)
+  ✔ audit is append-only, actor-scoped and excludes clinical values (5.823708ms)
+  ✔ temporary table cannot divert SECURITY DEFINER audit writes (2.981ms)
+  ✔ rollback and pool reuse do not leak identity or uncommitted rows (2.223041ms)
+  ✔ HTTP CRUD is authenticated and cannot cross ownership or reflect sensitive errors (15.356958ms)
+  ✔ real local password login, server sessions, CSRF, expiry, logout and isolation (345.47675ms)
+  ✔ owned record mappings, note immutability, retrieval and AI persistence (65.400625ms)
+  ✔ concurrent reservations cannot exceed the monthly plan limit (13.866917ms)
+  ✔ commerce authority cannot read clinical data and runtime cannot write entitlements (1.839375ms)
+  ✔ Stripe signatures, event replay and canonical out-of-order state are enforced (137.374542ms)
+✔ actual PostgreSQL migrations, non-owner isolation and HTTP ownership (785.7225ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 940.045792

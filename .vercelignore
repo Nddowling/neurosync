@@ -1,0 +1,7 @@
+.local
+.env*
+!.env.example
+base44
+docs
+tests
+.git

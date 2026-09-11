@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { useQuery } from "@tanstack/react-query";
 import { MessageSquare, FileText, Activity, Clock } from "lucide-react";
 import StatCard from "../components/dashboard/StatCard";
@@ -12,17 +12,17 @@ export default function Dashboard() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
+    neurosync.auth.me().then(setUser).catch(() => {});
   }, []);
 
   const { data: sessions = [], isLoading } = useQuery({
     queryKey: ["sessions"],
-    queryFn: () => base44.entities.ConsultSession.list("-created_date", 10),
+    queryFn: () => neurosync.entities.ConsultSession.list("-created_date", 10),
   });
 
   const { data: notes = [] } = useQuery({
     queryKey: ["notes"],
-    queryFn: () => base44.entities.ClinicalNote.list("-created_date", 50),
+    queryFn: () => neurosync.entities.ClinicalNote.list("-created_date", 50),
   });
 
   const activeSessions = sessions.filter(s => s.status === "active").length;

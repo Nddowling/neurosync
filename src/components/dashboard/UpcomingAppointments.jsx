@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { format, parseISO, isAfter, startOfToday } from "date-fns";
 import { Calendar, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -17,12 +17,12 @@ const TYPE_DOT = {
 export default function UpcomingAppointments() {
   const { data: appointments = [], isLoading: loadingAppts } = useQuery({
     queryKey: ["upcoming-appointments"],
-    queryFn: () => base44.functions.invoke("supabase", { action: "select", table: "patient_appointments", query: {} }).then(r => r.data?.data || []),
+    queryFn: () => neurosync.functions.invoke("records", { action: "select", table: "patient_appointments", query: {} }).then(r => r.data?.data || []),
   });
 
   const { data: patients = [] } = useQuery({
     queryKey: ["all-patients-mini"],
-    queryFn: () => base44.functions.invoke("supabase", { action: "select", table: "patients", query: {} }).then(r => r.data?.data || []),
+    queryFn: () => neurosync.functions.invoke("records", { action: "select", table: "patients", query: {} }).then(r => r.data?.data || []),
   });
 
   const patientMap = Object.fromEntries(patients.map(p => [p.id, p]));

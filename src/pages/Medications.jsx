@@ -1,5 +1,6 @@
+import { toast } from "sonner";
 import React, { useState, useEffect, useRef } from "react";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { Pill, Search, Loader2, AlertTriangle, BookOpen, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,21 +48,11 @@ export default function Medications() {
     setResult(null);
 
     try {
-      const response = await base44.integrations.Core.InvokeLLM({
-        model: "claude_sonnet_4_6",
-        prompt: `You are a senior psychopharmacology expert. Provide a concise, evidence-based response to this medication query. Use clinical precision with drug names, dosing ranges, CYP450 interactions, black box warnings, and monitoring parameters. Format with clear headers and bullet points.
-
-Query: ${q}
-
-Include:
-- Mechanism of action where relevant
-- Key drug-drug interactions
-- Black box warnings if applicable
-- Monitoring requirements
-- Clinical pearls from practice`,
-      });
+      const response = await neurosync.ai.reference("medication", q);
 
       setResult(response);
+    } catch (error) {
+      toast.error(error.message || "Reference lookup failed");
     } finally {
       setIsLoading(false);
     }

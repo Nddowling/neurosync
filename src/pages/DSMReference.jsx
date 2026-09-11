@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { base44 } from "@/api/base44Client";
+import { toast } from "sonner";
+import React, { useState } from "react";
+import { neurosync } from "@/api/client";
 import { BookOpen, Search, Loader2, AlertCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,23 +55,10 @@ export default function DSMReference() {
     setResult(null);
 
     try {
-      const response = await base44.integrations.Core.InvokeLLM({
-        model: "claude_sonnet_4_6",
-        prompt: `You are a psychiatry professor and DSM-5-TR expert. Provide diagnostic information for this query. Be clinically precise and concise.
-
-Query: ${q}
-
-Structure your response with:
-1. **Diagnostic Criteria** — Key criteria (A, B, C, etc.) from DSM-5-TR
-2. **Specifiers** — Relevant specifiers and subtypes
-3. **Key Differential Diagnoses** — How to distinguish from similar conditions
-4. **Clinical Pearls** — Practical diagnostic tips
-5. **Common Comorbidities** — Frequently co-occurring conditions
-6. **Assessment Tools** — Validated scales for screening and monitoring
-
-Use clear headers and bullet points.`,
-      });
+      const response = await neurosync.ai.reference("diagnostic", q);
       setResult(response);
+    } catch (error) {
+      toast.error(error.message || "Reference lookup failed");
     } finally {
       setIsLoading(false);
     }

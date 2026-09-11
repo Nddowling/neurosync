@@ -38,3 +38,9 @@ Baseline lint covers selected UI files, not the backend. Baseline jsconfig exclu
 No Base44, Supabase, Stripe, AI or production database credentials were used; no patient records accessed. Hosted login, conversations, entity permissions, PDF extraction, checkout and webhooks cannot be exercised against the live system from this baseline. Build success is not functional parity.
 
 Reproducible command output: [install](baseline/install.txt), [build](baseline/build.txt), [lint](baseline/lint.txt), [current typecheck](baseline/typecheck.txt), [prior typecheck](baseline/prior-typecheck.txt).
+
+## Extraction validation update — 2026-09-11
+
+The owned-backend and UI integration now pass the full `npm run typecheck` with **zero errors**, without compiler relaxation, TypeScript disabling, or error suppressions. Most baseline failures came from untyped Radix/HTML component wrappers; the touched wrappers now use their actual React/Radix prop and ref types. Remaining fixes included optional props, arithmetic over dates, query mutation argument types, checkbox tri-state handling, and the owned DTO fields.
+
+Original baseline logs remain unchanged: 381 errors / 36 files at the upstream baseline, with 372 / 35 independently reproduced at the user's original commit. See `PRODUCTION_STATUS.md` and the current validation artifacts for limits; a clean typecheck is not evidence of live provider readiness.

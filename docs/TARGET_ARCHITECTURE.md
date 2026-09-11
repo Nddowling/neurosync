@@ -1,3 +1,5 @@
+> Updated implementation/deployment status is in [PRODUCTION_STATUS.md](PRODUCTION_STATUS.md). This document retains the original reconnaissance/target rationale; historical “planned” descriptions are superseded by the feature parity matrix.
+
 # Target architecture
 
 Retain React/Vite and existing page layout. Browser → owned NeuroSync HTTP API → domain services → repositories → standard PostgreSQL. External identity, AI, payment and storage providers are adapters. No browser database/service credentials. Frontend hosting and PHI backend hosting can move independently.

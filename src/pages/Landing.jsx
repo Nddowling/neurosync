@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import {
   Stethoscope, Brain, FileText, Shield, ChevronRight, CheckCircle2,
   BookOpen, Database, ArrowRight, Pill
@@ -65,13 +65,13 @@ export default function Landing() {
 
   // Logged-in visitors go straight to the Dashboard
   useEffect(() => {
-    base44.auth.isAuthenticated().then((authed) => {
+    neurosync.auth.isAuthenticated().then((authed) => {
       if (authed) navigate("/Dashboard");
     }).catch(() => {});
   }, [navigate]);
 
   const handleLogin = () => {
-    base44.auth.redirectToLogin("/Dashboard");
+    neurosync.auth.redirectToLogin("/Dashboard");
   };
 
   return (

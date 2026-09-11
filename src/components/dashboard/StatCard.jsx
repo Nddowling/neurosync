@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
-export default function StatCard({ title, value, subtitle, icon: Icon, color = "teal", href }) {
+export default function StatCard({ title, value, subtitle = undefined, icon: Icon, color = "teal", href }) {
   const navigate = useNavigate();
   const colors = {
     teal: "from-teal-500 to-teal-600 shadow-teal-500/20",

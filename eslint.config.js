@@ -6,8 +6,8 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginUnusedImports from "eslint-plugin-unused-imports";
 
 export default [
-  ...tseslint.configs.recommended.map(config => ({ ...config, files: ["server/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"] })),
-  { files: ["server/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"], languageOptions: { globals: globals.node } },
+  ...tseslint.configs.recommended.map(config => ({ ...config, files: ["server/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts", "api/**/*.ts", "src/api/**/*.ts"] })),
+  { files: ["server/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts", "api/**/*.ts", "src/api/**/*.ts"], languageOptions: { globals: globals.node } },
   {
     files: [
       "src/components/**/*.{js,mjs,cjs,jsx}",

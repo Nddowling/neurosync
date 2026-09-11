@@ -25,7 +25,7 @@ try {
   command('createdb', ['-h', socket, '-U', 'test_owner', 'neurosync_test']);
   const database = `postgresql://app_rw@localhost/neurosync_test?host=${encodeURIComponent(socket)}`;
   const migration = `postgresql://test_owner@localhost/neurosync_test?host=${encodeURIComponent(socket)}`;
-  const result = spawnSync(process.execPath, ['--import', 'tsx', '--test', 'tests/api.test.ts', 'tests/database.test.ts'], {
+  const result = spawnSync(process.execPath, ['--import', 'tsx', '--test', 'tests/api.test.ts', 'tests/ai.test.ts', 'tests/database.test.ts'], {
     stdio: 'inherit', env: { ...process.env, TEST_DATABASE_URL: database, TEST_MIGRATION_DATABASE_URL: migration },
   });
   process.exitCode = result.status ?? 1;

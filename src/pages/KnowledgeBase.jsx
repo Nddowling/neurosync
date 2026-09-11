@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -46,44 +46,8 @@ export default function KnowledgeBase() {
 
   const processSingleFile = async (file, idx) => {
     try {
-      // Step 1: Upload (0→40%)
-      updateFile(idx, { status: "uploading", progress: 10 });
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      updateFile(idx, { progress: 40 });
-
-      // Step 2: Extract (40→75%)
-      updateFile(idx, { status: "extracting", progress: 50 });
-      const extracted = await base44.integrations.Core.ExtractDataFromUploadedFile({
-        file_url,
-        json_schema: {
-          type: "object",
-          properties: {
-            title: { type: "string", description: "Document title or best-guess title" },
-            content: { type: "string", description: "Full extracted text content" },
-            summary: { type: "string", description: "Brief 1-2 sentence summary" },
-            category: { type: "string", description: "One of: cpt_codes, clinical_reference, protocol, medication, billing, other" },
-            tags: { type: "string", description: "Comma-separated relevant tags" },
-          },
-        },
-      });
-      updateFile(idx, { progress: 75 });
-
-      if (extracted.status !== "success" || !extracted.output) {
-        throw new Error("Could not extract content from PDF");
-      }
-
-      // Step 3: Save (75→100%)
-      updateFile(idx, { status: "saving", progress: 85 });
-      const data = extracted.output;
-      await base44.entities.KnowledgeBase.create({
-        title: data.title || file.name.replace(/\.pdf$/i, ""),
-        content: data.content || data.summary || "Extracted from PDF",
-        category: data.category || "other",
-        tags: data.tags || "",
-        source: file.name,
-        file_url,
-      });
-
+      updateFile(idx, { status: "extracting", progress: 20 });
+      await neurosync.knowledge.upload(file);
       updateFile(idx, { status: "done", progress: 100 });
     } catch (err) {
       updateFile(idx, { status: "error", progress: 0, error: err.message || "Upload failed" });
@@ -98,13 +62,12 @@ export default function KnowledgeBase() {
     const initialStates = files.map(f => ({ name: f.name, status: "pending", progress: 0 }));
     setFileUploads(initialStates);
 
-    // Process all files in parallel
-    await Promise.all(files.map((file, idx) => processSingleFile(file, idx)));
+    // Bound memory and parser concurrency.
+    for (const [idx,file] of files.entries()) await processSingleFile(file,idx);
 
     // Refresh list and notify
     queryClient.invalidateQueries({ queryKey: ["knowledge_base"] });
-    const succeeded = initialStates.length; // we'll check actual state after
-    toast.success(`Upload complete — ${files.length} file${files.length > 1 ? "s" : ""} processed`);
+    toast.info("Upload processing finished. Review each file’s status below.");
 
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
@@ -113,11 +76,11 @@ export default function KnowledgeBase() {
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["knowledge_base"],
-    queryFn: () => base44.entities.KnowledgeBase.list("-created_date", 100),
+    queryFn: () => neurosync.entities.KnowledgeBase.list("-created_date", 100),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.KnowledgeBase.create(data),
+    mutationFn: (/** @type {Record<string,string>} */ data) => neurosync.entities.KnowledgeBase.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["knowledge_base"] });
       setShowAddDialog(false);
@@ -127,7 +90,7 @@ export default function KnowledgeBase() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.KnowledgeBase.delete(id),
+    mutationFn: (/** @type {string} */ id) => neurosync.entities.KnowledgeBase.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["knowledge_base"] });
       toast.success("Entry deleted");

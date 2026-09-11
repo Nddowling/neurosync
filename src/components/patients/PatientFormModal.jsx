@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,13 +22,13 @@ export default function PatientFormModal({ open, onClose, onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-    const user = await base44.auth.me();
+    const user = await neurosync.auth.me();
     // Auto-generate patient code if not provided
     const code = form.patient_code || `PT-${Date.now().toString().slice(-5)}`;
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "insert",
       table: "patients",
-      data: { ...form, patient_code: code, clinician_email: user.email },
+      data: { ...form, patient_code: code },
     });
     setSaving(false);
     onCreated();

@@ -14,8 +14,8 @@ export default function ClinicalWarningBanner({ variant = "decision-support", di
       icon: Info,
       color: "bg-teal-50 border-teal-200 text-teal-800",
       iconColor: "text-teal-600",
-      title: "HIPAA Certified Platform",
-      body: "NeuroSync is HIPAA certified. Patient data is encrypted end-to-end and handled in compliance with federal privacy regulations.",
+      title: "Clinical workspace",
+      body: "Use only synthetic or de-identified information until the required privacy agreements and deployment review are complete.",
     },
     "decision-support": {
       icon: Info,

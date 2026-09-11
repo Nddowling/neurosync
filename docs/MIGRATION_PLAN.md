@@ -1,3 +1,11 @@
+# Current migration status — 2026-09-11
+
+Owned frontend/API wiring is deployed to production. Phases 3–9 now have implemented code and 40 passing tests covering auth/session isolation, records, conversation/notes, knowledge retrieval and provider/Stripe contracts. Full typecheck and lint pass. The production API smoke test covers authenticated CRUD, patient/session linkage, PDF parsing/storage/download and logout. Browser interaction checks are blocked by the unavailable browser bridge. Live email, AI and Stripe activation remain pending configuration; full extraction acceptance is not claimed.
+
+The first clinician email was deferred by the user. Remaining operator inputs and exact activation steps are in PRODUCTION_STATUS.md. No new paid project, staging app, existing-secret rotation, unrelated-data deletion or real-patient-data move occurred.
+
+The original phased plan and foundation reports below are historical milestones; they do not describe the current implementation.
+
 # Migration plan
 
 Status: baseline/reconnaissance and first PostgreSQL/API foundation milestone complete; extraction not complete. Work only on codex/base44-extraction. No remote push, deployment, live data access or paid resources. Phase gates retain visibility of known legacy failures; they must not be relabeled as passing. New backend checks must pass independently.

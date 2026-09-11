@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 
 // Plan limits — null = unlimited
 export const PLAN_LIMITS = {
@@ -22,10 +22,10 @@ export default function useSubscription() {
 
   const fetchSubscription = useCallback(async () => {
     try {
-      const res = await base44.functions.invoke("getSubscription", {});
+      const res = await neurosync.functions.invoke("getSubscription", {});
       setSubscription(res.data);
     } catch (e) {
-      setSubscription({ plan: "free", status: "active", consults_used: 0, soap_notes_used: 0 });
+      setSubscription(null);
     } finally {
       setLoading(false);
     }
@@ -47,41 +47,11 @@ export default function useSubscription() {
     return (subscription.soap_notes_used || 0) < limits.soap_notes;
   };
 
-  const trackUsage = async (action) => {
-    try {
-      const res = await base44.functions.invoke("trackUsage", { action });
-      if (res.data) {
-        setSubscription(prev => ({
-          ...prev,
-          consults_used: res.data.consults_used ?? prev?.consults_used,
-          soap_notes_used: res.data.soap_notes_used ?? prev?.soap_notes_used,
-        }));
-      }
-      return res.data;
-    } catch (e) {
-      // Backend function unavailable (e.g. plan restriction) — enforce limits locally
-      const isConsult = action === "consult";
-      const usedKey = isConsult ? "consults_used" : "soap_notes_used";
-      const limitKey = isConsult ? "consults" : "soap_notes";
-      const limits = PLAN_LIMITS[subscription?.plan] || PLAN_LIMITS.free;
-      const used = subscription?.[usedKey] || 0;
-      if (limits[limitKey] !== null && used >= limits[limitKey]) {
-        return {
-          allowed: false,
-          reason: `Monthly limit reached on your current plan. Please upgrade.`,
-        };
-      }
-      const nextUsed = used + 1;
-      setSubscription(prev => ({ ...(prev || { plan: "free" }), [usedKey]: nextUsed }));
-      return { allowed: true, [usedKey]: nextUsed };
-    }
-  };
-
   const isUnlimited = () => {
     if (!subscription) return false;
     const limits = PLAN_LIMITS[subscription.plan] || PLAN_LIMITS.free;
     return limits.consults === null;
   };
 
-  return { subscription, loading, canConsult, canGenerateSoap, trackUsage, isUnlimited, refetch: fetchSubscription };
+  return { subscription, loading, canConsult, canGenerateSoap, isUnlimited, refetch: fetchSubscription };
 }

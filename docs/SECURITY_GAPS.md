@@ -1,3 +1,11 @@
+# Current security status — 2026-09-11
+
+The original findings below describe the pre-extraction baseline. Current code has owned verified sessions/CSRF, strict owner isolation, immutable final notes, protected private file delivery, validated AI output, server usage reservations and separate commerce authority. Tests and production API checks are in `docs/validation`.
+
+Remaining: provider/email activation, browser interaction verification (browser bridge unavailable), healthcare agreements/eligibility, backup/restore and retention operational exercises, distributed perimeter throttling, PDF malware scanning/OCR, and a formal clinical/retrieval evaluation. Four moderate dependency findings remain after compatible security updates; no high/critical findings remain. Supabase identity disablement must also revoke/disable owned sessions; external token revocation alone is not assumed to invalidate an owned session.
+
+## Historical baseline findings
+
 # Security gaps — code evidence, not compliance certification
 
 | ID | Finding / evidence | Priority | Treatment / phase |

@@ -1,9 +1,10 @@
+import { toast } from "sonner";
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { Search, X, FileText, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -64,13 +65,11 @@ export default function CPTCodeSelector({ open, onClose, onGenerate, isGeneratin
     if (!customCode.trim()) return;
     setIsLooking(true);
     setLookupResult(null);
-    const result = await base44.integrations.Core.InvokeLLM({
-      prompt: `Describe CPT code ${customCode.trim()} for a psychiatry/mental health/behavioral health billing context. Provide: the official code name, what type of clinical encounter it represents, documentation requirements, and typical session type. Be concise (2-3 sentences max).`,
-      add_context_from_internet: true,
-      model: "gemini_3_flash",
-    });
+    try {
+    const result = await neurosync.ai.reference("cpt", customCode.trim());
     setLookupResult({ code: customCode.trim(), label: result.split(".")[0].substring(0, 60), description: result });
-    setIsLooking(false);
+
+    } catch (error) { toast.error(error.message || "Code lookup failed"); } finally { setIsLooking(false); }
   };
 
   const addCustom = () => {

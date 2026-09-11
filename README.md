@@ -1,39 +1,40 @@
-**Welcome to your Base44 project** 
+# NeuroSync
 
-**About**
+Owned React/Vite clinical workspace with a TypeScript API, PostgreSQL authorization and persistence, provider-neutral AI orchestration, and replaceable authentication/commerce adapters.
 
-View and Edit  your app on [Base44.com](http://Base44.com) 
+Production: https://neurosync-navy.vercel.app
 
-This project contains everything you need to run your app locally.
+The owned runtime is deployed. **Live email authentication, AI and payments still require account/provider activation.** This repository does not claim healthcare regulatory compliance. See [production status](docs/PRODUCTION_STATUS.md) and [feature parity](docs/FEATURE_PARITY_MATRIX.md) before treating a workflow as validated.
 
-**Edit the code in your local development environment**
+## Development and checks
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+Use Node 24 and PostgreSQL 17. Copy `.env.example` to ignored `.env.local`; configure separate runtime and offline migration connections. No Base44 credentials are required.
 
-**Prerequisites:** 
-
-1. Clone the repository using the project's Git URL 
-2. Navigate to the project directory
-3. Install dependencies: `npm install`
-4. Create an `.env.local` file and set the right environment variables
-
-```
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url
-
-e.g.
-VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6
-VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
+```sh
+npm ci
+npm run db:migrate
+npm run dev:api
+# In another terminal:
+npm run dev
 ```
 
-Run the app: `npm run dev`
+```sh
+npm run build
+npm run lint
+npm run typecheck
+npm test
+```
 
-**Publish your changes**
+`npm test` uses a private, temporary synthetic PostgreSQL cluster and refuses existing or remote database targets. Full setup: [local development](docs/LOCAL_DEVELOPMENT.md). Configuration: [environment variables](docs/ENVIRONMENT_VARIABLES.md).
 
-Open [Base44.com](http://Base44.com) and click on Publish.
+## Ownership boundaries
 
-**Docs & Support**
+- `server/`: authentication, owned API, transactions, records, conversations, SOAP, knowledge and billing.
+- `server/ai/`: versioned prompts, runtime output schemas, provider adapters and vector boundary.
+- `db/migrations/`: authoritative additive SQL; original migrations remain immutable. Deployed schemas are `neurosync`, `neurosync_auth` and `neurosync_migrations`.
+- `src/`: existing React/Vite product and same-origin owned API client.
+- `api/`: Vercel Fetch entry point; `server/index.ts` is the portable Node HTTP entry point.
+- `tests/`: actual PostgreSQL isolation, HTTP/session tests and deterministic AI/Stripe fixtures.
+- `docs/`: baseline, architecture, extraction inventory, decisions and verification evidence.
 
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
-
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+Historical `base44/` source remains for migration provenance and is excluded from production deployment. Neither the SDK nor the build plugin is installed. Browser and backend runtime source contain no Base44 dependency.

@@ -1,3 +1,5 @@
+> Updated implementation/deployment status is in [PRODUCTION_STATUS.md](PRODUCTION_STATUS.md). This document retains the original reconnaissance/target rationale; historical “planned” descriptions are superseded by the feature parity matrix.
+
 # Current architecture
 
 Evidence baseline: 4bdb09e. This is a code audit, not a claim about live deployment state.

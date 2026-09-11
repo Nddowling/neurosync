@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from "react";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, UserPlus, ChevronLeft, Check, Loader2, User } from "lucide-react";
+import { Search, UserPlus, ChevronLeft, Check, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 
 const APPT_TYPES = [
@@ -86,12 +86,12 @@ export default function NewAppointmentModal({ open, onClose, patients, initialDa
   const handleCreatePatient = async () => {
     if (!newPatient.first_name || !newPatient.last_name) return;
     setSaving(true);
-    const user = await base44.auth.me();
+    const user = await neurosync.auth.me();
     const code = `PT-${Date.now().toString().slice(-5)}`;
-    const res = await base44.functions.invoke("supabase", {
+    const res = await neurosync.functions.invoke("records", {
       action: "insert",
       table: "patients",
-      data: { ...newPatient, patient_code: code, clinician_email: user.email },
+      data: { ...newPatient, patient_code: code },
     });
     const created = res?.data?.data?.[0];
     setSaving(false);
@@ -104,7 +104,7 @@ export default function NewAppointmentModal({ open, onClose, patients, initialDa
   const handleSchedule = async () => {
     if (!selectedPatient) return;
     setSaving(true);
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "insert",
       table: "patient_appointments",
       data: {

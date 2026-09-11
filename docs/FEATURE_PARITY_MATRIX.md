@@ -1,34 +1,33 @@
 # Feature parity matrix
 
-Phase 2 adds tested database isolation and a patient API foundation. All product workflows remain unmigrated; the existing frontend still calls Base44.
+Updated 2026-09-11. “Implemented” means owned code exists; live vendor-dependent workflows remain pending activation. Original caller inventory is retained in BASE44_EXTRACTION_MAP.md. Do not equate removal of imports with completed live feature validation.
 
-Source-observed behavior at 4bdb09e; live behavior unverified. No feature is complete merely because it renders.
+| Feature | Owned replacement and status | Evidence | Remaining gaps |
+|---|---|---|---|
+| Landing | Existing React page, owned favicon/login | Build, deployed HTML | Browser interaction verification unavailable in this session |
+| Authentication/account | Owned sessions, CSRF, profile fields, Supabase PKCE email + OIDC adapters | Real password/session/expiry/logout and ownership tests; production session smoke | First email deferred; Supabase redirect configuration and live email round-trip pending |
+| Dashboard | Owned note/session/appointment queries | API/database tests, build | Visual aggregate checks pending |
+| Patients | Whitelisted DTO/repository CRUD | Ownership, date and validation tests | Production UI interaction checks pending |
+| Patient detail | Owned patient and related records | Foreign-parent rejection and owner isolation | UI interaction checks pending |
+| Medication/goal/billing records | Explicit field/status/money mapping | Goal enum, currency and ownership tests | UI interaction checks pending |
+| Consult/conversation creation | Owned conversation + patient session | Persistence and patient linkage tests | Live model credentials pending |
+| Conversation history | Server-side ordered messages; active ID only in localStorage | Replay, ownership and reload tests | List currently bounded to 200 conversations |
+| Clinical AI | Versioned prompt, provider adapters, owned evidence retrieval | Three provider transport contracts, synthetic orchestration | Live inference/evaluation pending credentials |
+| SOAP engine | Structured output, billing contexts, atomic draft + usage | Crisis/combined/EM/therapy branch, foreign-parent, malformed output and replay tests | Live model quality evaluation pending |
+| CPT selection | Presets preserved; owned reference task | Typecheck, billing branch tests | Live lookup and licensed code verification pending |
+| ICD workflow | Presets + schema-validated draft codes | Typecheck, SOAP schema tests | No authoritative licensed code validation service |
+| Clinical notes | Unified clinical body + metadata; finalized immutability; version snapshots | Atomic save/replay/finalization tests | Explicit amendment UX not implemented; existing copy/print retained |
+| Medication reference | Owned task prompt/provider route | Transport contract tests | Live provider and clinical evaluation pending |
+| DSM reference | Owned diagnostic overview prompt | Build and adapter contracts | Proprietary criteria/corpus not supplied; licensing review remains |
+| Knowledge uploads/storage | Validated PDF parser, private PostgreSQL bytes, authenticated download | Owned deployment smoke and database tests | 2 MiB/100-page limit, no OCR or malware scanner |
+| Knowledge RAG | Version snapshots, chunks, local lexical vectors + full-text evidence | Retrieval isolation, deletion, deterministic embedding tests | Not learned semantic embeddings; 2,000 vector-candidate bound; retrieval quality evaluation needed |
+| Calendar | Existing screens, owned date/time/duration/status records | Schema mapping, owner isolation, production appointment smoke | Timezone conversion/DST UX evaluation pending |
+| Subscription display | Owned server entitlements | Database authority tests | Payment credentials pending |
+| Plan limits | Free 5 consult messages / 3 SOAP notes, paid plans centralized server-side | Reservation/idempotency/release tests | Load and distributed perimeter validation pending |
+| Usage metering | Owned monthly event ledger and reservations | Failed AI releases quota; repeated completed generation not recounted | External token/cost accounting not configured |
+| Stripe checkout | Server-controlled prices and return URLs; owned customer map | Typecheck, server validation | Live/test Stripe keys/price IDs missing; no checkout round-trip yet |
+| Stripe webhook | Signature verification, event dedupe, canonical subscription state, separate commerce role | Commerce isolation, invalid signatures, replay and canonical out-of-order state fixtures | Live/test provider webhook delivery still pending |
+| Audit | Append-only owner-scoped metadata audit; clinical bodies excluded | Privilege, RLS, definer-shadowing and mutation tests | Read/export coverage and retention operations need broader audit |
+| External MCP OAuth | Removed unused Base44 consent source | Source inventory: no corresponding server in repository | External MCP server is not implemented |
 
-| Feature | Current state | Base44 dependency | Target implementation | Migration status | Test/validation | Known gaps |
-|---|---|---|---|---|---|---|
-| Landing | Implemented public page | Auth status/login; remote favicon | Preserved page and owned login | Not started | Visual + navigation | No live session checked |
-| Authentication | Hosted settings + SDK | me/isAuthenticated/redirect/logout | OIDC adapter, opaque sessions | Not started | Session expiry/revocation/CSRF/forgery | No owned auth implementation |
-| Dashboard | Recent entities + appointments | ConsultSession/ClinicalNote + supabase | Owned aggregates/repositories | Not started | Counts, ordering, ownership | Metadata/body split; session creation agent-dependent |
-| Patients | List/search/create | supabase; auth.me | Owned patient API | Not started | CRUD + ownership + field mappings | SQL lacks UI fields |
-| Patient Detail | Profile/edit; six related tabs | supabase | Owned related records | Not started | Cross-clinician joins; read/update/delete | Related identifiers not tenant-bound in SQL |
-| Patient medications/goals/billing | Create/list/delete; goals status | supabase | Owned domain repositories | Not started | Enum/field/amount mapping and ownership | UI/SQL schema drift |
-| Consult | Chat/status/typewriter/sources | agents + trackUsage | Owned conversation orchestration | Not started | Send/reload/retry/history | Meter is per message |
-| Conversation creation | Explicit new or first send | createConversation | SQL conversation service | Not started | Metadata and duplicate handling | First-message title may contain PHI |
-| Conversation history | List/get/subscribe; active ID locally | agents | SQL messages + refresh/stream contract | Not started | Reload/order/ownership/unsubscribe | Session linkage incomplete |
-| AI clinical consultation | Hosted agent tools and instructions | clinicalAssistant | Versioned gateway and tool policies | Not started | Clinical synthetic fixtures + adapters | No owned model config or evidence validation |
-| SOAP generation | Two prompts, billing-aware consult | InvokeLLM; ClinicalNote; supabase | Owned SOAP engine + atomic save | Not started | All billing branches, missing fields, persistence | Crisis branch shadowed; output unvalidated |
-| CPT selection | Preset, multi-select, AI lookup | InvokeLLM + internet context | Owned lookup/task adapter | Not started | Combined/crisis/custom codes | Licensing and correctness review |
-| ICD workflow | Local presets + generated codes | SOAP InvokeLLM | Owned structured coding draft | Not started | Presets + validated output + review | Codes not authoritative claims |
-| Clinical notes | Metadata list/finalize; body rehydrate; copy/print | ClinicalNote + supabase | Single authoritative note + versions | Not started | Atomic save/reload/finalize/export audit | Persistence can fail while metadata succeeds |
-| Medication reference | Query + typewriter | InvokeLLM | analyzeMedication | Not started | Adapter contract + safe rendering | No formulary data store |
-| DSM reference | Preset categories + AI query | InvokeLLM | Owned evidence/reference task | Not started | Source/permission/license checks | Licensed corpus not present |
-| Knowledge Base | Manual CRUD, PDF upload/extract | entities + Core upload/extract + agent read | Document/version/chunk/embedding/citation | Not started | Upload restrictions, retrieval and isolation | No owned RAG/storage/parser |
-| Calendar | Month/week views, schedule/list | supabase | Owned appointments + patient service | Not started | Date/time/timezone/status/ownership | UI date+time vs SQL scheduled_at |
-| Subscription page | Plan cards, checkout and promo | getSubscription/createCheckout | Owned commerce API | Not started | Checkout URLs and plan display | No cancellation portal implementation |
-| Plan limits | Duplicated 5/3 free, paid unlimited | hook + trackUsage | Central server plan config | Not started | Boundary and inactive-plan tests | Client fallback and status holes |
-| Usage metering | Calendar-month read/update | UserSubscription | Atomic reservations/ledger | Not started | Concurrent requests/replay/reset | SOAP page unmetered |
-| Stripe checkout | Fixed prices plus promo price creation | createCheckout | Stripe adapter + server price config | Not started | Mock request/minimal metadata | Hosted price validity unverified |
-| Stripe webhook handling | Signature checked, two event families | service-role UserSubscription | Transactional event ledger | Not started | Invalid signature/replay/retry/order | Errors acknowledged; duplicate resets |
-| Account/user functionality | Profile display, ToS, logout | auth User extension | Owned clinician profile/session | Not started | Role immutability/ToS audit | No dedicated account page |
-| Audit logging | SQL write triggers only, not wired | Planned database | Protected audit writes + API reads | Not started | Immutability, actor isolation, no bodies | Existing audit grants contradict comments |
-| OAuth/MCP consent | Unrouted page source | Direct Base44 platform endpoints | Owned protocol if retained | Not started | Consent replay and redirect validation | Server/config absent; not claimed as working feature |
+Current deployment details and activation requirements: [PRODUCTION_STATUS.md](PRODUCTION_STATUS.md).

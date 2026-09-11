@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Search, User, Phone, Calendar, ChevronRight, Loader2 } from "lucide-react";
+import { neurosync } from "@/api/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Plus, Search, User, Phone, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,11 +17,11 @@ export default function Patients() {
   const { data: patients = [], isLoading } = useQuery({
     queryKey: ["patients"],
     queryFn: async () => {
-      const user = await base44.auth.me();
-      const res = await base44.functions.invoke("supabase", {
+      const user = await neurosync.auth.me();
+      const res = await neurosync.functions.invoke("records", {
         action: "select",
         table: "patients",
-        query: { clinician_email: user.email },
+        query: {},
       });
       return res.data?.data || [];
     },

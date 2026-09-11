@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import {
   Stethoscope,
   MessageSquare,
@@ -37,11 +37,11 @@ export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
+    neurosync.auth.me().then(setUser).catch(() => {});
   }, []);
 
   const handleLogout = () => {
-    base44.auth.logout();
+    neurosync.auth.logout();
   };
 
   return (
@@ -97,15 +97,15 @@ export default function Layout({ children, currentPageName }) {
             })}
           </nav>
 
-          {/* HIPAA Badge */}
+          {/* Workspace security notice */}
           <div className="mx-3 mb-3">
             <div className="px-4 py-3 rounded-xl bg-teal-50 border border-teal-100">
               <div className="flex items-center gap-2">
                 <Shield className="w-4 h-4 text-teal-600 flex-shrink-0" />
                 <div>
-                  <p className="text-[11px] font-semibold text-teal-700 uppercase tracking-wide">HIPAA Certified</p>
+                  <p className="text-[11px] font-semibold text-teal-700 uppercase tracking-wide">Access controlled</p>
                   <p className="text-[11px] text-teal-600 mt-0.5 leading-relaxed">
-                    End-to-end encrypted &amp; compliant
+                    Authenticated clinical workspace
                   </p>
                 </div>
               </div>

@@ -1,0 +1,4 @@
+
+> neurosync@0.0.0 typecheck
+> tsc -p tsconfig.server.json && tsc -p ./jsconfig.json
+

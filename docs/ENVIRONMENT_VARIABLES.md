@@ -1,32 +1,25 @@
 # Environment variables
 
-Never expose server credentials with VITE_. No real values were read or recorded during audit. Existing README examples are vendor templates, not verified deployment settings.
+`.env.example` is the current template. All credentials belong only in server/offline configuration; never use `VITE_` for secrets. The browser uses same-origin API calls and HttpOnly session cookies. No Base44 variable is required.
 
-| Variable | Location | Purpose / status |
+| Variables | Boundary | Purpose |
 |---|---|---|
-| VITE_BASE44_APP_ID | Legacy browser build | Required legacy app identity |
-| VITE_BASE44_APP_BASE_URL | Legacy browser/dev proxy | Hosted API origin |
-| VITE_BASE44_FUNCTIONS_VERSION | Legacy browser | Optional hosted function version |
-| BASE44_LEGACY_SDK_IMPORTS | Legacy build | Legacy import transformation flag |
-| BASE44_APP_ID | Legacy Deno checkout | Commerce metadata; remove |
-| SUPABASE_URL | Legacy Deno function | REST service origin |
-| SUPABASE_SERVICE_ROLE_KEY | Legacy Deno function secret | Privileged REST access; replace |
-| STRIPE_SECRET_KEY | Server only | Commerce adapter, never browser |
-| STRIPE_WEBHOOK_SECRET | Server only | Raw webhook signature verification |
-| DATABASE_URL | Owned API secret | Non-owner app_rw connection only |
-| MIGRATION_DATABASE_URL | Offline migration secret | Owner connection; never runtime |
-| TEST_DATABASE_URL / TEST_MIGRATION_DATABASE_URL | Synthetic tests | Explicit isolated database; never production |
-| PORT | Owned API | Local port, planned default 3001 |
-| NODE_ENV | Server | Environment; production must reject development auth |
-| APP_ORIGIN | Server, planned | Allowed origin and checkout/redirect base |
-| OIDC_ISSUER / OIDC_CLIENT_ID / OIDC_CLIENT_SECRET | Auth adapter, planned | Issuer identity and confidential client |
-| AI_CLINICAL_PROVIDER / AI_CLINICAL_MODEL | AI config, planned | Task routing |
-| AI_SOAP_PROVIDER / AI_SOAP_MODEL | AI config, planned | SOAP task routing |
-| AI_REFERENCE_PROVIDER / AI_REFERENCE_MODEL | AI config, planned | Reference task routing |
-| OPENAI_API_KEY / ANTHROPIC_API_KEY / GOOGLE_API_KEY | Adapter secrets, planned | Only chosen/approved providers |
-| STRIPE_PRICE_PROFESSIONAL / STRIPE_PRICE_ENTERPRISE / STRIPE_PRICE_PROMO | Server, planned | Configured existing prices; no dynamic creation |
-| STORAGE_ADAPTER / STORAGE_ROOT | Server, planned | Private local or replaceable storage |
+| DATABASE_URL | Web API | Nonowner `app_rw` connection. Supabase production uses the IPv4 transaction pooler. |
+| DATABASE_SSL_CA_BASE64 | Database transport | Base64 PEM CA. Certificate and hostname verification stay enabled. |
+| MIGRATION_DATABASE_URL | Offline operator only | Schema migrations and clinician invitation provisioning. Never deploy this credential. |
+| APP_ORIGIN | Server | Exact permitted browser origin, authentication callback base, checkout return URLs. Production: `https://neurosync-navy.vercel.app`. |
+| NODE_ENV, PORT | Server | Production security behavior; local listener port (3001 default). |
+| AUTH_MODE | Authentication | `supabase` or `oidc` in production; `local` is restricted to loopback development. |
+| SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY | Supabase auth adapter | Public project key is used server-side for PKCE email authentication. No privileged Supabase service-role key is needed by the runtime. |
+| OIDC_ISSUER, OIDC_CLIENT_ID, OIDC_CLIENT_SECRET | OIDC adapter | Alternative external identity provider. Map approved issuer/subject identities offline. |
+| AI_CLINICAL_PROVIDER, AI_CLINICAL_MODEL | AI config | Clinical consultation route. |
+| AI_SOAP_PROVIDER, AI_SOAP_MODEL | AI config | Structured note generation route. |
+| AI_REFERENCE_PROVIDER, AI_REFERENCE_MODEL | AI config | Medication, diagnostic and CPT reference route. |
+| OPENAI_API_KEY, ANTHROPIC_API_KEY, GOOGLE_API_KEY | Provider adapter | Configure only the selected vendors. Models are centralized in server environment settings. |
+| BILLING_DATABASE_URL | Commerce adapter | Dedicated `neurosync_billing` login; has no clinical-table access. |
+| STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET | Stripe adapter | Checkout API and raw-body webhook verification. |
+| STRIPE_PROFESSIONAL_PRICE_ID, STRIPE_ENTERPRISE_PRICE_ID | Stripe adapter | Existing approved recurring prices; browser cannot supply an arbitrary price or return URL. |
+| TEST_DATABASE_URL, TEST_MIGRATION_DATABASE_URL | Test harness only | Automatically generated private temporary cluster; rejects existing/remote database targets. |
+| POSTGRES_PASSWORD | Optional local Docker | Local development owner password; not used by hosted runtime. |
 
-Target .env.local is gitignored. Proposed variables are not yet promises of implemented behavior. PHI deployment also requires TLS/certificate/retention and contractual configuration, documented separately. No Base44 variables in final target runtime.
-
-Implemented in phase 2: DATABASE_URL, MIGRATION_DATABASE_URL, PORT; .env.local loading via Node for dev:api/db:migrate. POSTGRES_PASSWORD is only used by optional local Compose. PG_BIN selects local PostgreSQL tools for the isolated test harness. TEST_DATABASE_URL and TEST_MIGRATION_DATABASE_URL are generated by npm test, not user production configuration. Auth/AI/storage/commerce adapter settings remain planned. NODE_ENV is reserved; no development-auth bypass exists.
+Blank AI/payment settings leave those operations explicitly unavailable. Do not put fake responses in the production adapter to make readiness appear successful. Supabase's redirect allowlist and email delivery are external settings, not these environment variables.

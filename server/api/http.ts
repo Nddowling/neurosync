@@ -9,7 +9,7 @@ const server = createServer({ requestTimeout: 15000, headersTimeout: 10000, maxH
     for await (const chunk of incoming.iterator({ destroyOnReturn: false })) {
       const value = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as Uint8Array);
       bytes += value.length;
-      if (bytes > MAX_BODY_BYTES) {
+      if (bytes > (incoming.url === '/api/knowledge/upload' ? 3000000 : incoming.url === '/api/ai/soap' ? 512000 : MAX_BODY_BYTES)) {
         outgoing.writeHead(413, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'Connection': 'close' });
         outgoing.end('{"error":"payload_too_large"}');
         return;
@@ -27,7 +27,11 @@ const server = createServer({ requestTimeout: 15000, headersTimeout: 10000, maxH
       method, headers, ...(['GET','HEAD'].includes(method) ? {} : { body: Buffer.concat(chunks) }),
     });
     const response = await app(request);
-    outgoing.writeHead(response.status, Object.fromEntries(response.headers));
+    const responseHeaders = Object.fromEntries(response.headers);
+    delete responseHeaders["set-cookie"];
+    const cookies = response.headers.getSetCookie();
+    if (cookies.length) outgoing.setHeader("set-cookie", cookies);
+    outgoing.writeHead(response.status, responseHeaders);
     outgoing.end(Buffer.from(await response.arrayBuffer()));
   } catch {
     if (!outgoing.headersSent) outgoing.writeHead(500, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });

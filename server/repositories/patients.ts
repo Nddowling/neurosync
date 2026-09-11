@@ -12,9 +12,9 @@ export class Patients {
       throw new Error('Invalid pagination');
     }
     return withIdentity(this.pool, identity, async client => {
-      const result = await client.query<Patient>(`select ${projection} from public.patients
+      const result = await client.query<Patient>(`select ${projection} from neurosync.patients
         where owner_uid = $1 order by created_at desc, id desc limit $2 offset $3`, [identity.subject, limit, offset]);
-      await client.query(`insert into public.audit_log(actor_uid, action, table_name, row_id)
+      await client.query(`insert into neurosync.audit_log(actor_uid, action, table_name, row_id)
         select $1, 'read', 'patients', unnest($2::text[])`, [identity.subject, result.rows.map(row => row.id)]);
       return result.rows;
     });
@@ -22,8 +22,8 @@ export class Patients {
   async get(identity: Identity, id: string): Promise<Patient | null> {
     recordId.parse(id);
     return withIdentity(this.pool, identity, async client => {
-      const result = await client.query<Patient>(`select ${projection} from public.patients where id=$1 and owner_uid=$2`, [id, identity.subject]);
-      if (result.rows[0]) await client.query(`insert into public.audit_log(actor_uid, action, table_name, row_id)
+      const result = await client.query<Patient>(`select ${projection} from neurosync.patients where id=$1 and owner_uid=$2`, [id, identity.subject]);
+      if (result.rows[0]) await client.query(`insert into neurosync.audit_log(actor_uid, action, table_name, row_id)
         values ($1,'read','patients',$2)`, [identity.subject, id]);
       return result.rows[0] ?? null;
     });
@@ -31,7 +31,7 @@ export class Patients {
   async create(identity: Identity, input: unknown): Promise<Patient> {
     const data = patientCreate.parse(input);
     return withIdentity(this.pool, identity, async client => {
-      const result = await client.query<Patient>(`insert into public.patients
+      const result = await client.query<Patient>(`insert into neurosync.patients
         (owner_uid, ${fields.join(',')}) values ($1,${fields.map((_,i) => `$${i+2}`).join(',')}) returning ${projection}`,
         [identity.subject, ...fields.map(key => data[key] ?? null)]);
       const row = result.rows[0];
@@ -44,7 +44,7 @@ export class Patients {
     const data: PatientInput = patientUpdate.parse(input);
     const keys = fields.filter(key => Object.hasOwn(data, key)); // identifiers from constant allowlist only
     return withIdentity(this.pool, identity, async client => {
-      const result = await client.query<Patient>(`update public.patients set ${keys.map((key,i) => `${key}=$${i+3}`).join(',')}
+      const result = await client.query<Patient>(`update neurosync.patients set ${keys.map((key,i) => `${key}=$${i+3}`).join(',')}
         where id=$1 and owner_uid=$2 returning ${projection}`, [id, identity.subject, ...keys.map(key => data[key])]);
       return result.rows[0] ?? null;
     });
@@ -52,7 +52,7 @@ export class Patients {
   async delete(identity: Identity, id: string): Promise<boolean> {
     recordId.parse(id);
     return withIdentity(this.pool, identity, async client => {
-      const result = await client.query('delete from public.patients where id=$1 and owner_uid=$2', [id, identity.subject]);
+      const result = await client.query('delete from neurosync.patients where id=$1 and owner_uid=$2', [id, identity.subject]);
       return result.rowCount === 1;
     });
   }

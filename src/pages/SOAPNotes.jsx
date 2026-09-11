@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import ClinicalWarningBanner from "@/components/legal/ClinicalWarningBanner";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FileText, Plus, Copy, Download, ChevronDown, Clock, CheckCircle2, Loader2 } from "lucide-react";
+import { FileText, Plus, ChevronDown, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import SOAPNoteForm from "../components/soap/SOAPNoteForm";
 import SOAPNoteView from "../components/soap/SOAPNoteView";
-import { saveClinicalNoteContent, fetchClinicalNoteContent } from "@/lib/clinicalNotes";
 
 export default function SOAPNotes() {
   const [showForm, setShowForm] = useState(false);
@@ -25,7 +24,7 @@ export default function SOAPNotes() {
       const limit = 100;
       let hasMore = true;
       while (hasMore) {
-        const batch = await base44.entities.ClinicalNote.list("-created_date", limit, skip);
+        const batch = await neurosync.entities.ClinicalNote.list("-created_date", limit, skip);
         if (!batch || batch.length === 0) {
           hasMore = false;
         } else {
@@ -39,95 +38,16 @@ export default function SOAPNotes() {
   });
 
   const createNoteMutation = useMutation({
-    mutationFn: async (formData) => {
+    mutationFn: async (/** @type {Record<string,string>} */ formData) => {
       setGenerating(true);
-      const prompt = `You are a board-certified psychiatrist generating a formal psychiatric SOAP note for an EHR. Output must be highly clinical, detailed, and formatted using Markdown. Use tables where specified below.
-
----
-
-SESSION DATA:
-- Session Type: ${formData.note_type}
-- Provider: ${formData.provider_name || "Not specified"}
-- Patient: ${formData.patient_info || "Not specified"}
-- Demographics: ${formData.demographics || "Not specified"}
-- Chief Complaint: ${formData.chief_complaint || "Not specified"}
-- Subjective / HPI: ${formData.subjective || "Not provided"}
-- Objective / MSE notes: ${formData.objective || "Not provided"}
-- Current Medications: ${formData.medications || "None listed"}
-- Additional Notes / Labs: ${formData.additional || "None"}
-- Session Duration: ${formData.session_duration || "45"} minutes
-- CPT Code: ${formData.cpt_code || ""}
-- Pre-selected ICD-10 Codes (include these in your diagnosis table): ${formData.icd_codes || "None pre-selected"}
-
----
-
-Generate each JSON field with detailed Markdown content following these exact standards:
-
-**subjective:** Write a narrative paragraph. Include: chief complaint in patient's own words (use quotes), symptom onset/duration/frequency, sleep, appetite, energy, mood, concentration, functional impairment at work/relationships, psychosocial stressors, medication adherence details, substance use, collateral information if any, PHQ-9/GAD-7 scores if mentioned, and changes since last visit.
-
-**objective:** Start with vital signs if provided. Then include a full MSE as a Markdown table with columns "Domain" and "Findings". Include all domains: Appearance, Behavior, Speech, Mood (patient-reported, in quotes), Affect (range/congruence), Thought Process, Thought Content (SI/HI/delusions/paranoia/obsessions), Perceptual, Cognition, Insight, Judgment. End with "Current Medications:" as a bulleted list with dose/route/frequency.
-
-**assessment:** Write a clinical formulation paragraph first (treatment response, residual symptoms, contributing factors, differential reasoning). Then add a Markdown table of diagnoses with columns "ICD-10" and "Diagnosis". Include Z-codes for psychosocial stressors. End with a severity statement.
-
-**risk_assessment:** Render as a Markdown table with columns "Domain" and "Finding". Rows: Suicidal Ideation, Plan, Intent, Means/Access, Homicidal Ideation, Self-Harm History, Protective Factors, Risk Level. End with one sentence on safety plan status.
-
-**plan:** Use numbered sections with bold headers: 1. Medications, 2. Therapy, 3. Labs, 4. Patient Education, 5. Coordination of Care, 6. Follow-Up. Be specific — include dosing rationale, referral names, what was discussed, and follow-up timeline. End with PHQ/GAD monitoring plan.
-
-**icd_codes:** Comma-separated ICD-10 codes only (e.g. "F33.1, F41.1, Z63.0")`;
-
-      const result = await base44.integrations.Core.InvokeLLM({
-        prompt,
-        model: "claude_sonnet_4_6",
-        response_json_schema: {
-          type: "object",
-          properties: {
-            subjective: { type: "string" },
-            objective: { type: "string" },
-            assessment: { type: "string" },
-            risk_assessment: { type: "string" },
-            plan: { type: "string" },
-            icd_codes: { type: "string" }
-          }
-        }
-      });
-
-      // Write PHI clinical content to the clinical database (best effort —
-      // when unavailable the note still displays but is not persisted)
-      const supabaseNoteId = await saveClinicalNoteContent({
-        note_type: formData.note_type || "soap",
-        subjective: result.subjective,
-        objective: result.objective,
-        assessment: result.assessment,
-        risk_assessment: result.risk_assessment,
-        plan: result.plan,
-        provider_name: formData.provider_name,
-        patient_info: formData.patient_info,
-      });
-
-      // Store only non-PHI metadata in Base44
-      const note = await base44.entities.ClinicalNote.create({
-        note_type: formData.note_type || "soap",
-        icd_codes: result.icd_codes,
-        status: "draft",
-        provider_name: formData.provider_name,
-        session_duration: formData.session_duration,
-        cpt_code: formData.cpt_code,
-        supabase_note_id: supabaseNoteId,
-      });
-
-      // Return enriched note object for immediate display
-      setGenerating(false);
-      return { ...note, subjective: result.subjective, objective: result.objective, assessment: result.assessment, risk_assessment: result.risk_assessment, plan: result.plan };
+      try { return await neurosync.ai.soap({form: formData, codes: (formData.cpt_code || '').split(',').map(code=>code.trim()).filter(Boolean).map(code=>({code})), request_id: crypto.randomUUID()}); }
+      finally { setGenerating(false); }
     },
     onSuccess: (note) => {
       queryClient.invalidateQueries({ queryKey: ["clinical-notes"] });
       setShowForm(false);
       setSelectedNote(note);
-      if (note.supabase_note_id) {
-        toast.success("SOAP note generated");
-      } else {
-        toast.warning("Note generated — clinical database unavailable on your current plan. Copy or print it now; only billing metadata was saved.");
-      }
+      toast.success("SOAP note generated and saved");
     },
     onError: () => {
       setGenerating(false);
@@ -136,7 +56,7 @@ Generate each JSON field with detailed Markdown content following these exact st
   });
 
   const finalizeNote = async (noteId) => {
-    await base44.entities.ClinicalNote.update(noteId, { status: "finalized" });
+    await neurosync.entities.ClinicalNote.update(noteId, { status: "finalized" });
     queryClient.invalidateQueries({ queryKey: ["clinical-notes"] });
     setSelectedNote(prev => prev ? { ...prev, status: "finalized" } : prev);
     toast.success("Note finalized");
@@ -144,15 +64,7 @@ Generate each JSON field with detailed Markdown content following these exact st
 
   // Load full clinical content from the clinical database when a note is selected
   const handleSelectNote = async (note) => {
-    const clinical = note.supabase_note_id
-      ? await fetchClinicalNoteContent(note.supabase_note_id)
-      : null;
-    if (clinical) {
-      setSelectedNote({ ...note, ...clinical });
-    } else {
-      setSelectedNote(note);
-      toast.warning("Note content unavailable — the clinical database connection is restricted on your current plan.");
-    }
+    setSelectedNote(note);
   };
 
   const statusColors = {

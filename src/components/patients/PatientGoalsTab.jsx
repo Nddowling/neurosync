@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { Target, Plus, Trash2, CheckCircle2, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,7 @@ export default function PatientGoalsTab({ patientId }) {
   const { data: goals = [], isLoading } = useQuery({
     queryKey: ["patient_goals", patientId],
     queryFn: async () => {
-      const res = await base44.functions.invoke("supabase", {
+      const res = await neurosync.functions.invoke("records", {
         action: "select", table: "patient_goals", query: { patient_id: patientId },
       });
       return res.data?.data || [];
@@ -25,7 +25,7 @@ export default function PatientGoalsTab({ patientId }) {
   });
 
   const addGoal = async () => {
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "insert", table: "patient_goals",
       data: { ...form, patient_id: patientId },
     });
@@ -37,7 +37,7 @@ export default function PatientGoalsTab({ patientId }) {
 
   const toggleGoal = async (goal) => {
     const newStatus = goal.status === "achieved" ? "active" : "achieved";
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "update", table: "patient_goals",
       query: { id: goal.id }, data: { status: newStatus },
     });
@@ -45,7 +45,7 @@ export default function PatientGoalsTab({ patientId }) {
   };
 
   const removeGoal = async (id) => {
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "delete", table: "patient_goals", query: { id },
     });
     queryClient.invalidateQueries({ queryKey: ["patient_goals", patientId] });
@@ -98,7 +98,7 @@ export default function PatientGoalsTab({ patientId }) {
   );
 }
 
-function GoalRow({ goal, onToggle, onRemove, faded }) {
+function GoalRow({ goal, onToggle, onRemove, faded = false }) {
   return (
     <div className={`flex items-start gap-3 p-3 bg-white rounded-xl border border-gray-100 ${faded ? "opacity-60" : ""}`}>
       <button onClick={() => onToggle(goal)} className="mt-0.5 flex-shrink-0">

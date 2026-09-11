@@ -8,7 +8,7 @@ import { RateLimit } from '../security/rate-limit.js';
 import { safeLogger, type SafeLogger } from '../security/log.js';
 
 export const MAX_BODY_BYTES = 32768;
-async function readJson(request: Request): Promise<unknown> {
+export async function readJson(request: Request, maxBytes = MAX_BODY_BYTES): Promise<unknown> {
   if (request.headers.get('content-type')?.split(';')[0]?.trim() !== 'application/json') throw new ApiError(415, 'unsupported_media_type');
   const reader = request.body?.getReader();
   if (!reader) throw new ApiError(400, 'invalid_request');
@@ -19,7 +19,7 @@ async function readJson(request: Request): Promise<unknown> {
       const chunk = await reader.read();
       if (chunk.done) break;
       size += chunk.value.byteLength;
-      if (size > MAX_BODY_BYTES) {
+      if (size > maxBytes) {
         await reader.cancel();
         throw new ApiError(413, 'payload_too_large');
       }
@@ -33,7 +33,7 @@ const pagination = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(50),
   offset: z.coerce.number().int().min(0).max(100000).default(0),
 }).strict();
-export function createApp(options: { patients: Pick<Patients, 'list' | 'get' | 'create' | 'update' | 'delete'>; verifier?: IdentityVerifier; logger?: SafeLogger; limiter?: RateLimit }) {
+export function createApp(options: { patients: Pick<Patients, 'list' | 'get' | 'create' | 'update' | 'delete'>; verifier?: IdentityVerifier; logger?: SafeLogger; limiter?: RateLimit; auth?: { route(request: Request): Promise<Response | null> }; route?: (request: Request, identity: Identity) => Promise<Response | null> }) {
   const verifier = options.verifier ?? denyAuthentication;
   const log = options.logger ?? safeLogger;
   const limiter = options.limiter ?? new RateLimit();
@@ -42,15 +42,24 @@ export function createApp(options: { patients: Pick<Patients, 'list' | 'get' | '
     const headers = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff',
       'Referrer-Policy': 'no-referrer', 'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'",
       'X-Frame-Options': 'DENY', 'X-Request-Id': requestId };
+    const complete = (response: Response) => {
+      for (const [name,value] of Object.entries(headers)) response.headers.set(name,value);
+      log({ requestId, status: response.status, event: response.status >= 500 ? 'request_failed' : 'request_complete' });
+      return response;
+    };
     let status = 200;
     let data: unknown;
     try {
       const url = new URL(request.url);
+      const authResponse = await options.auth?.route(request);
+      if (authResponse) return complete(authResponse);
       if (url.pathname === '/api/health' && request.method === 'GET') {
         data = { status: 'ok', service: 'neurosync-api' }; // liveness, not deployment/auth readiness
       } else {
         const identity = await Identity.authenticate(request, verifier);
         if (!limiter.allow(identity.subject)) throw new ApiError(429, 'rate_limited');
+        const custom = await options.route?.(request, identity);
+        if (custom) return complete(custom);
         const match = /^\/api\/patients(?:\/([^/]+))?$/.exec(url.pathname);
         if (!match) throw new ApiError(404, 'not_found');
         const id = match[1] ? recordId.parse(match[1]) : undefined;
@@ -83,7 +92,6 @@ export function createApp(options: { patients: Pick<Patients, 'list' | 'get' | '
       status = failure.status;
       data = { error: failure.code, requestId };
     }
-    log({ requestId, status, event: status >= 500 ? 'request_failed' : 'request_complete' });
-    return status === 204 ? new Response(null, { status, headers }) : Response.json(data, { status, headers });
+    return complete(status === 204 ? new Response(null, { status }) : Response.json(data, { status }));
   };
 }

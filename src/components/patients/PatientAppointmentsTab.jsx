@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { Calendar, Plus, Trash2, Clock } from "lucide-react";
 
 const LOCATIONS = ["Office", "Telehealth", "Phone", "Hospital", "Home Visit", "Other"];
@@ -35,7 +35,7 @@ export default function PatientAppointmentsTab({ patientId }) {
   const { data: appointments = [], isLoading } = useQuery({
     queryKey: ["patient_appointments", patientId],
     queryFn: async () => {
-      const res = await base44.functions.invoke("supabase", {
+      const res = await neurosync.functions.invoke("records", {
         action: "select", table: "patient_appointments", query: { patient_id: patientId },
       });
       return res.data?.data || [];
@@ -43,7 +43,7 @@ export default function PatientAppointmentsTab({ patientId }) {
   });
 
   const addAppointment = async () => {
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "insert", table: "patient_appointments",
       data: { ...form, patient_id: patientId, duration_minutes: Number(form.duration_minutes) || 50 },
     });
@@ -54,7 +54,7 @@ export default function PatientAppointmentsTab({ patientId }) {
   };
 
   const removeAppointment = async (id) => {
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "delete", table: "patient_appointments", query: { id },
     });
     queryClient.invalidateQueries({ queryKey: ["patient_appointments", patientId] });
@@ -133,7 +133,7 @@ export default function PatientAppointmentsTab({ patientId }) {
   );
 }
 
-function AptRow({ apt, onRemove, statusColors, faded }) {
+function AptRow({ apt, onRemove, statusColors, faded = false }) {
   return (
     <div className={`flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 ${faded ? "opacity-60" : ""}`}>
       <div className="w-10 h-10 rounded-xl bg-blue-50 flex flex-col items-center justify-center flex-shrink-0">
