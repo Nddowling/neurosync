@@ -42,3 +42,11 @@ The in-app browser runtime could not initialize (`browser-client is not trusted`
 `npm ci`, build, lint and full typecheck pass. Typecheck: zero errors. Integration/unit suite: 40 passing tests. Compatible security updates reduced the audit to four moderate findings; no high or critical findings remain. Major-version dependency upgrades were not forced. The first deployed PDF-parser packaging failure and direct IPv6 connection incompatibility were corrected with explicit native dependencies, lazy parser loading and the verified IPv4 transaction pooler.
 
 Supabase's security advisor identified one NeuroSync-specific mutable search path inherited from the original timestamp trigger. Additive migration 0012 pins it to pg_catalog; unrelated existing public-schema findings were not modified. [Advisor remediation reference](https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable).
+
+## Release record
+
+Application commit: `d1a5e4a` on `codex/base44-extraction`. Final production deployment: `neurosync-h0ibe5qzy-nicks-projects-0994fdbd.vercel.app`, aliased to `https://neurosync-navy.vercel.app`. Post-deployment health/config endpoints returned 200, anonymous profile access returned 401, and the page title is NeuroSync.
+
+Vercel deployment is manual for this migration. The automatically added Git connection was disconnected so repository pushes do not generate preview builds or deploy the old main branch. Source remains in GitHub; reconnect CI/CD after choosing the desired production branch and activation gates.
+
+The follow-up Supabase security-advisor check returned no NeuroSync-schema findings. Pre-existing findings in unrelated schemas remain outside this migration.
