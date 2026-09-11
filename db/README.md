@@ -1,3 +1,5 @@
+> Historical database proposal. The adapter does not yet use this schema; audit permissions below are not enforced by 0001–0003 alone. References to /infra and BAA coverage are unverified. See ../docs/SECURITY_GAPS.md and ../docs/HIPAA_DEPLOYMENT_REQUIREMENTS.md.
+
 # NeuroSync database (Cloud SQL / PostgreSQL)
 
 This is the **PHI store**. It runs on **Cloud SQL for PostgreSQL** under the Google
