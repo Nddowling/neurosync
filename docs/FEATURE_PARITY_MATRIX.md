@@ -1,24 +1,24 @@
 # Feature parity matrix
 
-Updated 2026-09-11. “Implemented” means owned code exists; live vendor-dependent workflows remain pending activation. Original caller inventory is retained in BASE44_EXTRACTION_MAP.md. Do not equate removal of imports with completed live feature validation.
+Updated 2026-09-11. “Implemented” means owned code exists; vendor-dependent validation is recorded per workflow. Original caller inventory is retained in BASE44_EXTRACTION_MAP.md. Do not equate removal of imports with completed live feature validation.
 
 | Feature | Owned replacement and status | Evidence | Remaining gaps |
 |---|---|---|---|
 | Landing | Existing React page, owned favicon/login | Build, deployed HTML | Browser interaction verification unavailable in this session |
-| Authentication/account | Owned sessions, CSRF, profile fields, Supabase PKCE email + OIDC adapters | Real password/session/expiry/logout and ownership tests; production session smoke | First email deferred; Supabase redirect configuration and live email round-trip pending |
+| Authentication/account | Owned sessions, CSRF, profile fields, Supabase PKCE email + OIDC adapters | Real password/session/expiry/logout and ownership tests; production session smoke | Administrator password login verified in production; optional Supabase email redirect configuration and email round-trip pending |
 | Dashboard | Owned note/session/appointment queries | API/database tests, build | Visual aggregate checks pending |
 | Patients | Whitelisted DTO/repository CRUD | Ownership, date and validation tests | Production UI interaction checks pending |
 | Patient detail | Owned patient and related records | Foreign-parent rejection and owner isolation | UI interaction checks pending |
 | Medication/goal/billing records | Explicit field/status/money mapping | Goal enum, currency and ownership tests | UI interaction checks pending |
-| Consult/conversation creation | Owned conversation + patient session | Persistence and patient linkage tests | Live model credentials pending |
+| Consult/conversation creation | Owned conversation + patient session | Persistence and patient linkage tests | GPT-5 mini activated; clinical quality evaluation pending |
 | Conversation history | Server-side ordered messages; active ID only in localStorage | Replay, ownership and reload tests | List currently bounded to 200 conversations |
-| Clinical AI | Versioned prompt, provider adapters, owned evidence retrieval | Three provider transport contracts, synthetic orchestration | Live inference/evaluation pending credentials |
-| SOAP engine | Structured output, billing contexts, atomic draft + usage | Crisis/combined/EM/therapy branch, foreign-parent, malformed output and replay tests | Live model quality evaluation pending |
+| Clinical AI | Versioned prompt, provider adapters, owned evidence retrieval | Three provider transport contracts, synthetic orchestration | GPT-5 mini live chat and reload verified; clinical quality evaluation pending |
+| SOAP engine | Structured output, billing contexts, atomic draft + usage | Crisis/combined/EM/therapy branch, foreign-parent, malformed output and replay tests; live GPT-5 mini generation/save/reload/replay | Live model quality evaluation pending |
 | CPT selection | Presets preserved; owned reference task | Typecheck, billing branch tests | Live lookup and licensed code verification pending |
 | ICD workflow | Presets + schema-validated draft codes | Typecheck, SOAP schema tests | No authoritative licensed code validation service |
 | Clinical notes | Unified clinical body + metadata; finalized immutability; version snapshots | Atomic save/replay/finalization tests | Explicit amendment UX not implemented; existing copy/print retained |
-| Medication reference | Owned task prompt/provider route | Transport contract tests | Live provider and clinical evaluation pending |
-| DSM reference | Owned diagnostic overview prompt | Build and adapter contracts | Proprietary criteria/corpus not supplied; licensing review remains |
+| Medication reference | Owned task prompt/provider route | Transport contract tests | GPT-5 mini configured; medication-specific clinical evaluation pending |
+| DSM reference | Owned diagnostic overview prompt | Build, adapter contracts and live diagnostic-reference response | Proprietary criteria/corpus not supplied; licensing review remains |
 | Knowledge uploads/storage | Validated PDF parser, private PostgreSQL bytes, authenticated download | Owned deployment smoke and database tests | 2 MiB/100-page limit, no OCR or malware scanner |
 | Knowledge RAG | Version snapshots, chunks, local lexical vectors + full-text evidence | Retrieval isolation, deletion, deterministic embedding tests | Not learned semantic embeddings; 2,000 vector-candidate bound; retrieval quality evaluation needed |
 | Calendar | Existing screens, owned date/time/duration/status records | Schema mapping, owner isolation, production appointment smoke | Timezone conversion/DST UX evaluation pending |

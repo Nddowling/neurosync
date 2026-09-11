@@ -24,3 +24,15 @@ test('local lexical embeddings are deterministic and have unit norm',async()=>{
  const provider=new LexicalEmbedding();const vector=await provider.embed('sleep monitoring protocol');assert.deepEqual(vector,await provider.embed('sleep monitoring protocol'));
  assert.ok(Math.abs(cosine(vector,vector)-1)<0.00001);assert.equal(cosine(vector,[]),0);
 });
+
+test('GPT-5 mini uses low reasoning with a bounded completion and no stored provider response',async()=>{
+ const transport:typeof fetch=async(_url,init)=>{
+  const body=JSON.parse(String(init?.body));
+  assert.equal(body.model,'gpt-5-mini');assert.equal(body.reasoning_effort,'low');
+  assert.equal(body.max_completion_tokens,8192);assert.equal(body.store,false);
+  assert.deepEqual(body.response_format,{type:'json_object'});
+  assert.equal(body.temperature,undefined);
+  return Response.json({choices:[{message:{content:'{"ok":true}'}}]});
+ };
+ assert.equal(await new HttpProvider('openai','gpt-5-mini','synthetic-key',transport).generate({system:'Owned prompt',input:'Synthetic facts',structured:true}),'{"ok":true}');
+});

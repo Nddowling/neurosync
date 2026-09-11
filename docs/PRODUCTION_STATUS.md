@@ -23,7 +23,7 @@ Frontend routes and existing React/Vite layout remain. SDK/build-plugin runtime 
 
 - The first administrator has been provisioned at the user’s request with a hashed password and active enterprise testing entitlement. Password login uses owned identity storage in Supabase and normal production sessions; administrator role retains clinician data isolation. No email invitation is required for this login.
 - Optional email-link authentication still requires Supabase Auth to allow `https://neurosync-navy.vercel.app/api/auth/supabase-callback` as an additional redirect URL. Preserve other applications' settings in this shared Supabase project. End-to-end email delivery and callback require a selected account and provider configuration.
-- AI provider keys and model selections are not configured. AI endpoints fail closed with `service_unavailable`; no simulated response is served. Configure `AI_CLINICAL_*`, `AI_SOAP_*`, and `AI_REFERENCE_*` plus selected provider API keys. Live inference has not been validated.
+- GPT-5 mini is configured for clinical, SOAP and reference tasks using the user-provided OpenAI key in Vercel Production. Low reasoning effort and an 8,192-token completion ceiling bound each request; no automatic paid fallback or retries are configured. A monthly dollar cutoff and provider token/cost ledger are not implemented. Clinical quality evaluation remains required beyond functional smoke checks.
 - Stripe secret key, webhook signing secret, product price IDs and an isolated `neurosync_billing` login credential are not configured. This role currently has NOLOGIN. No live purchase or Stripe webhook round-trip has been made. Never reuse unrelated applications' payment keys without authorization.
 - Privacy agreements, BAA eligibility, retention/backup/restore operations, and external email deliverability remain deployment/operator requirements. No compliance certification is claimed.
 
@@ -39,7 +39,7 @@ The in-app browser runtime could not initialize (`browser-client is not trusted`
 
 ## Release gates
 
-`npm ci`, build, lint and full typecheck pass. Typecheck: zero errors. Integration/unit suite: 41 passing tests, including production password login, rejected credentials and secure session cookies. Compatible security updates reduced the audit to four moderate findings; no high or critical findings remain. Major-version dependency upgrades were not forced. The first deployed PDF-parser packaging failure and direct IPv6 connection incompatibility were corrected with explicit native dependencies, lazy parser loading and the verified IPv4 transaction pooler.
+`npm ci`, build, lint and full typecheck pass. Typecheck: zero errors. Integration/unit suite: 42 passing tests, including production password login, rejected credentials and secure session cookies. Compatible security updates reduced the audit to four moderate findings; no high or critical findings remain. Major-version dependency upgrades were not forced. The first deployed PDF-parser packaging failure and direct IPv6 connection incompatibility were corrected with explicit native dependencies, lazy parser loading and the verified IPv4 transaction pooler.
 
 Supabase's security advisor identified one NeuroSync-specific mutable search path inherited from the original timestamp trigger. Additive migration 0012 pins it to pg_catalog; unrelated existing public-schema findings were not modified. [Advisor remediation reference](https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable).
 
@@ -53,4 +53,18 @@ The follow-up Supabase security-advisor check returned no NeuroSync-schema findi
 
 ## Administrator password activation (2026-09-11)
 
-Deployed `neurosync-3haumtd84-nicks-projects-0994fdbd.vercel.app` to the production alias. Verified the supplied administrator credentials against the live API: successful login, secure session cookies, administrator profile, active enterprise entitlement, authorized patient-list access and logout revocation. The login page returned 200. Temporary local credential artifacts were deleted after verification; no password was committed. Browser interaction remains unverified because of the native bridge limitation above. AI and payment provider activation remain outstanding.
+Deployed `neurosync-3haumtd84-nicks-projects-0994fdbd.vercel.app` to the production alias. Verified the supplied administrator credentials against the live API: successful login, secure session cookies, administrator profile, active enterprise entitlement, authorized patient-list access and logout revocation. The login page returned 200. Temporary local credential artifacts were deleted after verification; no password was committed. Browser interaction remains unverified because of the native bridge limitation above. At this release, AI and payment provider activation remained outstanding; see the subsequent AI activation record below.
+
+## GPT-5 mini activation (2026-09-11)
+
+Production deployment: `neurosync-ggon6cbao-nicks-projects-0994fdbd.vercel.app`, aliased to `https://neurosync-navy.vercel.app`. All three task routes use `openai` / `gpt-5-mini`; `OPENAI_API_KEY` remains server-only in Vercel. The adapter requests low reasoning effort for GPT-5 mini, limits completion tokens to 8,192 (including reasoning), and explicitly sets `store: false`. This is not a zero-data-retention agreement. No automatic fallback or retry spending was introduced.
+
+Three live provider requests using a temporary synthetic clinician verified:
+- Clinical conversation response with OpenAI/model attribution, persisted assistant message and identical content on reload.
+- Structured SOAP generation with all five narrative sections, saved patient/session linkage, and identical persisted plan on retrieval.
+- Diagnostic reference response.
+- Replaying the consultation and SOAP request IDs reused saved output; usage remained one consultation and one SOAP generation.
+
+The verification session was logged out, and its temporary records and identity were removed; audit metadata remains. The user's administrator account was unchanged. Exact provider charges and account balance were not queried; the user reported approximately $2 available. These checks establish API functionality and persistence, not clinical accuracy or browser interaction. All 42 tests, lint, typecheck and build pass.
+
+Configuration reference: [GPT-5 API reasoning controls](https://openai.com/index/introducing-gpt-5-for-developers/) and [GPT-5 mini model](https://developers.openai.com/api/docs/models/gpt-5-mini).
