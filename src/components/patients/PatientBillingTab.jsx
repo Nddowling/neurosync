@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { CreditCard, Plus, Trash2, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,7 +31,7 @@ export default function PatientBillingTab({ patientId }) {
   const { data: bills = [], isLoading } = useQuery({
     queryKey: ["patient_billing", patientId],
     queryFn: async () => {
-      const res = await base44.functions.invoke("supabase", {
+      const res = await neurosync.functions.invoke("records", {
         action: "select", table: "patient_billing", query: { patient_id: patientId },
       });
       return res.data?.data || [];
@@ -39,7 +39,7 @@ export default function PatientBillingTab({ patientId }) {
   });
 
   const addBill = async () => {
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "insert", table: "patient_billing",
       data: { ...form, patient_id: patientId },
     });
@@ -50,7 +50,7 @@ export default function PatientBillingTab({ patientId }) {
   };
 
   const removeBill = async (id) => {
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "delete", table: "patient_billing", query: { id },
     });
     queryClient.invalidateQueries({ queryKey: ["patient_billing", patientId] });
@@ -60,8 +60,8 @@ export default function PatientBillingTab({ patientId }) {
 
   if (isLoading) return <Skeleton className="h-24 rounded-xl" />;
 
-  const totalBilled = bills.reduce((sum, b) => sum + (parseFloat(b.fee) || 0), 0);
-  const totalPaid = bills.reduce((sum, b) => sum + (parseFloat(b.insurance_paid) || 0) + (parseFloat(b.patient_responsibility) || 0), 0);
+  const totalBilled = bills.reduce((sum, b) => sum + (Number(b.fee) || 0), 0);
+  const totalPaid = bills.reduce((sum, b) => sum + (Number(b.insurance_paid) || 0) + (Number(b.patient_responsibility) || 0), 0);
   const totalBalance = totalBilled - totalPaid;
 
   const statusColors = { pending: "bg-amber-100 text-amber-700", submitted: "bg-blue-100 text-blue-700", paid: "bg-green-100 text-green-700", denied: "bg-red-100 text-red-700", partial: "bg-orange-100 text-orange-700" };
@@ -150,7 +150,7 @@ export default function PatientBillingTab({ patientId }) {
                 <p className="text-xs text-gray-400">{bill.service_date ? new Date(bill.service_date).toLocaleDateString() : "—"}</p>
               </div>
               <div className="text-right flex-shrink-0">
-                {bill.fee && <p className="text-sm font-semibold text-gray-900">${parseFloat(bill.fee).toFixed(2)}</p>}
+                {bill.fee && <p className="text-sm font-semibold text-gray-900">${Number(bill.fee).toFixed(2)}</p>}
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[bill.status] || "bg-gray-100 text-gray-600"}`}>
                   {bill.status}
                 </span>

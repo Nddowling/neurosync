@@ -1,3 +1,11 @@
+# Owned database foundation (phase 2)
+
+Apply immutable migrations 0001–0004 using `npm run db:migrate`; 0004 corrects runtime privileges, clinician isolation and audit protection. `npm test` verifies actual PostgreSQL isolation in a temporary synthetic cluster. See [local instructions](../docs/LOCAL_DEVELOPMENT.md), [field reconciliation](../docs/DATABASE_FIELD_MAP.md), and [security gaps](../docs/SECURITY_GAPS.md).
+
+The running frontend has not been switched to this database. No real data was imported. The following is historical proposal text and must not be used as deployment evidence.
+
+> Historical database proposal. The adapter does not yet use this schema; audit permissions below are not enforced by 0001–0003 alone. References to /infra and BAA coverage are unverified. See ../docs/SECURITY_GAPS.md and ../docs/HIPAA_DEPLOYMENT_REQUIREMENTS.md.
+
 # NeuroSync database (Cloud SQL / PostgreSQL)
 
 This is the **PHI store**. It runs on **Cloud SQL for PostgreSQL** under the Google

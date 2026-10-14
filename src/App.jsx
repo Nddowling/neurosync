@@ -1,3 +1,4 @@
+import { Toaster as SonnerToaster } from "sonner";
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
@@ -10,11 +11,12 @@ import Patients from './pages/Patients';
 import PatientDetail from './pages/PatientDetail';
 import CalendarPage from './pages/Calendar';
 import Landing from './pages/Landing';
+import Login from './pages/Login';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import TermsOfServiceModal from '@/components/legal/TermsOfServiceModal';
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { neurosync } from '@/api/client';
 
 const { Pages, Layout } = pagesConfig;
 
@@ -28,18 +30,18 @@ const TosGate = ({ children }) => {
 
   useEffect(() => {
     if (!isAuthenticated) { setTosAccepted(true); return; } // don't gate unauthenticated
-    base44.auth.me().then(user => {
+    neurosync.auth.me().then(user => {
       setTosAccepted(!!user?.tos_accepted_at);
-    }).catch(() => setTosAccepted(true));
+    }).catch(() => setTosAccepted(false));
   }, [isAuthenticated]);
 
   const handleAccept = async () => {
-    await base44.auth.updateMe({ tos_accepted_at: new Date().toISOString() });
+    await neurosync.auth.updateMe({ tos_accepted_at: new Date().toISOString() });
     setTosAccepted(true);
   };
 
   const handleDecline = () => {
-    base44.auth.logout();
+    neurosync.auth.logout();
   };
 
   if (tosAccepted === null) return null;
@@ -65,9 +67,10 @@ const AuthenticatedApp = () => {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
       // Redirect to login, return to Dashboard after
-      base44.auth.redirectToLogin(window.location.origin + "/Dashboard");
+      neurosync.auth.redirectToLogin(window.location.origin + "/Dashboard");
       return null;
     }
+    return <div role="alert" className="p-8">Unable to load your session. Please reload to try again.</div>;
   }
 
   // Render the main app
@@ -104,10 +107,12 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/Login" element={<Login />} />
             <Route path="/*" element={<AuthenticatedApp />} />
           </Routes>
         </Router>
         <Toaster />
+        <SonnerToaster richColors />
       </QueryClientProvider>
     </AuthProvider>
   )

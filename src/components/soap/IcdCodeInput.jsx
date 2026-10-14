@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { X, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 
 // Most common psychiatric & related ICD-10 codes
 const ICD_CODES = [

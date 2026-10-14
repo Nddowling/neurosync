@@ -1,6 +1,7 @@
+import MedicationLibrary from "@/components/knowledge/MedicationLibrary";
 import React, { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -46,44 +47,8 @@ export default function KnowledgeBase() {
 
   const processSingleFile = async (file, idx) => {
     try {
-      // Step 1: Upload (0→40%)
-      updateFile(idx, { status: "uploading", progress: 10 });
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      updateFile(idx, { progress: 40 });
-
-      // Step 2: Extract (40→75%)
-      updateFile(idx, { status: "extracting", progress: 50 });
-      const extracted = await base44.integrations.Core.ExtractDataFromUploadedFile({
-        file_url,
-        json_schema: {
-          type: "object",
-          properties: {
-            title: { type: "string", description: "Document title or best-guess title" },
-            content: { type: "string", description: "Full extracted text content" },
-            summary: { type: "string", description: "Brief 1-2 sentence summary" },
-            category: { type: "string", description: "One of: cpt_codes, clinical_reference, protocol, medication, billing, other" },
-            tags: { type: "string", description: "Comma-separated relevant tags" },
-          },
-        },
-      });
-      updateFile(idx, { progress: 75 });
-
-      if (extracted.status !== "success" || !extracted.output) {
-        throw new Error("Could not extract content from PDF");
-      }
-
-      // Step 3: Save (75→100%)
-      updateFile(idx, { status: "saving", progress: 85 });
-      const data = extracted.output;
-      await base44.entities.KnowledgeBase.create({
-        title: data.title || file.name.replace(/\.pdf$/i, ""),
-        content: data.content || data.summary || "Extracted from PDF",
-        category: data.category || "other",
-        tags: data.tags || "",
-        source: file.name,
-        file_url,
-      });
-
+      updateFile(idx, { status: "extracting", progress: 20 });
+      await neurosync.knowledge.upload(file);
       updateFile(idx, { status: "done", progress: 100 });
     } catch (err) {
       updateFile(idx, { status: "error", progress: 0, error: err.message || "Upload failed" });
@@ -98,13 +63,12 @@ export default function KnowledgeBase() {
     const initialStates = files.map(f => ({ name: f.name, status: "pending", progress: 0 }));
     setFileUploads(initialStates);
 
-    // Process all files in parallel
-    await Promise.all(files.map((file, idx) => processSingleFile(file, idx)));
+    // Bound memory and parser concurrency.
+    for (const [idx,file] of files.entries()) await processSingleFile(file,idx);
 
     // Refresh list and notify
     queryClient.invalidateQueries({ queryKey: ["knowledge_base"] });
-    const succeeded = initialStates.length; // we'll check actual state after
-    toast.success(`Upload complete — ${files.length} file${files.length > 1 ? "s" : ""} processed`);
+    toast.info("Upload processing finished. Review each file’s status below.");
 
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
@@ -113,11 +77,11 @@ export default function KnowledgeBase() {
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["knowledge_base"],
-    queryFn: () => base44.entities.KnowledgeBase.list("-created_date", 100),
+    queryFn: () => neurosync.knowledge.list(),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.KnowledgeBase.create(data),
+    mutationFn: (/** @type {Record<string,string>} */ data) => neurosync.entities.KnowledgeBase.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["knowledge_base"] });
       setShowAddDialog(false);
@@ -127,7 +91,7 @@ export default function KnowledgeBase() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.KnowledgeBase.delete(id),
+    mutationFn: (/** @type {string} */ id) => neurosync.entities.KnowledgeBase.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["knowledge_base"] });
       toast.success("Entry deleted");
@@ -151,7 +115,7 @@ export default function KnowledgeBase() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Knowledge Base</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Clinical references, CPT codes, and protocols available to the AI assistant during consultations.</p>
+          <p className="text-sm text-gray-500 mt-0.5">Shared medication references and your private consultation resources.</p>
         </div>
         <div className="flex gap-2">
           <label>
@@ -175,6 +139,9 @@ export default function KnowledgeBase() {
         </div>
       </div>
 
+      <section className="mb-8"><h2 className="text-lg font-semibold mb-3">Included reference library</h2><MedicationLibrary /></section>
+      <h2 className="text-lg font-semibold mb-2">Your private resources</h2>
+      <p className="text-sm text-gray-500 mb-4">Your uploaded documents and entries are available to your AI consultations.</p>
       {/* Upload Progress Panel */}
       {fileUploads.length > 0 && (
         <div className="mb-6 bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
@@ -253,7 +220,7 @@ export default function KnowledgeBase() {
             <BookOpen className="h-7 w-7 text-gray-400" />
           </div>
           <h3 className="text-sm font-semibold text-gray-600">
-            {searchQuery ? "No matching entries" : "Knowledge Base is empty"}
+            {searchQuery ? "No matching entries" : "No private resources yet"}
           </h3>
           <p className="text-xs text-gray-400 mt-1 max-w-xs">
             {searchQuery ? "Try a different search term." : "Add clinical references, CPT codes, or upload PDFs to enrich your AI consultations."}
@@ -272,7 +239,7 @@ export default function KnowledgeBase() {
                     </Badge>
                     {entry.file_url && (
                       <Badge className="text-[10px] bg-gray-100 text-gray-500 border-gray-200 gap-1">
-                        <FileText className="h-2.5 w-2.5" /> PDF
+                        <FileText className="h-2.5 w-2.5" /> <a href={entry.file_url} target="_blank" rel="noreferrer" className="underline">Open PDF</a>
                       </Badge>
                     )}
                   </div>

@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { base44 } from "@/api/base44Client";
+import { toast } from "sonner";
+import React, { useState } from "react";
+import { neurosync } from "@/api/client";
 import { BookOpen, Search, Loader2, AlertCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,18 +8,18 @@ import ReactMarkdown from "react-markdown";
 import ClinicalWarningBanner from "@/components/legal/ClinicalWarningBanner";
 
 const dsmCategories = [
-  { label: "Depressive Disorders", query: "DSM-5-TR diagnostic criteria for Major Depressive Disorder, Persistent Depressive Disorder, and Disruptive Mood Dysregulation Disorder. Include specifiers." },
-  { label: "Anxiety Disorders", query: "DSM-5-TR diagnostic criteria for Generalized Anxiety Disorder, Panic Disorder, Social Anxiety Disorder, and Specific Phobia. Include differential diagnosis tips." },
-  { label: "Bipolar Disorders", query: "DSM-5-TR diagnostic criteria for Bipolar I, Bipolar II, and Cyclothymic Disorder. Include mania vs hypomania distinction and specifiers." },
-  { label: "Schizophrenia Spectrum", query: "DSM-5-TR diagnostic criteria for Schizophrenia, Schizoaffective Disorder, Brief Psychotic Disorder, and Delusional Disorder. Include duration requirements." },
-  { label: "Trauma & Stressor-Related", query: "DSM-5-TR criteria for PTSD, Acute Stress Disorder, and Adjustment Disorders. Include the 4 PTSD symptom clusters." },
-  { label: "OCD & Related", query: "DSM-5-TR criteria for OCD, Body Dysmorphic Disorder, Hoarding Disorder, Trichotillomania, and Excoriation Disorder." },
-  { label: "Personality Disorders", query: "DSM-5-TR diagnostic criteria for all Cluster A, B, and C personality disorders. Include general personality disorder criteria." },
-  { label: "ADHD", query: "DSM-5-TR diagnostic criteria for ADHD including all presentations, age-adjusted criteria for adults, and common differential diagnoses." },
-  { label: "Substance Use Disorders", query: "DSM-5-TR diagnostic criteria for Substance Use Disorders including severity levels, and criteria for specific substances (alcohol, opioids, cannabis, stimulants)." },
-  { label: "Eating Disorders", query: "DSM-5-TR diagnostic criteria for Anorexia Nervosa, Bulimia Nervosa, Binge Eating Disorder, and ARFID. Include severity specifiers." },
-  { label: "Neurocognitive Disorders", query: "DSM-5-TR criteria for Major and Mild Neurocognitive Disorder, including etiological subtypes (Alzheimer's, Vascular, Lewy Body, Frontotemporal)." },
-  { label: "Sleep-Wake Disorders", query: "DSM-5-TR criteria for Insomnia Disorder, Hypersomnolence Disorder, and Narcolepsy. Include psychiatric comorbidity considerations." },
+  { label: "Depressive Disorders", query: "DSM-5 diagnostic overview for Major Depressive Disorder, Persistent Depressive Disorder, and Disruptive Mood Dysregulation Disorder. Include specifiers." },
+  { label: "Anxiety Disorders", query: "DSM-5 diagnostic overview for Generalized Anxiety Disorder, Panic Disorder, Social Anxiety Disorder, and Specific Phobia. Include differential diagnosis tips." },
+  { label: "Bipolar Disorders", query: "DSM-5 diagnostic overview for Bipolar I, Bipolar II, and Cyclothymic Disorder. Include mania vs hypomania distinction and specifiers." },
+  { label: "Schizophrenia Spectrum", query: "DSM-5 diagnostic overview for Schizophrenia, Schizoaffective Disorder, Brief Psychotic Disorder, and Delusional Disorder. Include duration requirements." },
+  { label: "Trauma & Stressor-Related", query: "DSM-5 diagnostic overview for PTSD, Acute Stress Disorder, and Adjustment Disorders. Include the 4 PTSD symptom clusters." },
+  { label: "OCD & Related", query: "DSM-5 diagnostic overview for OCD, Body Dysmorphic Disorder, Hoarding Disorder, Trichotillomania, and Excoriation Disorder." },
+  { label: "Personality Disorders", query: "DSM-5 diagnostic overview for all Cluster A, B, and C personality disorders. Include general personality disorder criteria." },
+  { label: "ADHD", query: "DSM-5 diagnostic overview for ADHD including all presentations, age-adjusted criteria for adults, and common differential diagnoses." },
+  { label: "Substance Use Disorders", query: "DSM-5 diagnostic overview for Substance Use Disorders including severity levels, and criteria for specific substances (alcohol, opioids, cannabis, stimulants)." },
+  { label: "Eating Disorders", query: "DSM-5 diagnostic overview for Anorexia Nervosa, Bulimia Nervosa, Binge Eating Disorder, and ARFID. Include severity specifiers." },
+  { label: "Neurocognitive Disorders", query: "DSM-5 diagnostic overview for Major and Mild Neurocognitive Disorder, including etiological subtypes (Alzheimer's, Vascular, Lewy Body, Frontotemporal)." },
+  { label: "Sleep-Wake Disorders", query: "DSM-5 diagnostic overview for Insomnia Disorder, Hypersomnolence Disorder, and Narcolepsy. Include psychiatric comorbidity considerations." },
 ];
 
 export default function DSMReference() {
@@ -26,51 +27,22 @@ export default function DSMReference() {
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
-  const [displayedResult, setDisplayedResult] = useState("");
-  const typewriterRef = React.useRef(null);
-
-  React.useEffect(() => {
-    if (!result) { setDisplayedResult(""); return; }
-    let i = 0;
-    clearInterval(typewriterRef.current);
-    setDisplayedResult("");
-    typewriterRef.current = setInterval(() => {
-      i += 8;
-      if (i >= result.length) {
-        setDisplayedResult(result);
-        clearInterval(typewriterRef.current);
-      } else {
-        setDisplayedResult(result.slice(0, i));
-      }
-    }, 16);
-    return () => clearInterval(typewriterRef.current);
-  }, [result]);
+  const [sources,setSources]=useState(/** @type {{sourceId:string,title:string,fileUrl:string|null}[]} */ ([]));
 
   const handleSearch = async (searchQuery) => {
     const q = searchQuery || query;
-    if (!q.trim()) return;
+    if (!q.trim() || isLoading) return;
 
     setIsLoading(true);
     setResult(null);
+    setSources([]);
 
     try {
-      const response = await base44.integrations.Core.InvokeLLM({
-        model: "claude_sonnet_4_6",
-        prompt: `You are a psychiatry professor and DSM-5-TR expert. Provide diagnostic information for this query. Be clinically precise and concise.
-
-Query: ${q}
-
-Structure your response with:
-1. **Diagnostic Criteria** — Key criteria (A, B, C, etc.) from DSM-5-TR
-2. **Specifiers** — Relevant specifiers and subtypes
-3. **Key Differential Diagnoses** — How to distinguish from similar conditions
-4. **Clinical Pearls** — Practical diagnostic tips
-5. **Common Comorbidities** — Frequently co-occurring conditions
-6. **Assessment Tools** — Validated scales for screening and monitoring
-
-Use clear headers and bullet points.`,
-      });
-      setResult(response);
+      const response = await neurosync.ai.diagnostic(q);
+      setResult(response.content);
+      setSources(response.sources);
+    } catch (error) {
+      toast.error(error.message || "Reference lookup failed");
     } finally {
       setIsLoading(false);
     }
@@ -80,7 +52,7 @@ Use clear headers and bullet points.`,
     <div className="p-6 lg:p-10 max-w-5xl mx-auto">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">DSM-5 Reference</h1>
-        <p className="text-sm text-gray-400 mt-1">Diagnostic criteria and clinical guidance</p>
+        <p className="text-sm text-gray-400 mt-1">Diagnostic summaries using your private Knowledge Base when relevant sources are available.</p>
       </div>
       <ClinicalWarningBanner variant="decision-support" className="mb-6" />
 
@@ -145,7 +117,7 @@ Use clear headers and bullet points.`,
       )}
 
       {/* Result */}
-      {(result || displayedResult) && (
+      {result && (
         <div>
           <Button variant="ghost" onClick={() => setResult(null)} className="mb-4 text-sm text-gray-500 hover:text-gray-700 gap-1 -ml-2">
             ← Back to categories
@@ -159,13 +131,16 @@ Use clear headers and bullet points.`,
                 <h3 className="text-sm font-semibold text-gray-900">{activeCategory || "Search Results"}</h3>
                 <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5">
                   <AlertCircle className="w-3 h-3" />
-                  Reference only — confirm with current DSM-5-TR text
+                  Verify the cited edition; DSM-5 (2013) is not DSM-5-TR.
                 </p>
               </div>
             </div>
+            <div className="mb-4 rounded-lg bg-slate-50 p-3 text-xs text-gray-600">
+              {sources.length ? <><p className="font-semibold mb-2">Retrieved from your Knowledge Base</p><ul className="space-y-1">{[...new Map(sources.map(source=>[source.sourceId,source])).values()].map(source=><li key={source.sourceId}><a className="underline" href={source.fileUrl || "/KnowledgeBase"} target="_blank" rel="noreferrer">{source.title}</a></li>)}</ul></> : <p>No matching private reference was retrieved. This is a general AI response.</p>}
+            </div>
             <div className="prose-clinical">
               <ReactMarkdown className="text-sm text-gray-700 leading-relaxed">
-                {displayedResult}
+                {result}
               </ReactMarkdown>
             </div>
           </div>

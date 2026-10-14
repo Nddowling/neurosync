@@ -29,3 +29,7 @@ dist-ssr
 
 .env
 base44/.app.jsonc
+
+!.env.example
+.local/
+.vercel

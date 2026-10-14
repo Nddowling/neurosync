@@ -1,0 +1,82 @@
+# Production extraction status
+
+Updated 2026-09-11. The user authorized working directly in production and confirmed existing NeuroSync data is synthetic/test data. No separate staging deployment was created.
+
+## Infrastructure
+
+- Existing repository: `Nddowling/neurosync`, migration branch `codex/base44-extraction`.
+- Vercel project: `neurosync`, `prj_qSRgY8Nk3ZTmJgw3tBn8OmBIkuB5`, team `nicks-projects-0994fdbd`.
+- Production URL: https://neurosync-navy.vercel.app
+- Existing Supabase project: Lead Generator (`xjltsyviygqisleutgua`, us-east-2).
+- Owned schemas: `neurosync`, `neurosync_auth`, `neurosync_migrations`.
+- Unrelated public-schema applications and records were preserved. No data wipe was necessary.
+- Runtime `app_rw` is a nonowner role with no elevated role flags or memberships. Hosted IPv4 transaction-pooler connectivity and runtime isolation checks passed with certificate and hostname verification enabled.
+- Fresh runtime credential exists only in ignored `.env.production.local` (0600) and Vercel production environment. It is not a Supabase service-role key. No existing credential was rotated.
+
+## Implemented
+
+Owned server sessions/CSRF, operator-provisioned password authentication, invitation-scoped Supabase PKCE email authentication, optional OIDC adapter, clinician-scoped record CRUD, conversation history, model routing for OpenAI/Anthropic/Google, versioned clinical and SOAP prompts, schema-validated atomic SOAP persistence, quota reservations and failure release, billing-aware SOAP branches, note finalization protection, knowledge PDF ingestion/private downloads/chunks/version history/local lexical embeddings/citation evidence, and Stripe checkout/webhook adapters with separate commerce authority.
+
+Frontend routes and existing React/Vite layout remain. SDK/build-plugin runtime dependencies were removed. Replaced unused hosted OAuth consent source; an external MCP authorization server was never present in this repository and is not claimed as implemented.
+
+## Activation still required
+
+- The first administrator has been provisioned at the user’s request with a hashed password and active enterprise testing entitlement. Password login uses owned identity storage in Supabase and normal production sessions; administrator role retains clinician data isolation. No email invitation is required for this login.
+- Optional email-link authentication still requires Supabase Auth to allow `https://neurosync-navy.vercel.app/api/auth/supabase-callback` as an additional redirect URL. Preserve other applications' settings in this shared Supabase project. End-to-end email delivery and callback require a selected account and provider configuration.
+- GPT-5 mini is configured for clinical, SOAP and reference tasks using the user-provided OpenAI key in Vercel Production. Low reasoning effort and an 8,192-token completion ceiling bound each request; no automatic paid fallback or retries are configured. A monthly dollar cutoff and provider token/cost ledger are not implemented. Clinical quality evaluation remains required beyond functional smoke checks.
+- Stripe secret key, webhook signing secret, product price IDs and an isolated `neurosync_billing` login credential are not configured. This role currently has NOLOGIN. No live purchase or Stripe webhook round-trip has been made. Never reuse unrelated applications' payment keys without authorization.
+- Privacy agreements, BAA eligibility, retention/backup/restore operations, and external email deliverability remain deployment/operator requirements. No compliance certification is claimed.
+
+## Validation limits
+
+Deterministic provider fixtures validate adapter contracts and persistence without external AI calls. Temporary PostgreSQL test clusters contain only synthetic records. A route rendering successfully does not establish clinical feature readiness. See validation logs and feature parity matrix for evidence and remaining gaps.
+
+## Verified production API smoke (2026-09-11)
+
+Health returned 200; anonymous profile/document access returned 401. A temporary synthetic server-session identity verified patient creation/date retrieval, linked appointment persistence, patient-linked conversation/history, PDF parsing/private storage/download, knowledge deletion, explicit unavailable AI/commerce responses and logout revocation. The synthetic identity and its records were removed afterward; audit metadata was retained. This deliberately tests the API/session boundary and does not establish external email authentication readiness.
+
+The in-app browser runtime could not initialize (`browser-client is not trusted` / native bridge unavailable), so no interactive-browser or screenshot verification is claimed.
+
+## Release gates
+
+`npm ci`, build, lint and full typecheck pass. Typecheck: zero errors. Integration/unit suite: 48 passing tests, including production password login, rejected credentials and secure session cookies. Compatible security updates reduced the audit to four moderate findings; no high or critical findings remain. Major-version dependency upgrades were not forced. The first deployed PDF-parser packaging failure and direct IPv6 connection incompatibility were corrected with explicit native dependencies, lazy parser loading and the verified IPv4 transaction pooler.
+
+Supabase's security advisor identified one NeuroSync-specific mutable search path inherited from the original timestamp trigger. Additive migration 0012 pins it to pg_catalog; unrelated existing public-schema findings were not modified. [Advisor remediation reference](https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable).
+
+## Release record
+
+Application commit: `d1a5e4a` on `codex/base44-extraction`. Final production deployment: `neurosync-h0ibe5qzy-nicks-projects-0994fdbd.vercel.app`, aliased to `https://neurosync-navy.vercel.app`. Post-deployment health/config endpoints returned 200, anonymous profile access returned 401, and the page title is NeuroSync.
+
+Vercel deployment is manual for this migration. The automatically added Git connection was disconnected so repository pushes do not generate preview builds or deploy the old main branch. Source remains in GitHub; reconnect CI/CD after choosing the desired production branch and activation gates.
+
+The follow-up Supabase security-advisor check returned no NeuroSync-schema findings. Pre-existing findings in unrelated schemas remain outside this migration.
+
+## Administrator password activation (2026-09-11)
+
+Deployed `neurosync-3haumtd84-nicks-projects-0994fdbd.vercel.app` to the production alias. Verified the supplied administrator credentials against the live API: successful login, secure session cookies, administrator profile, active enterprise entitlement, authorized patient-list access and logout revocation. The login page returned 200. Temporary local credential artifacts were deleted after verification; no password was committed. Browser interaction remains unverified because of the native bridge limitation above. At this release, AI and payment provider activation remained outstanding; see the subsequent AI activation record below.
+
+## GPT-5 mini activation (2026-09-11)
+
+Production deployment: `neurosync-ggon6cbao-nicks-projects-0994fdbd.vercel.app`, aliased to `https://neurosync-navy.vercel.app`. All three task routes use `openai` / `gpt-5-mini`; `OPENAI_API_KEY` remains server-only in Vercel. The adapter requests low reasoning effort for GPT-5 mini, limits completion tokens to 8,192 (including reasoning), and explicitly sets `store: false`. This is not a zero-data-retention agreement. No automatic fallback or retry spending was introduced.
+
+Three live provider requests using a temporary synthetic clinician verified:
+- Clinical conversation response with OpenAI/model attribution, persisted assistant message and identical content on reload.
+- Structured SOAP generation with all five narrative sections, saved patient/session linkage, and identical persisted plan on retrieval.
+- Diagnostic reference response.
+- Replaying the consultation and SOAP request IDs reused saved output; usage remained one consultation and one SOAP generation.
+
+The verification session was logged out, and its temporary records and identity were removed; audit metadata remains. The user's administrator account was unchanged. Exact provider charges and account balance were not queried; the user reported approximately $2 available. These checks establish API functionality and persistence, not clinical accuracy or browser interaction. All 42 tests, lint, typecheck and build pass.
+
+Configuration reference: [GPT-5 API reasoning controls](https://openai.com/index/introducing-gpt-5-for-developers/) and [GPT-5 mini model](https://developers.openai.com/api/docs/models/gpt-5-mini).
+
+## Shared medication library and private DSM demo (2026-09-11)
+
+Production deployment: `neurosync-fvxqffr2m-nicks-projects-0994fdbd.vercel.app`, aliased to `https://neurosync-navy.vercel.app`. Medication Reference and Knowledge Base now include the same authenticated FDA label search, with manufacturer/source dates, label sections and DailyMed links. It uses no AI credits. Source updates are weekly and cached lookups expire after one hour; no full offline corpus or scheduled bulk-import job is claimed.
+
+Medication and DSM pages render completed AI answers immediately instead of replaying a typewriter animation. General reference calls use a smaller/minimal-reasoning GPT-5 mini configuration. Measured examples: source search 943 ms, opening a label 391 ms, repeated search 115 ms, short AI medication response 2,746 ms. These are sample timings, not guarantees.
+
+At the user's request, their local 970-page DSM-5 (2013) scan was split into 28 private PDF parts and OCR-processed locally. All 2,168 extracted chunks were indexed under the administrator's existing owner identity. No API credits were used for OCR/embeddings. The original remains local; no PDF or book text was committed or published as a public asset. DSM subscriber-wide licensing remains separate from this private demo import.
+
+DSM Lookup now retrieves private knowledge excerpts, distinguishes source edition, and returns authenticated PDF links. Live checks verified all 28 catalog entries, about 41 KB of catalog previews, topic-relevant ADHD sources including the chapter, a model response, successful PDF download and anonymous denial. A representative lookup plus source download took about 8.1 seconds. Tests independently verify two-clinician retrieval isolation. OCR recognition and clinical accuracy still require human verification.
+
+The Chrome-based browser CLI worked where the earlier native in-app bridge had failed. Medication search/selection, Knowledge Base resources and DSM Lookup source display were checked in the browser. Full typecheck, lint, build and all 48 tests pass. See [REFERENCE_LIBRARY.md](REFERENCE_LIBRARY.md) for source licensing, coverage, refresh behavior and remaining limits.

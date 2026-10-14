@@ -183,7 +183,7 @@ const mdComponents = {
   ),
 };
 
-export default function MessageBubble({ message, isLastAssistant, onGenerateSoap, isGeneratingSoap }) {
+export default function MessageBubble({ message, isLastAssistant = false, onGenerateSoap = undefined, isGeneratingSoap = false }) {
   const isUser = message.role === "user";
   const rawContent = message.content?.replace(/▍$/, "") || message.content;
   const { body, sources } = isUser ? { body: message.content, sources: [] } : parseSources(message.content);

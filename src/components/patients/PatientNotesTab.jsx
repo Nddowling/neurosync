@@ -1,16 +1,15 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { FileText, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
 
 export default function PatientNotesTab({ patientId }) {
   const { data: notes = [], isLoading } = useQuery({
     queryKey: ["patient_notes", patientId],
     queryFn: async () => {
-      const res = await base44.functions.invoke("supabase", {
+      const res = await neurosync.functions.invoke("records", {
         action: "select",
         table: "patient_notes",
         query: { patient_id: patientId },
@@ -49,7 +48,7 @@ export default function PatientNotesTab({ patientId }) {
               </div>
               <p className="text-xs text-gray-400 mb-2">{new Date(note.created_at).toLocaleDateString("en-US", { year:"numeric", month:"short", day:"numeric" })}</p>
               {note.icd_codes && <p className="text-xs text-gray-500">ICD-10: {note.icd_codes}</p>}
-              {note.cpt_codes && <p className="text-xs text-gray-500">CPT: {note.cpt_codes}</p>}
+              {note.cpt_code && <p className="text-xs text-gray-500">CPT: {note.cpt_code}</p>}
               {note.subjective && (
                 <p className="text-xs text-gray-500 mt-1 line-clamp-2 border-t border-gray-50 pt-2">{note.subjective}</p>
               )}

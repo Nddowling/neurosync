@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, User, Phone, Mail, MapPin, Shield, Edit2 } from "lucide-react";
+import { ArrowLeft, Phone, Mail, MapPin, Shield, Edit2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,7 +12,6 @@ import PatientMedsTab from "@/components/patients/PatientMedsTab";
 import PatientGoalsTab from "@/components/patients/PatientGoalsTab";
 import PatientAppointmentsTab from "@/components/patients/PatientAppointmentsTab";
 import PatientBillingTab from "@/components/patients/PatientBillingTab";
-import PatientFormModal from "@/components/patients/PatientFormModal";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function PatientDetail() {
@@ -26,7 +25,7 @@ export default function PatientDetail() {
     queryKey: ["patient", patientId],
     enabled: !!patientId,
     queryFn: async () => {
-      const res = await base44.functions.invoke("supabase", {
+      const res = await neurosync.functions.invoke("records", {
         action: "select",
         table: "patients",
         query: { id: patientId },
@@ -53,7 +52,7 @@ export default function PatientDetail() {
   }
 
   const age = patient.date_of_birth
-    ? Math.floor((new Date() - new Date(patient.date_of_birth)) / (365.25 * 24 * 60 * 60 * 1000))
+    ? Math.floor((new Date().getTime() - new Date(patient.date_of_birth).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
     : null;
 
   return (
@@ -132,7 +131,7 @@ export default function PatientDetail() {
         </TabsContent>
 
         <TabsContent value="consults"><PatientConsultsTab patientId={patientId} patient={patient} /></TabsContent>
-        <TabsContent value="notes"><PatientNotesTab patientId={patientId} patient={patient} /></TabsContent>
+        <TabsContent value="notes"><PatientNotesTab patientId={patientId} /></TabsContent>
         <TabsContent value="medications"><PatientMedsTab patientId={patientId} /></TabsContent>
         <TabsContent value="goals"><PatientGoalsTab patientId={patientId} /></TabsContent>
         <TabsContent value="appointments"><PatientAppointmentsTab patientId={patientId} /></TabsContent>
@@ -164,7 +163,7 @@ function PatientEditModal({ patient, onClose, onSaved }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "update",
       table: "patients",
       query: { id: patient.id },

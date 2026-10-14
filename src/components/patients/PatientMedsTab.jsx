@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
-import { Pill, Plus, Trash2, X } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { neurosync } from "@/api/client";
+import { Pill, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,7 +17,7 @@ export default function PatientMedsTab({ patientId }) {
   const { data: meds = [], isLoading } = useQuery({
     queryKey: ["patient_meds", patientId],
     queryFn: async () => {
-      const res = await base44.functions.invoke("supabase", {
+      const res = await neurosync.functions.invoke("records", {
         action: "select", table: "patient_medications", query: { patient_id: patientId },
       });
       return res.data?.data || [];
@@ -25,7 +25,7 @@ export default function PatientMedsTab({ patientId }) {
   });
 
   const addMed = async () => {
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "insert", table: "patient_medications",
       data: { ...form, patient_id: patientId },
     });
@@ -36,7 +36,7 @@ export default function PatientMedsTab({ patientId }) {
   };
 
   const removeMed = async (id) => {
-    await base44.functions.invoke("supabase", {
+    await neurosync.functions.invoke("records", {
       action: "delete", table: "patient_medications", query: { id },
     });
     queryClient.invalidateQueries({ queryKey: ["patient_meds", patientId] });
@@ -96,7 +96,7 @@ export default function PatientMedsTab({ patientId }) {
   );
 }
 
-function MedRow({ med, onRemove, faded }) {
+function MedRow({ med, onRemove, faded = false }) {
   return (
     <div className={`flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 ${faded ? "opacity-60" : ""}`}>
       <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0">

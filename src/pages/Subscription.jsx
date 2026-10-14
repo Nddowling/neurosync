@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Check, Zap, Shield, Star, Loader2 } from "lucide-react";
@@ -90,11 +90,8 @@ export default function Subscription() {
     }
     setLoadingPlan(plan.key);
     try {
-      const origin = window.location.origin;
-      const response = await base44.functions.invoke("createCheckout", {
+      const response = await neurosync.functions.invoke("createCheckout", {
         plan: plan.key,
-        successUrl: `${origin}/Subscription?success=true`,
-        cancelUrl: `${origin}/Subscription?canceled=true`,
       });
       if (response.data?.url) {
         window.location.href = response.data.url;
@@ -116,12 +113,9 @@ export default function Subscription() {
         alert("Checkout only works from the published app, not inside the preview.");
         return;
       }
-      const origin = window.location.origin;
-      const response = await base44.functions.invoke("createCheckout", {
+      const response = await neurosync.functions.invoke("createCheckout", {
         plan: "professional",
         promoCode: promoCode.trim(),
-        successUrl: `${origin}/Subscription?success=true`,
-        cancelUrl: `${origin}/Subscription?canceled=true`,
       });
       if (response.data?.url) {
         window.location.href = response.data.url;
@@ -272,7 +266,7 @@ export default function Subscription() {
 
         {/* ToS Confirmation before subscribing */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4 flex items-start gap-3">
-          <Checkbox id="sub-tos" checked={tosConfirmed} onCheckedChange={setTosConfirmed} className="mt-0.5" />
+          <Checkbox id="sub-tos" checked={tosConfirmed} onCheckedChange={checked => setTosConfirmed(checked === true)} className="mt-0.5" />
           <label htmlFor="sub-tos" className="text-xs text-gray-600 leading-relaxed cursor-pointer">
             By subscribing, I confirm that I am a licensed mental health professional, I will not enter PHI into this platform, and I agree to the <Link to="#" className="underline text-gray-900" onClick={e => { e.preventDefault(); window.scrollTo(0,0); }}>Terms of Service</Link>. I understand that NeuroSync is a clinical decision support tool only and all clinical decisions remain my sole professional responsibility.
           </label>

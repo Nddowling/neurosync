@@ -1,0 +1,39 @@
+
+> base44-app@0.0.0 lint
+> eslint . --quiet
+
+
+src/components/calendar/NewAppointmentModal.jsx
+  8:57  error  'User' is defined but never used  unused-imports/no-unused-imports
+
+src/components/patients/PatientMedsTab.jsx
+  2:20  error  'useMutation' is defined but never used  unused-imports/no-unused-imports
+  4:30  error  'X' is defined but never used            unused-imports/no-unused-imports
+
+src/components/patients/PatientNotesTab.jsx
+  7:10  error  'Badge' is defined but never used  unused-imports/no-unused-imports
+
+src/components/soap/IcdCodeInput.jsx
+  3:10  error  'Input' is defined but never used  unused-imports/no-unused-imports
+
+src/pages/DSMReference.jsx
+  1:27  error  'useEffect' is defined but never used  unused-imports/no-unused-imports
+  1:38  error  'useRef' is defined but never used     unused-imports/no-unused-imports
+
+src/pages/PatientDetail.jsx
+   4:21  error  'User' is defined but never used              unused-imports/no-unused-imports
+  15:8   error  'PatientFormModal' is defined but never used  unused-imports/no-unused-imports
+
+src/pages/Patients.jsx
+  3:20  error  'useMutation' is defined but never used  unused-imports/no-unused-imports
+  4:37  error  'Calendar' is defined but never used     unused-imports/no-unused-imports
+  4:61  error  'Loader2' is defined but never used      unused-imports/no-unused-imports
+
+src/pages/SOAPNotes.jsx
+  5:26  error  'Copy' is defined but never used          unused-imports/no-unused-imports
+  5:32  error  'Download' is defined but never used      unused-imports/no-unused-imports
+  5:62  error  'CheckCircle2' is defined but never used  unused-imports/no-unused-imports
+  5:76  error  'Loader2' is defined but never used       unused-imports/no-unused-imports
+
+✖ 16 problems (16 errors, 0 warnings)
+  16 errors and 0 warnings potentially fixable with the `--fix` option.

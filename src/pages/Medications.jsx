@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
-import { base44 } from "@/api/base44Client";
+import MedicationLibrary from "@/components/knowledge/MedicationLibrary";
+import { toast } from "sonner";
+import React, { useState } from "react";
+import { neurosync } from "@/api/client";
 import { Pill, Search, Loader2, AlertTriangle, BookOpen, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,50 +20,21 @@ const quickQueries = [
 export default function Medications() {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
-  const [displayedResult, setDisplayedResult] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
-  const typewriterRef = useRef(null);
-
-  useEffect(() => {
-    if (!result) { setDisplayedResult(""); return; }
-    let i = 0;
-    clearInterval(typewriterRef.current);
-    setDisplayedResult("");
-    typewriterRef.current = setInterval(() => {
-      i += 8;
-      if (i >= result.length) {
-        setDisplayedResult(result);
-        clearInterval(typewriterRef.current);
-      } else {
-        setDisplayedResult(result.slice(0, i));
-      }
-    }, 16);
-    return () => clearInterval(typewriterRef.current);
-  }, [result]);
-
   const handleSearch = async (searchQuery) => {
     const q = searchQuery || query;
-    if (!q.trim()) return;
+    if (!q.trim() || isLoading) return;
 
     setIsLoading(true);
     setResult(null);
 
     try {
-      const response = await base44.integrations.Core.InvokeLLM({
-        model: "claude_sonnet_4_6",
-        prompt: `You are a senior psychopharmacology expert. Provide a concise, evidence-based response to this medication query. Use clinical precision with drug names, dosing ranges, CYP450 interactions, black box warnings, and monitoring parameters. Format with clear headers and bullet points.
-
-Query: ${q}
-
-Include:
-- Mechanism of action where relevant
-- Key drug-drug interactions
-- Black box warnings if applicable
-- Monitoring requirements
-- Clinical pearls from practice`,
-      });
+      const response = await neurosync.ai.reference("medication", q);
 
       setResult(response);
+    } catch (error) {
+      toast.error(error.message || "Reference lookup failed");
     } finally {
       setIsLoading(false);
     }
@@ -75,10 +48,13 @@ Include:
     <div className="p-6 lg:p-10 max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Medication Reference</h1>
-        <p className="text-sm text-gray-400 mt-1">Psychopharmacology reference powered by AI</p>
+        <p className="text-sm text-gray-400 mt-1">Medication labels and optional AI explanations</p>
       </div>
       <ClinicalWarningBanner variant="medications" className="mb-6" />
 
+      <MedicationLibrary />
+      <h2 className="text-lg font-semibold mt-10 mb-2">Ask AI</h2>
+      <p className="text-sm text-gray-500 mb-4">For comparisons and general explanations. Uses AI credits; verify answers against source labels.</p>
       {/* Search */}
       <div className="flex gap-2 mb-6">
         <div className="flex-1 relative">
@@ -142,7 +118,7 @@ Include:
       )}
 
       {/* Result */}
-      {(result || displayedResult) && (
+      {result && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
           <div className="flex items-start gap-3 mb-4 pb-4 border-b border-gray-50">
             <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
@@ -158,7 +134,7 @@ Include:
           </div>
           <div className="prose-clinical">
             <ReactMarkdown className="text-sm text-gray-700 leading-relaxed">
-              {displayedResult}
+              {result}
             </ReactMarkdown>
           </div>
         </div>

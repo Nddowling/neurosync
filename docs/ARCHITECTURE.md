@@ -1,3 +1,5 @@
+> Historical proposal, superseded by CURRENT_ARCHITECTURE.md and TARGET_ARCHITECTURE.md. Statements below about implementation, infrastructure and BAA coverage are UNVERIFIED. See HIPAA_DEPLOYMENT_REQUIREMENTS.md.
+
 # NeuroSync — target architecture & migration plan
 
 NeuroSync is an AI clinical decision-support + documentation tool for psychiatrists /

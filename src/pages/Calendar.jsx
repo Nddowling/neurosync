@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { neurosync } from "@/api/client";
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addMonths, subMonths, addWeeks, subWeeks, isSameDay, isSameMonth, parseISO } from "date-fns";
@@ -9,11 +9,11 @@ import NewAppointmentModal from "../components/calendar/NewAppointmentModal";
 import { useQueryClient } from "@tanstack/react-query";
 
 const fetchAppointments = () =>
-  base44.functions.invoke("supabase", { action: "select", table: "patient_appointments", query: {} })
+  neurosync.functions.invoke("records", { action: "select", table: "patient_appointments", query: {} })
     .then(r => r.data?.data || []);
 
 const fetchPatients = () =>
-  base44.functions.invoke("supabase", { action: "select", table: "patients", query: {} })
+  neurosync.functions.invoke("records", { action: "select", table: "patients", query: {} })
     .then(r => r.data?.data || []);
 
 const TYPE_COLORS = {

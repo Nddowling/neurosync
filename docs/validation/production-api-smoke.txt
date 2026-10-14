@@ -1,0 +1,11 @@
+PASS Production health and database readiness
+PASS Anonymous access denied
+PASS Owned server session resolves synthetic clinician
+PASS Patient creation, date preservation and retrieval
+PASS Linked appointment persistence
+PASS Patient-linked conversation and history
+PASS Unconfigured AI fails explicitly; no fabricated output
+PASS Production PDF parse, private storage and authenticated download
+PASS Knowledge deletion
+PASS Unconfigured commerce fails explicitly
+PASS Logout revokes production session
